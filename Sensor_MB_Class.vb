@@ -279,7 +279,7 @@ Public Class Sensor_MB_Class
         Dim strResult As String
         Dim strResults() As String
         Dim HC, CO, CO2, O2, NOX, RPM, OilTemp, AmbientTemp, Pressure As Short
-
+        Dim stat As Boolean
 
         unitsL = 0
         unitsH = 0
