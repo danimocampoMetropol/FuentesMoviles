@@ -52,6 +52,7 @@ Public Class Sensor_MB_Class
     Public Oil_Temp_as_mV As Integer = 0
     Public RPM_as_1_Min As Integer = 1
     Public RPM_as_1_mV As Integer = 0
+    Public Warm_Up_Time As UInteger
 
 
 
@@ -189,7 +190,7 @@ Public Class Sensor_MB_Class
 
         tmrComunicacion = New Windows.Forms.Timer()
         tmrComunicacion.Enabled = False
-        AddHandler tmrComunicacion.Tick, AddressOf tmrComunicacion_Tick
+        AddHandler tmrComunicacion.Tick, AddressOf TmrComunicacion_Tick
 
         _serialPortMicroBench = New SerialPort()
         _serialPortMicroBench.PortName = portName
@@ -258,6 +259,21 @@ Public Class Sensor_MB_Class
 
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="mode"></param>
+    ''' <param name="unitsPressure"></param>
+    ''' <param name="unitsTemp"></param>
+    ''' <param name="HCRange"></param>
+    ''' <param name="LowHighResolition"></param>
+    ''' <param name="Rpm2_4_Cycle"></param>
+    ''' <param name="ignitioNormal_Dual"></param>
+    ''' <param name="ResolutionPressureHigh_Low"></param>
+    ''' <param name="HCasPPMHexane_Propane"></param>
+    ''' <param name="OilTempAs_C_mV"></param>
+    ''' <param name="RpmAs_1xmin_mv"></param>
+    ''' <returns></returns>
     Public Function Comando_MB_GetData(mode As UInteger,
                                         unitsPressure As UInteger,
                                         unitsTemp As UInteger,
@@ -279,7 +295,6 @@ Public Class Sensor_MB_Class
         Dim strResult As String
         Dim strResults() As String
         Dim HC, CO, CO2, O2, NOX, RPM, OilTemp, AmbientTemp, Pressure As Short
-        Dim stat As Boolean
 
         unitsL = 0
         unitsH = 0
@@ -544,11 +559,82 @@ Public Class Sensor_MB_Class
                     SinglePointCalibrationStatus.PRESS_Cal = True
                 End If
 
+                TwoPointCalibrationStatus.HC_Cal = False
+                If satatusWord3 And &H1 Then
+                    TwoPointCalibrationStatus.HC_Cal = True
+                End If
+                TwoPointCalibrationStatus.CO_Cal = False
+                If satatusWord3 And &H2 Then
+                    TwoPointCalibrationStatus.CO_Cal = True
+                End If
+                TwoPointCalibrationStatus.CO2_Cal = False
+                If satatusWord3 And &H4 Then
+                    TwoPointCalibrationStatus.CO2_Cal = True
+                End If
 
+                BenchOperationalWarnings.BlockHeater = False
+                If satatusWord6 And &H2 Then
+                    BenchOperationalWarnings.BlockHeater = True
+                End If
+                BenchOperationalWarnings.O2OffsetVoltage_Warning = False
+                If satatusWord6 And &H4 Then
+                    BenchOperationalWarnings.O2OffsetVoltage_Warning = True
+                End If
+                BenchOperationalWarnings.NOXOffsetVoltage_OutRange = False
+                If satatusWord6 And &H8 Then
+                    BenchOperationalWarnings.NOXOffsetVoltage_OutRange = True
+                End If
+                BenchOperationalWarnings.NDIRBeamStrength_Warning = False
+                If satatusWord6 And &H2000 Then
+                    BenchOperationalWarnings.NDIRBeamStrength_Warning = True
+                End If
+                BenchOperationalWarnings.IncompatibleEEPROM = False
+                If satatusWord6 And &H8000 Then
+                    BenchOperationalWarnings.IncompatibleEEPROM = True
+                End If
 
+                ADConverterChannels.HC_Channel_railed = False
+                If satatusWord7 And &H1 Then
+                    ADConverterChannels.HC_Channel_railed = True
+                End If
+                ADConverterChannels.CO_Channel_railed = False
+                If satatusWord7 And &H2 Then
+                    ADConverterChannels.CO_Channel_railed = True
+                End If
+                ADConverterChannels.CO2_Channel_railed = False
+                If satatusWord7 And &H4 Then
+                    ADConverterChannels.CO2_Channel_railed = True
+                End If
+                ADConverterChannels.O2_Channel_railed = False
+                If satatusWord7 And &H8 Then
+                    ADConverterChannels.O2_Channel_railed = True
+                End If
+                ADConverterChannels.NOX_Channel_railed = False
+                If satatusWord7 And &H10 Then
+                    ADConverterChannels.NOX_Channel_railed = True
+                End If
+                ADConverterChannels.RPM_Channel_railed = False
+                If satatusWord7 And &H20 Then
+                    ADConverterChannels.RPM_Channel_railed = True
+                End If
+                ADConverterChannels.OIL_Channel_railed = False
+                If satatusWord7 And &H40 Then
+                    ADConverterChannels.OIL_Channel_railed = True
+                End If
+                ADConverterChannels.TEMP_Channel_railed = False
+                If satatusWord7 And &H80 Then
+                    ADConverterChannels.TEMP_Channel_railed = True
+                End If
+                ADConverterChannels.PRESS_Channel_railed = False
+                If satatusWord7 And &H100 Then
+                    ADConverterChannels.PRESS_Channel_railed = True
+                End If
+                ADConverterChannels.BlOCK_Channel_railed = False
+                If satatusWord7 And &H800 Then
+                    ADConverterChannels.BlOCK_Channel_railed = True
+                End If
 
-
-
+                Warm_Up_Time = satatusWord9
 
                 Return "1,Datos Almacenados en las estructuras"
             Else
@@ -561,11 +647,11 @@ Public Class Sensor_MB_Class
 
 
     ''' <summary>
-    ''' 
+    ''' prueba Summary
     ''' </summary>
-    ''' <param name="mode"></param>
-    ''' <param name="gas"></param>
-    ''' <returns></returns>
+    ''' <param name="mode">indica el modo </param>
+    ''' <param name="gas">indica el tipo de gas</param>
+    ''' <returns>string separado por coma</returns>
     ''' 
 
     Public Function Comando_MB_Calibration(mode As UInteger, gas As UInteger) As String
@@ -636,11 +722,14 @@ Public Class Sensor_MB_Class
                 'Inicializar temporizador 10 segundos
                 IniTemporizador(10)
                 While response = BUSY And _timeOut = False
-                    response = send_Microbench_command(PROCESS_STATUS, LENGTHY_MODE, data_in, 0)
+                    response = send_Microbench_command(PROCESS_STATUS, NORMAL_MODE, data_in, 0)
+                    Delay(1)
                 End While
+
                 If _timeOut = True Then
                     Return "0,Banco ocupado Tiempo de espera de 10 segundos agotado"
                 End If
+                response = send_Microbench_command(command, LENGTHY_MODE, data_in, 0)
             End If
 
             Select Case response
@@ -725,11 +814,9 @@ Public Class Sensor_MB_Class
             _count = 0
             _serialPortMicroBench.Write(data_send, 0, DataCount + 6) 'Envia trama
             'Inicializa temporizador de 2 segundos para recibir paquete
-            IniTemporizador(2)
-            'espera que el temprozador de la señal de timeOut
-            While _timeOut = False
-                Application.DoEvents()
-            End While
+
+            Delay(2)
+
             _readDataMB = True
             'Inicia Thread de recepcion
             'inicia timer de recepcion. Si al cabo de 2 segundo no ha recibido paquete retorna
@@ -817,10 +904,18 @@ Public Class Sensor_MB_Class
         _timeOut = False
     End Sub
 
-    Private Sub tmrComunicacion_Tick(sender As Object, e As EventArgs)
+    Private Sub TmrComunicacion_Tick(sender As Object, e As EventArgs)
         tmrComunicacion.Enabled = False
         tmrComunicacion.Stop()
         _timeOut = True
     End Sub
 
+
+    Public Sub Delay(ByVal seconds As Single)
+        Static start As Single
+        start = Microsoft.VisualBasic.Timer()
+        Do While Microsoft.VisualBasic.Timer() < start + seconds
+            System.Windows.Forms.Application.DoEvents()
+        Loop
+    End Sub
 End Class

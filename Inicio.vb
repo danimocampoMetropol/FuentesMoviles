@@ -92,6 +92,8 @@ Public Class frmFuentesMoviles
                                                  Sensor_MB.Oil_Temp_as_C, Sensor_MB.RPM_as_1_Min)
         strResult = Sensor_MB.Comando_MB_GetStatus()
 
+
+        strResult = Sensor_MB.Comando_MB_Calibration(0, 0)
         strResults = strResult.Split(",")
         txtConsolaMicroBench.AppendText(strResults(1) + vbCrLf)
 
