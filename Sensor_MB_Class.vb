@@ -14,6 +14,7 @@ Public Class Sensor_MB_Class
     Const MBCalibration As UInteger = 2
     Const MBGetData As UInteger = 3
     Const MBGetStatus As UInteger = 4
+    Const MBReadWriteCalibration As UInteger = 5
 
 
 
@@ -31,6 +32,39 @@ Public Class Sensor_MB_Class
     Public Report_Gas_Data_in_Voltage As Integer = 10
     Public Report_Gas_Data_in_AD_Counts As Integer = 11
     Public Report_Gas_Data_in_Modulation As Integer = 12
+
+    'Constantes Read Calibration Data
+    Public DataSet_SinglePont_Cal_HC_CO_CO2_HiHC As UInteger = 1
+    Public DataSet_SinglePont_Cal_O2 As UInteger = 2
+    Public DataSet_SinglePont_Cal_NOX As UInteger = 3
+    Public DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX As UInteger = 4
+    Public DataSet_TwolePont_Cal_HC_CO_CO2_P1 As UInteger = 11
+    Public DataSet_TwolePont_Cal_HC_CO_CO2_P2 As UInteger = 21
+    Public DataSet_PEF As UInteger = 42
+    Public DataSet_New_O2_Transducer_Installed As UInteger = 50
+    Public DataSet_Read_Bad_O2 As UInteger = 51
+    Public DataSet_Read_High_O2 As UInteger = 52
+
+    Structure Calibration_Data
+        Public HC As Double
+        Public CO As Double
+        Public CO2 As Double
+        Public HC_P2 As Double
+        Public CO_P2 As Double
+        Public CO2_P2 As Double
+        Public HiHc As Double
+        Public O2 As Double
+        Public NOX As Double
+        Public PEF As Integer
+        Public Flag As Short
+        Public Bad_O2 As Double
+        Public High_O2 As Double
+    End Structure
+
+    Public CalibrationData As Calibration_Data
+
+
+
 
     Public Pressure_in_mbar As Integer = 1
     Public Pressure_in_Hg As Integer = 0
@@ -81,6 +115,7 @@ Public Class Sensor_MB_Class
 
 
     Dim readThread As New Thread(AddressOf Read)
+
 
     Structure Overall_Status
         Public warmUpInProgress As Boolean
@@ -663,6 +698,7 @@ Public Class Sensor_MB_Class
             Dim strResults() As String
             Dim mini_status As UInteger
 
+
             Select Case gas
                 Case 0
                     gasByte = &B1
@@ -701,6 +737,107 @@ Public Class Sensor_MB_Class
                     Case Else
                         Return "0,Error devuelve mini_status desconocido"
                 End Select
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
+
+    Public Function Comando_MB_Read_Calibration(dataSet As Integer, PEF_Value As Short) As String
+        Try
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim HC, CO, CO2, O2, NOX, HiHC, Bad_O2, High_O2 As Short
+
+            data(0) = 0 'Read
+            data(1) = 0
+            data(2) = dataSet
+            data(3) = 0
+
+
+            If dataSet = DataSet_PEF Then
+                ReDim Preserve data(5)
+                data(4) = PEF_Value & &HFF
+                data(5) = PEF_Value / &H100
+            End If
+
+            strResult = Microbench_command(MBReadWriteCalibration, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                Select Case dataSet
+                    Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC
+                        HC = data_rcv(4) + data_rcv(5) * &H100
+                        CO = data_rcv(6) + data_rcv(7) * &H100
+                        CO2 = data_rcv(8) + data_rcv(9) * &H100
+                        HiHC = data_rcv(10) + data_rcv(11) * &H100
+                        CalibrationData.HC = HC / 100
+                        CalibrationData.CO = CO / 100
+                        CalibrationData.CO2 = CO2 / 100
+                        CalibrationData.HiHc = HiHC / 100
+
+                    Case DataSet_SinglePont_Cal_O2
+                        O2 = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.O2 = O2 / 100
+
+                    Case DataSet_SinglePont_Cal_NOX
+                        NOX = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.NOX = NOX / 100
+
+                    Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX
+                        HC = data_rcv(4) + data_rcv(5) * &H100
+                        CO = data_rcv(6) + data_rcv(7) * &H100
+                        CO2 = data_rcv(8) + data_rcv(9) * &H100
+                        O2 = data_rcv(10) + data_rcv(11) * &H100
+                        NOX = data_rcv(12) + data_rcv(13) * &H100
+                        HiHC = data_rcv(14) + data_rcv(15) * &H100
+
+                        CalibrationData.HC = HC / 100
+                        CalibrationData.CO = CO / 100
+                        CalibrationData.CO2 = CO2 / 100
+                        CalibrationData.NOX = NOX / 100
+                        CalibrationData.O2 = O2 / 100
+                        CalibrationData.HiHc = HiHC / 100
+
+                    Case DataSet_TwolePont_Cal_HC_CO_CO2_P1
+                        HC = data_rcv(4) + data_rcv(5) * &H100
+                        CO = data_rcv(6) + data_rcv(7) * &H100
+                        CO2 = data_rcv(8) + data_rcv(9) * &H100
+                        CalibrationData.HC = HC / 100
+                        CalibrationData.CO = CO / 100
+                        CalibrationData.CO2 = CO2 / 100
+
+
+                    Case DataSet_TwolePont_Cal_HC_CO_CO2_P2
+                        HC = data_rcv(4) + data_rcv(5) * &H100
+                        CO = data_rcv(6) + data_rcv(7) * &H100
+                        CO2 = data_rcv(8) + data_rcv(9) * &H100
+                        CalibrationData.HC_P2 = HC / 100
+                        CalibrationData.CO_P2 = CO / 100
+                        CalibrationData.CO2_P2 = CO2 / 100
+
+                    Case DataSet_PEF
+                        CalibrationData.PEF = data_rcv(4) + data_rcv(5) * &H100
+
+                    Case DataSet_New_O2_Transducer_Installed
+                        CalibrationData.Flag = data_rcv(4) + data_rcv(5) * &H100
+
+                    Case DataSet_Read_Bad_O2
+                        Bad_O2 = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.Bad_O2 = Bad_O2 / 100
+
+                    Case DataSet_Read_High_O2
+                        High_O2 = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.Bad_O2 = Bad_O2 / 100
+
+
+
+                End Select
+
+
+                Return "1,Datos Almacenados en las estructuras"
             Else
                 Return strResult
             End If
