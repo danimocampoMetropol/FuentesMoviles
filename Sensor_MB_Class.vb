@@ -375,25 +375,25 @@ Public Class Sensor_MB_Class
             status = data_rcv(4) + data_rcv(5) * &H100
 
 
-            HC = data_rcv(6) + data_rcv(7) * &H100
-            CO = data_rcv(8) + data_rcv(9) * &H100
-            CO2 = data_rcv(10) + data_rcv(11) * &H100
-            O2 = data_rcv(12) + data_rcv(13) * &H100
-            NOX = data_rcv(14) + data_rcv(15) * &H100
-            RPM = data_rcv(16) + data_rcv(17) * &H100
-            OilTemp = data_rcv(18) + data_rcv(19) * &H100
-            AmbientTemp = data_rcv(20) + data_rcv(21) * &H100
-            Pressure = data_rcv(22) + data_rcv(23) * &H100
+            HC = BitConverter.ToInt16(data_rcv, 6)
+            CO = BitConverter.ToInt16(data_rcv, 8)
+            CO2 = BitConverter.ToInt16(data_rcv, 10)
+            O2 = BitConverter.ToInt16(data_rcv, 12)
+            NOX = BitConverter.ToInt16(data_rcv, 14)
+            RPM = BitConverter.ToInt16(data_rcv, 16)
+            OilTemp = BitConverter.ToInt16(data_rcv, 18)
+            AmbientTemp = BitConverter.ToInt16(data_rcv, 20)
+            Pressure = BitConverter.ToInt16(data_rcv, 22)
 
-            GetDataResults.HC = HC / 100
-            GetDataResults.CO = CO / 100
-            GetDataResults.CO2 = CO2 / 100
-            GetDataResults.O2 = O2 / 100
-            GetDataResults.NOX = NOX / 100
-            GetDataResults.RPM = RPM / 100
-            GetDataResults.OilTemp = OilTemp / 100
-            GetDataResults.AmbientTemp = AmbientTemp / 100
-            GetDataResults.Pressure = Pressure / 100
+            GetDataResults.HC = HC
+            GetDataResults.CO = CO
+            GetDataResults.CO2 = CO2
+            GetDataResults.O2 = O2
+            GetDataResults.NOX = NOX
+            GetDataResults.RPM = RPM
+            GetDataResults.OilTemp = OilTemp
+            GetDataResults.AmbientTemp = AmbientTemp
+            GetDataResults.Pressure = Pressure
 
             GetDataResults.lowFlow = False
             If status And &B1 Then
@@ -769,68 +769,68 @@ Public Class Sensor_MB_Class
             If strResults(0) = "1" Then
                 Select Case dataSet
                     Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC
-                        HC = data_rcv(4) + data_rcv(5) * &H100
-                        CO = data_rcv(6) + data_rcv(7) * &H100
-                        CO2 = data_rcv(8) + data_rcv(9) * &H100
-                        HiHC = data_rcv(10) + data_rcv(11) * &H100
-                        CalibrationData.HC = HC / 100
-                        CalibrationData.CO = CO / 100
-                        CalibrationData.CO2 = CO2 / 100
-                        CalibrationData.HiHc = HiHC / 100
+                        HC = BitConverter.ToInt16(data_rcv, 4)
+                        CO = BitConverter.ToInt16(data_rcv, 6)
+                        CO2 = BitConverter.ToInt16(data_rcv, 8)
+                        HiHC = BitConverter.ToInt16(data_rcv, 10)
+                        CalibrationData.HC = HC
+                        CalibrationData.CO = CO
+                        CalibrationData.CO2 = CO2
+                        CalibrationData.HiHc = HiHC
 
                     Case DataSet_SinglePont_Cal_O2
-                        O2 = data_rcv(4) + data_rcv(5) * &H100
-                        CalibrationData.O2 = O2 / 100
+                        O2 = BitConverter.ToInt16(data_rcv, 4)
+                        CalibrationData.O2 = O2
 
                     Case DataSet_SinglePont_Cal_NOX
-                        NOX = data_rcv(4) + data_rcv(5) * &H100
-                        CalibrationData.NOX = NOX / 100
+                        NOX = BitConverter.ToInt16(data_rcv, 4)
+                        CalibrationData.NOX = NOX
 
                     Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX
-                        HC = data_rcv(4) + data_rcv(5) * &H100
-                        CO = data_rcv(6) + data_rcv(7) * &H100
-                        CO2 = data_rcv(8) + data_rcv(9) * &H100
-                        O2 = data_rcv(10) + data_rcv(11) * &H100
-                        NOX = data_rcv(12) + data_rcv(13) * &H100
-                        HiHC = data_rcv(14) + data_rcv(15) * &H100
+                        HC = BitConverter.ToInt16(data_rcv, 4)
+                        CO = BitConverter.ToInt16(data_rcv, 6)
+                        CO2 = BitConverter.ToInt16(data_rcv, 8)
+                        O2 = BitConverter.ToInt16(data_rcv, 10)
+                        NOX = BitConverter.ToInt16(data_rcv, 12)
+                        HiHC = BitConverter.ToInt16(data_rcv, 14)
 
-                        CalibrationData.HC = HC / 100
-                        CalibrationData.CO = CO / 100
-                        CalibrationData.CO2 = CO2 / 100
-                        CalibrationData.NOX = NOX / 100
-                        CalibrationData.O2 = O2 / 100
-                        CalibrationData.HiHc = HiHC / 100
+                        CalibrationData.HC = HC
+                        CalibrationData.CO = CO
+                        CalibrationData.CO2 = CO2
+                        CalibrationData.NOX = NOX
+                        CalibrationData.O2 = O2
+                        CalibrationData.HiHc = HiHC
 
                     Case DataSet_TwolePont_Cal_HC_CO_CO2_P1
-                        HC = data_rcv(4) + data_rcv(5) * &H100
-                        CO = data_rcv(6) + data_rcv(7) * &H100
-                        CO2 = data_rcv(8) + data_rcv(9) * &H100
-                        CalibrationData.HC = HC / 100
-                        CalibrationData.CO = CO / 100
-                        CalibrationData.CO2 = CO2 / 100
+                        HC = BitConverter.ToInt16(data_rcv, 4)
+                        CO = BitConverter.ToInt16(data_rcv, 6)
+                        CO2 = BitConverter.ToInt16(data_rcv, 8)
+                        CalibrationData.HC = HC
+                        CalibrationData.CO = CO
+                        CalibrationData.CO2 = CO2
 
 
                     Case DataSet_TwolePont_Cal_HC_CO_CO2_P2
-                        HC = data_rcv(4) + data_rcv(5) * &H100
-                        CO = data_rcv(6) + data_rcv(7) * &H100
-                        CO2 = data_rcv(8) + data_rcv(9) * &H100
-                        CalibrationData.HC_P2 = HC / 100
-                        CalibrationData.CO_P2 = CO / 100
-                        CalibrationData.CO2_P2 = CO2 / 100
+                        HC = BitConverter.ToInt16(data_rcv, 4)
+                        CO = BitConverter.ToInt16(data_rcv, 6)
+                        CO2 = BitConverter.ToInt16(data_rcv, 8)
+                        CalibrationData.HC_P2 = HC
+                        CalibrationData.CO_P2 = CO
+                        CalibrationData.CO2_P2 = CO2
 
                     Case DataSet_PEF
-                        CalibrationData.PEF = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.PEF = BitConverter.ToInt16(data_rcv, 4)
 
                     Case DataSet_New_O2_Transducer_Installed
-                        CalibrationData.Flag = data_rcv(4) + data_rcv(5) * &H100
+                        CalibrationData.Flag = BitConverter.ToInt16(data_rcv, 4)
 
                     Case DataSet_Read_Bad_O2
-                        Bad_O2 = data_rcv(4) + data_rcv(5) * &H100
-                        CalibrationData.Bad_O2 = Bad_O2 / 100
+                        Bad_O2 = BitConverter.ToInt16(data_rcv, 4)
+                        CalibrationData.Bad_O2 = Bad_O2
 
                     Case DataSet_Read_High_O2
-                        High_O2 = data_rcv(4) + data_rcv(5) * &H100
-                        CalibrationData.Bad_O2 = Bad_O2 / 100
+                        High_O2 = BitConverter.ToInt16(data_rcv, 4)
+                        CalibrationData.Bad_O2 = Bad_O2
 
 
 
@@ -860,7 +860,6 @@ Public Class Sensor_MB_Class
                 IniTemporizador(10)
                 While response = BUSY And _timeOut = False
                     response = send_Microbench_command(PROCESS_STATUS, NORMAL_MODE, data_in, 0)
-                    Delay(1)
                 End While
 
                 If _timeOut = True Then

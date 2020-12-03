@@ -14,7 +14,7 @@ Public Class frmFuentesMoviles
     Public Shared Sub Main()
 
 
-        Sensor_MB = New Sensor_MB_Class("COM10")
+        Sensor_MB = New Sensor_MB_Class("COM8")
         Sensor_MB._continue = True
         frmIncio.ShowDialog()
 
@@ -79,6 +79,8 @@ Public Class frmFuentesMoviles
     Private Sub btnGetData_Click(sender As Object, e As EventArgs) Handles btnGetData.Click
         Dim strResult As String
         Dim strResults() As String
+
+        'strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, 0)
 
         strResult = Sensor_MB.Comando_MB_GetData(Sensor_MB.Report_Gas_Data_in_Concentration,
                                                  Sensor_MB.Pressure_in_mbar,
