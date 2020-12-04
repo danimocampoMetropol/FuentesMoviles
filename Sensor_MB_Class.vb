@@ -46,22 +46,28 @@ Public Class Sensor_MB_Class
     Public DataSet_Read_High_O2 As UInteger = 52
 
     Structure Calibration_Data
-        Public HC As Double
-        Public CO As Double
-        Public CO2 As Double
-        Public HC_P2 As Double
-        Public CO_P2 As Double
-        Public CO2_P2 As Double
-        Public HiHc As Double
-        Public O2 As Double
-        Public NOX As Double
-        Public PEF As Integer
-        Public Flag As Short
-        Public Bad_O2 As Double
-        Public High_O2 As Double
+        Dim HC As Integer
+        Dim CO As Integer
+        Dim CO2 As Integer
+        Dim HC_P2 As Integer
+        Dim CO_P2 As Integer
+        Dim CO2_P2 As Integer
+        Dim HiHc As Integer
+        Dim O2 As Integer
+        Dim NOX As Integer
+        Dim PEF As Integer
+        Dim Flag As Short
+        Dim Bad_O2 As Integer
+        Dim High_O2 As Integer
+        Dim HC_Flag_Out_Range As Integer
+        Dim CO_Flag_Out_Range As Integer
+        Dim CO2_Flag_Out_Range As Integer
+        Dim O2_Flag_Out_Range As Integer
+        Dim NOX_Flag_Out_Range As Integer
+        Dim New_O2_Transd_Installed As Integer
     End Structure
 
-    Public CalibrationData As Calibration_Data
+
 
 
 
@@ -87,6 +93,8 @@ Public Class Sensor_MB_Class
     Public RPM_as_1_Min As Integer = 1
     Public RPM_as_1_mV As Integer = 0
     Public Warm_Up_Time As UInteger
+
+
 
 
 
@@ -118,107 +126,100 @@ Public Class Sensor_MB_Class
 
 
     Structure Overall_Status
-        Public warmUpInProgress As Boolean
-        Public ZeroNeeded As Boolean
-        Public NewO2TransducerInstalled As Boolean
-        Public Cal_ZreoWarning As Boolean
-        Public BadO2Trasnducer As Boolean
-        Public LowFLow As Boolean
-        Public NewNOXTransducer As Boolean
-        Public BadNOXTrasnducer As Boolean
-        Public CondesationWarning As Boolean
-        Public ADChannelIsRailed As Boolean
-        Public BenchInternalWarning As Boolean
+        Dim warmUpInProgress As Boolean
+        Dim ZeroNeeded As Boolean
+        Dim NewO2TransducerInstalled As Boolean
+        Dim Cal_ZreoWarning As Boolean
+        Dim BadO2Trasnducer As Boolean
+        Dim LowFLow As Boolean
+        Dim NewNOXTransducer As Boolean
+        Dim BadNOXTrasnducer As Boolean
+        Dim CondesationWarning As Boolean
+        Dim ADChannelIsRailed As Boolean
+        Dim BenchInternalWarning As Boolean
     End Structure
 
 
     Structure Zero_Status
-        Public HC_Warning As Boolean
-        Public CO_Warning As Boolean
-        Public CO2_Warning As Boolean
-        Public HiHC_Warning As Boolean
-        Public O2_Warning As Boolean
-        Public NOX_Warning As Boolean
-        Public RPM_Warning As Boolean
-        Public BadNOXTrasnducer As Boolean
-        Public CondesationWarning As Boolean
-        Public ADChannelIsRailed As Boolean
-        Public BenchInternalWarning As Boolean
+        Dim HC_Warning As Boolean
+        Dim CO_Warning As Boolean
+        Dim CO2_Warning As Boolean
+        Dim HiHC_Warning As Boolean
+        Dim O2_Warning As Boolean
+        Dim NOX_Warning As Boolean
+        Dim RPM_Warning As Boolean
+        Dim BadNOXTrasnducer As Boolean
+        Dim CondesationWarning As Boolean
+        Dim ADChannelIsRailed As Boolean
+        Dim BenchInternalWarning As Boolean
     End Structure
 
 
     Structure SinglePointCalibration_Status
-        Public HC_Cal As Boolean
-        Public CO_Cal As Boolean
-        Public CO2_Cal As Boolean
-        Public HiHC_Cal As Boolean
-        Public O2_Cal As Boolean
-        Public NOX_Cal As Boolean
-        Public RPM_Cal As Boolean
-        Public PRESS_Cal As Boolean
+        Dim HC_Cal As Boolean
+        Dim CO_Cal As Boolean
+        Dim CO2_Cal As Boolean
+        Dim HiHC_Cal As Boolean
+        Dim O2_Cal As Boolean
+        Dim NOX_Cal As Boolean
+        Dim RPM_Cal As Boolean
+        Dim PRESS_Cal As Boolean
     End Structure
 
     Structure TwoPointCalibration_Status
-        Public HC_Cal As Boolean
-        Public CO_Cal As Boolean
-        Public CO2_Cal As Boolean
+        Dim HC_Cal As Boolean
+        Dim CO_Cal As Boolean
+        Dim CO2_Cal As Boolean
     End Structure
 
 
     Structure BenchOperational_Warnings
-        Public BlockHeater As Boolean
-        Public O2OffsetVoltage_Warning As Boolean
-        Public NOXOffsetVoltage_OutRange As Boolean
-        Public NDIRBeamStrength_Warning As Boolean
-        Public IncompatibleEEPROM As Boolean
+        Dim BlockHeater As Boolean
+        Dim O2OffsetVoltage_Warning As Boolean
+        Dim NOXOffsetVoltage_OutRange As Boolean
+        Dim NDIRBeamStrength_Warning As Boolean
+        Dim IncompatibleEEPROM As Boolean
     End Structure
 
 
     Structure ADConverter_Channels
-        Public HC_Channel_railed As Boolean
-        Public CO_Channel_railed As Boolean
-        Public CO2_Channel_railed As Boolean
-        Public O2_Channel_railed As Boolean
-        Public NOX_Channel_railed As Boolean
-        Public RPM_Channel_railed As Boolean
-        Public OIL_Channel_railed As Boolean
-        Public TEMP_Channel_railed As Boolean
-        Public PRESS_Channel_railed As Boolean
-        Public BlOCK_Channel_railed As Boolean
+        Dim HC_Channel_railed As Boolean
+        Dim CO_Channel_railed As Boolean
+        Dim CO2_Channel_railed As Boolean
+        Dim O2_Channel_railed As Boolean
+        Dim NOX_Channel_railed As Boolean
+        Dim RPM_Channel_railed As Boolean
+        Dim OIL_Channel_railed As Boolean
+        Dim TEMP_Channel_railed As Boolean
+        Dim PRESS_Channel_railed As Boolean
+        Dim BlOCK_Channel_railed As Boolean
     End Structure
 
     Structure GetData_Results
-        Public HC As Double
-        Public CO As Double
-        Public CO2 As Double
-        Public O2 As Double
-        Public NOX As Double
-        Public RPM As Double
-        Public OilTemp As Double
-        Public AmbientTemp As Double
-        Public Pressure As Double
-        Public lowFlow As Boolean
-        Public FilterBowlFull As Boolean
-        Public Alarm As Boolean
-        Public DataMayNotBeAccurate As Boolean
-        Public ZERO_recommended As Boolean
-        Public HighHC_Range As Boolean
-        Public CondensationWarning As Boolean
-        Public HC_OutRange As Boolean
-        Public CO2_OutRange As Boolean
-        Public CO_OutRange As Boolean
-        Public O2_OutRange As Boolean
-        Public NOX_OutRange As Boolean
-        Public BenchInternalWarning As Boolean
+        Dim HC As Double
+        Dim CO As Double
+        Dim CO2 As Double
+        Dim O2 As Double
+        Dim NOX As Double
+        Dim RPM As Double
+        Dim OilTemp As Double
+        Dim AmbientTemp As Double
+        Dim Pressure As Double
+        Dim lowFlow As Boolean
+        Dim FilterBowlFull As Boolean
+        Dim Alarm As Boolean
+        Dim DataMayNotBeAccurate As Boolean
+        Dim ZERO_recommended As Boolean
+        Dim HighHC_Range As Boolean
+        Dim CondensationWarning As Boolean
+        Dim HC_OutRange As Boolean
+        Dim CO2_OutRange As Boolean
+        Dim CO_OutRange As Boolean
+        Dim O2_OutRange As Boolean
+        Dim NOX_OutRange As Boolean
+        Dim BenchInternalWarning As Boolean
     End Structure
 
-    Public OverallStatus As Overall_Status
-    Public ZeroStatus As Zero_Status
-    Public SinglePointCalibrationStatus As SinglePointCalibration_Status
-    Public TwoPointCalibrationStatus As TwoPointCalibration_Status
-    Public BenchOperationalWarnings As BenchOperational_Warnings
-    Public ADConverterChannels As ADConverter_Channels
-    Public GetDataResults As GetData_Results
 
 
     Public Sub New(portName As String)
@@ -233,13 +234,7 @@ Public Class Sensor_MB_Class
         _serialPortMicroBench.DataBits = 8
         _serialPortMicroBench.StopBits = 1
 
-        OverallStatus = New Overall_Status
-        ZeroStatus = New Zero_Status
-        SinglePointCalibrationStatus = New SinglePointCalibration_Status
-        TwoPointCalibrationStatus = New TwoPointCalibration_Status
-        BenchOperationalWarnings = New BenchOperational_Warnings
-        ADConverterChannels = New ADConverter_Channels
-        GetDataResults = New GetData_Results
+
 
         _readDataMB = False
         _continueValue = True
@@ -319,7 +314,7 @@ Public Class Sensor_MB_Class
                                         ResolutionPressureHigh_Low As UInteger,
                                         HCasPPMHexane_Propane As UInteger,
                                         OilTempAs_C_mV As UInteger,
-                                        RpmAs_1xmin_mv As UInteger) As String
+                                        RpmAs_1xmin_mv As UInteger, ByRef GetDataResults As GetData_Results) As String
 
 
 
@@ -455,7 +450,12 @@ Public Class Sensor_MB_Class
 
     End Function
 
-    Public Function Comando_MB_GetStatus() As String
+    Public Function Comando_MB_GetStatus(ByRef OverallStatus As Overall_Status,
+                                         ByRef ZeroStatus As Zero_Status,
+                                         ByRef SinglePointCalibrationStatus As SinglePointCalibration_Status,
+                                         ByRef TwoPointCalibrationStatus As TwoPointCalibration_Status,
+                                         ByRef BenchOperationalWarnings As BenchOperational_Warnings,
+                                         ByRef ADConverterChannels As ADConverter_Channels) As String
         Try
 
             Dim data(0) As Byte
@@ -689,7 +689,7 @@ Public Class Sensor_MB_Class
     ''' <returns>string separado por coma</returns>
     ''' 
 
-    Public Function Comando_MB_Calibration(mode As UInteger, gas As UInteger) As String
+    Public Function Comando_MB_Calibration(mode As UInteger, gas As UInteger, ByRef GetDataResults As GetData_Results) As String
         Try
 
             Dim data(3) As Byte
@@ -725,6 +725,12 @@ Public Class Sensor_MB_Class
             strResults = strResult.Split(",")
             If strResults(0) = "1" Then
                 mini_status = data_rcv(4) + data_rcv(5) * &H100
+
+                GetDataResults.lowFlow = False
+                If mini_status And &B1 Then
+                    GetDataResults.lowFlow = True
+                End If
+
                 Select Case mini_status
                     Case &H0
                         Return "1,No Warning"
@@ -745,7 +751,7 @@ Public Class Sensor_MB_Class
         End Try
     End Function
 
-    Public Function Comando_MB_Read_Calibration(dataSet As Integer, PEF_Value As Short) As String
+    Public Function Comando_MB_Read_Calibration(dataSet As Integer, PEF_Value As Short, ByRef CalibrationData As Calibration_Data) As String
         Try
             Dim data(3) As Byte
             Dim strResult As String
@@ -844,6 +850,168 @@ Public Class Sensor_MB_Class
         Catch ex As Exception
             Return "0," + ex.Message
         End Try
+    End Function
+
+
+    Public Function Comando_MB_Write_Calibration(dataSet As Integer, ByRef calibrationData As Calibration_Data) As String
+        Try
+            Dim data(3), DataT() As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim mini_status As UInteger
+
+            data(0) = 1 'Write
+            data(1) = 0
+            data(2) = dataSet
+            data(3) = 0
+
+
+            Select Case dataSet
+                Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC
+                    ReDim Preserve data(11)
+                    DataT = BitConverter.GetBytes(calibrationData.HC)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO)
+                    data(6) = DataT(0)
+                    data(7) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO2)
+                    data(8) = DataT(0)
+                    data(9) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.HiHc)
+                    data(10) = DataT(0)
+                    data(11) = DataT(1)
+
+                Case DataSet_SinglePont_Cal_O2
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.O2)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+
+                Case DataSet_SinglePont_Cal_NOX
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.NOX)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+
+                Case DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX
+                    ReDim Preserve data(15)
+                    DataT = BitConverter.GetBytes(calibrationData.HC)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO)
+                    data(6) = DataT(0)
+                    data(7) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO2)
+                    data(8) = DataT(0)
+                    data(9) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.HiHc)
+                    data(10) = DataT(0)
+                    data(11) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.O2)
+                    data(12) = DataT(0)
+                    data(13) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.NOX)
+                    data(14) = DataT(0)
+                    data(15) = DataT(1)
+
+                Case DataSet_TwolePont_Cal_HC_CO_CO2_P1
+                    ReDim Preserve data(11)
+                    DataT = BitConverter.GetBytes(calibrationData.HC)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO)
+                    data(6) = DataT(0)
+                    data(7) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO2)
+                    data(8) = DataT(0)
+                    data(9) = DataT(1)
+
+
+                Case DataSet_TwolePont_Cal_HC_CO_CO2_P2
+                    ReDim Preserve data(11)
+                    DataT = BitConverter.GetBytes(calibrationData.HC_P2)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO_P2)
+                    data(6) = DataT(0)
+                    data(7) = DataT(1)
+                    DataT = BitConverter.GetBytes(calibrationData.CO2_P2)
+                    data(8) = DataT(0)
+                    data(9) = DataT(1)
+
+                Case DataSet_PEF
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.PEF)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+
+                Case DataSet_New_O2_Transducer_Installed
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.Flag)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+
+                Case DataSet_Read_Bad_O2
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.Bad_O2)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+
+                Case DataSet_Read_High_O2
+                    ReDim Preserve data(5)
+                    DataT = BitConverter.GetBytes(calibrationData.High_O2)
+                    data(4) = DataT(0)
+                    data(5) = DataT(1)
+            End Select
+
+
+            strResult = Microbench_command(MBReadWriteCalibration, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                mini_status = data_rcv(4) + data_rcv(5) * &H100
+
+                calibrationData.HC_Flag_Out_Range = False
+                If mini_status & &H1 Then
+                    calibrationData.HC_Flag_Out_Range = True
+                End If
+                calibrationData.CO_Flag_Out_Range = False
+                If mini_status & &H2 Then
+                    calibrationData.CO_Flag_Out_Range = True
+                End If
+                calibrationData.CO2_Flag_Out_Range = False
+                If mini_status & &H4 Then
+                    calibrationData.CO2_Flag_Out_Range = True
+                End If
+                calibrationData.O2_Flag_Out_Range = False
+                If mini_status & &H8 Then
+                    calibrationData.O2_Flag_Out_Range = True
+                End If
+                calibrationData.NOX_Flag_Out_Range = False
+                If mini_status & &H10 Then
+                    calibrationData.NOX_Flag_Out_Range = True
+                End If
+                calibrationData.New_O2_Transd_Installed = False
+                If mini_status & &H20 Then
+                    calibrationData.New_O2_Transd_Installed = True
+                End If
+
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
+
+    Public Function Comando_MB_Write_I_O(Cal_Sol_1 As Integer,
+                                         Cal_Sol_2 As Integer,
+                                         Sol_1 As Integer,
+                                         Sol_2 As Integer,
+                                         Pump As Integer,
+                                         Drain_Pump As Integer) As String
+
+
     End Function
     Private Function Microbench_command(command As UInteger, data_in As Byte(), DataCount As UInteger) As String
         Try

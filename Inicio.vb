@@ -79,6 +79,20 @@ Public Class frmFuentesMoviles
     Private Sub btnGetData_Click(sender As Object, e As EventArgs) Handles btnGetData.Click
         Dim strResult As String
         Dim strResults() As String
+        Dim CalibrationData As Sensor_MB_Class.Calibration_Data
+        Dim GetDataResults As Sensor_MB_Class.GetData_Results
+        Dim OverAllStatus As Sensor_MB_Class.Overall_Status
+        Dim ZerStatus As Sensor_MB_Class.Zero_Status
+        Dim SinglePointCalibrationSatus As Sensor_MB_Class.SinglePointCalibration_Status
+        Dim TwoPointCalibrationStatus As Sensor_MB_Class.TwoPointCalibration_Status
+        Dim BenchOperationWarning As Sensor_MB_Class.BenchOperational_Warnings
+        Dim ADConverterChannels As Sensor_MB_Class.ADConverter_Channels
+
+
+
+        CalibrationData.HC = 1500
+
+        strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
 
         'strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, 0)
 
@@ -91,11 +105,11 @@ Public Class frmFuentesMoviles
                                                  Sensor_MB.Normal_Ignition,
                                                  Sensor_MB.Pressure_Resolution_High,
                                                  Sensor_MB.HC_AS_ppm_Hexane,
-                                                 Sensor_MB.Oil_Temp_as_C, Sensor_MB.RPM_as_1_Min)
-        strResult = Sensor_MB.Comando_MB_GetStatus()
+                                                 Sensor_MB.Oil_Temp_as_C, Sensor_MB.RPM_as_1_Min, GetDataResults)
+        strResult = Sensor_MB.Comando_MB_GetStatus(OverAllStatus, ZerStatus, SinglePointCalibrationSatus, TwoPointCalibrationStatus, BenchOperationWarning, ADConverterChannels)
 
 
-        strResult = Sensor_MB.Comando_MB_Calibration(0, 0)
+        strResult = Sensor_MB.Comando_MB_Calibration(0, 0, GetDataResults)
         strResults = strResult.Split(",")
         txtConsolaMicroBench.AppendText(strResults(1) + vbCrLf)
 
