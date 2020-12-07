@@ -15,6 +15,10 @@ Public Class Sensor_MB_Class
     Const MBGetData As UInteger = 3
     Const MBGetStatus As UInteger = 4
     Const MBReadWriteCalibration As UInteger = 5
+    Const MBReadWrite_IO As UInteger = 8
+    Const MBCalibrate_RPM As UInteger = 9
+    Const MBReadSerialNumber As UInteger = 13
+    Const MBSetAccesLevel As UInteger = 18
 
 
 
@@ -44,6 +48,24 @@ Public Class Sensor_MB_Class
     Public DataSet_New_O2_Transducer_Installed As UInteger = 50
     Public DataSet_Read_Bad_O2 As UInteger = 51
     Public DataSet_Read_High_O2 As UInteger = 52
+
+
+    'Constante IO_Mode
+    Public IO_Mode_Solenoid_Map As Integer = 0
+    Public IO_Mode_Cal_Sol1 As Integer = 1
+    Public IO_Mode_Cal_Sol2 As Integer = 2
+    Public IO_Mode_Sol1 As Integer = 3
+    Public IO_Mode_Sol2 As Integer = 4
+    Public IO_Mode_Pump As Integer = 5
+    Public IO_Mode_Drain_Pump As Integer = 6
+    Public IO_Mode_Low_Flow As Integer = 7
+    Public IO_Mode_Physical_IO_Map As Integer = 8
+
+    'Constante Access Level
+    Public Service_Mode As Integer = 3
+    Public User_Mode As Integer = 4
+
+
 
     Structure Calibration_Data
         Dim HC As Integer
@@ -125,6 +147,44 @@ Public Class Sensor_MB_Class
     Dim readThread As New Thread(AddressOf Read)
 
 
+    Structure I_O_Port
+        Dim Cal_Sol_1 As Boolean
+        Dim Cal_Sol_2 As Boolean
+        Dim Sol_1 As Boolean
+        Dim Sol_2 As Boolean
+        Dim Pump As Boolean
+        Dim Drain_Pump As Boolean
+        Dim Low_Flow As Boolean
+        Dim Physical_IO_Map_Sample_Input As Physical_I_O_Map_Sample_Input
+        Dim Physical_IO_Map_Sample_Output As Physical_I_O_Map_Sample_Output
+    End Structure
+
+    Structure Physical_I_O_Map_Sample_Output
+        Dim Pin1 As Boolean
+        Dim Pin2 As Boolean
+        Dim Pin3 As Boolean
+        Dim Pin4 As Boolean
+        Dim Pin5 As Boolean
+        Dim Pin6 As Boolean
+        Dim Pin7 As Boolean
+        Dim Pin8 As Boolean
+    End Structure
+    Structure Physical_I_O_Map_Sample_Input
+        Dim Pin1 As Boolean
+        Dim Pin2 As Boolean
+        Dim Pin3 As Boolean
+        Dim Pin4 As Boolean
+        Dim Pin5 As Boolean
+        Dim Pin6 As Boolean
+        Dim Pin7 As Boolean
+        Dim Pin8 As Boolean
+    End Structure
+    Structure Calibrate_RPM_Status
+        Dim Calibration_Successfull As Boolean
+        Dim RPM_Zero_Required As Boolean
+        Dim No_RPM_KIT_Installed As Boolean
+        Dim RPM_Calibration_Required As Boolean
+    End Structure
     Structure Overall_Status
         Dim warmUpInProgress As Boolean
         Dim ZeroNeeded As Boolean
@@ -246,24 +306,30 @@ Public Class Sensor_MB_Class
 
 
     Public Function Comando_MB_GetVersionSoftware() As String
-        Dim data(3) As Byte
-        Dim strResult As String
-        Dim strResults() As String
-        Dim version As UInteger
+        Try
 
-        data(0) = 0
-        data(1) = 0
-        data(2) = 0
-        data(3) = 0
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim version As UInteger
 
-        strResult = Microbench_command(MBGetVersion, data, data.Length)
-        strResults = strResult.Split(",")
-        If strResults(0) = "1" Then
-            version = data_rcv(4) + data_rcv(5) * &H100
-            Return "1," + version.ToString
-        Else
-            Return strResult
-        End If
+            data(0) = 0
+            data(1) = 0
+            data(2) = 0
+            data(3) = 0
+
+            strResult = Microbench_command(MBGetVersion, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                version = data_rcv(4) + data_rcv(5) * &H100
+                Return "1," + version.ToString
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+
+        End Try
 
     End Function
     Public Function Comando_MB_GetVersionHardware() As String
@@ -318,134 +384,138 @@ Public Class Sensor_MB_Class
 
 
 
+        Try
 
-        Dim unitsH, unitsL As Byte
-        Dim status As UShort
-        Dim data(3) As Byte
-        Dim strResult As String
-        Dim strResults() As String
-        Dim HC, CO, CO2, O2, NOX, RPM, OilTemp, AmbientTemp, Pressure As Short
+            Dim unitsH, unitsL As Byte
+            Dim status As UShort
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim HC, CO, CO2, O2, NOX, RPM, OilTemp, AmbientTemp, Pressure As Short
 
-        unitsL = 0
-        unitsH = 0
-        If unitsPressure = 1 Then
-            unitsL = unitsL Or &B1
-        End If
-        If unitsTemp = 1 Then
-            unitsL = unitsL Or &B10
-        End If
-        If HCRange = 1 Then
-            unitsL = unitsL Or &B100
-        End If
-        If LowHighResolition = 1 Then
-            unitsL = unitsL Or &B1000
-        End If
-        If Rpm2_4_Cycle = 1 Then
-            unitsL = unitsL Or &B10000
-        End If
-        If ignitioNormal_Dual = 1 Then
-            unitsL = unitsL Or &B100000
-        End If
-        If ResolutionPressureHigh_Low = 1 Then
-            unitsL = unitsL Or &B1000000
-        End If
-        If HCasPPMHexane_Propane = 1 Then
-            unitsL = unitsL Or &B10000000
-        End If
-        If OilTempAs_C_mV = 1 Then
-            unitsH = unitsH Or &B1
-        End If
-        If RpmAs_1xmin_mv = 1 Then
-            unitsH = unitsH Or &B10
-        End If
+            unitsL = 0
+            unitsH = 0
+            If unitsPressure = 1 Then
+                unitsL = unitsL Or &B1
+            End If
+            If unitsTemp = 1 Then
+                unitsL = unitsL Or &B10
+            End If
+            If HCRange = 1 Then
+                unitsL = unitsL Or &B100
+            End If
+            If LowHighResolition = 1 Then
+                unitsL = unitsL Or &B1000
+            End If
+            If Rpm2_4_Cycle = 1 Then
+                unitsL = unitsL Or &B10000
+            End If
+            If ignitioNormal_Dual = 1 Then
+                unitsL = unitsL Or &B100000
+            End If
+            If ResolutionPressureHigh_Low = 1 Then
+                unitsL = unitsL Or &B1000000
+            End If
+            If HCasPPMHexane_Propane = 1 Then
+                unitsL = unitsL Or &B10000000
+            End If
+            If OilTempAs_C_mV = 1 Then
+                unitsH = unitsH Or &B1
+            End If
+            If RpmAs_1xmin_mv = 1 Then
+                unitsH = unitsH Or &B10
+            End If
 
-        data(0) = mode
-        data(1) = 0
-        data(2) = unitsL
-        data(3) = unitsH
+            data(0) = mode
+            data(1) = 0
+            data(2) = unitsL
+            data(3) = unitsH
 
-        strResult = Microbench_command(MBGetData, data, data.Length)
-        strResults = strResult.Split(",")
-        If strResults(0) = "1" Then
-            status = data_rcv(4) + data_rcv(5) * &H100
+            strResult = Microbench_command(MBGetData, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                status = data_rcv(4) + data_rcv(5) * &H100
 
 
-            HC = BitConverter.ToInt16(data_rcv, 6)
-            CO = BitConverter.ToInt16(data_rcv, 8)
-            CO2 = BitConverter.ToInt16(data_rcv, 10)
-            O2 = BitConverter.ToInt16(data_rcv, 12)
-            NOX = BitConverter.ToInt16(data_rcv, 14)
-            RPM = BitConverter.ToInt16(data_rcv, 16)
-            OilTemp = BitConverter.ToInt16(data_rcv, 18)
-            AmbientTemp = BitConverter.ToInt16(data_rcv, 20)
-            Pressure = BitConverter.ToInt16(data_rcv, 22)
+                HC = BitConverter.ToInt16(data_rcv, 6)
+                CO = BitConverter.ToInt16(data_rcv, 8)
+                CO2 = BitConverter.ToInt16(data_rcv, 10)
+                O2 = BitConverter.ToInt16(data_rcv, 12)
+                NOX = BitConverter.ToInt16(data_rcv, 14)
+                RPM = BitConverter.ToInt16(data_rcv, 16)
+                OilTemp = BitConverter.ToInt16(data_rcv, 18)
+                AmbientTemp = BitConverter.ToInt16(data_rcv, 20)
+                Pressure = BitConverter.ToInt16(data_rcv, 22)
 
-            GetDataResults.HC = HC
-            GetDataResults.CO = CO
-            GetDataResults.CO2 = CO2
-            GetDataResults.O2 = O2
-            GetDataResults.NOX = NOX
-            GetDataResults.RPM = RPM
-            GetDataResults.OilTemp = OilTemp
-            GetDataResults.AmbientTemp = AmbientTemp
-            GetDataResults.Pressure = Pressure
+                GetDataResults.HC = HC
+                GetDataResults.CO = CO
+                GetDataResults.CO2 = CO2
+                GetDataResults.O2 = O2
+                GetDataResults.NOX = NOX
+                GetDataResults.RPM = RPM
+                GetDataResults.OilTemp = OilTemp
+                GetDataResults.AmbientTemp = AmbientTemp
+                GetDataResults.Pressure = Pressure
 
-            GetDataResults.lowFlow = False
-            If status And &B1 Then
-                GetDataResults.lowFlow = True
+                GetDataResults.lowFlow = False
+                If status And &B1 Then
+                    GetDataResults.lowFlow = True
+                End If
+                GetDataResults.FilterBowlFull = False
+                If status And &B10 Then
+                    GetDataResults.FilterBowlFull = True
+                End If
+                GetDataResults.Alarm = False
+                If status And &B100 Then
+                    GetDataResults.Alarm = True
+                End If
+                GetDataResults.DataMayNotBeAccurate = False
+                If status And &B1000 Then
+                    GetDataResults.DataMayNotBeAccurate = True
+                End If
+                GetDataResults.ZERO_recommended = False
+                If status And &B10000 Then
+                    GetDataResults.ZERO_recommended = True
+                End If
+                GetDataResults.HighHC_Range = False
+                If status And &B100000 Then
+                    GetDataResults.HighHC_Range = True
+                End If
+                GetDataResults.CondensationWarning = False
+                If status And &B1000000 Then
+                    GetDataResults.CondensationWarning = True
+                End If
+                GetDataResults.HC_OutRange = False
+                If status And &B100000000 Then
+                    GetDataResults.HC_OutRange = True
+                End If
+                GetDataResults.CO_OutRange = False
+                If status And &B1000000000 Then
+                    GetDataResults.CO_OutRange = True
+                End If
+                GetDataResults.CO2_OutRange = False
+                If status And &B10000000000 Then
+                    GetDataResults.CO2_OutRange = True
+                End If
+                GetDataResults.O2_OutRange = False
+                If status And &B100000000000 Then
+                    GetDataResults.O2_OutRange = True
+                End If
+                GetDataResults.NOX_OutRange = False
+                If status And &B1000000000000 Then
+                    GetDataResults.NOX_OutRange = True
+                End If
+                GetDataResults.BenchInternalWarning = False
+                If status And &B1000000000000000 Then
+                    GetDataResults.BenchInternalWarning = True
+                End If
+                Return "1,Datos Leidos Correctamente"
+            Else
+                Return strResult
             End If
-            GetDataResults.FilterBowlFull = False
-            If status And &B10 Then
-                GetDataResults.FilterBowlFull = True
-            End If
-            GetDataResults.Alarm = False
-            If status And &B100 Then
-                GetDataResults.Alarm = True
-            End If
-            GetDataResults.DataMayNotBeAccurate = False
-            If status And &B1000 Then
-                GetDataResults.DataMayNotBeAccurate = True
-            End If
-            GetDataResults.ZERO_recommended = False
-            If status And &B10000 Then
-                GetDataResults.ZERO_recommended = True
-            End If
-            GetDataResults.HighHC_Range = False
-            If status And &B100000 Then
-                GetDataResults.HighHC_Range = True
-            End If
-            GetDataResults.CondensationWarning = False
-            If status And &B1000000 Then
-                GetDataResults.CondensationWarning = True
-            End If
-            GetDataResults.HC_OutRange = False
-            If status And &B100000000 Then
-                GetDataResults.HC_OutRange = True
-            End If
-            GetDataResults.CO_OutRange = False
-            If status And &B1000000000 Then
-                GetDataResults.CO_OutRange = True
-            End If
-            GetDataResults.CO2_OutRange = False
-            If status And &B10000000000 Then
-                GetDataResults.CO2_OutRange = True
-            End If
-            GetDataResults.O2_OutRange = False
-            If status And &B100000000000 Then
-                GetDataResults.O2_OutRange = True
-            End If
-            GetDataResults.NOX_OutRange = False
-            If status And &B1000000000000 Then
-                GetDataResults.NOX_OutRange = True
-            End If
-            GetDataResults.BenchInternalWarning = False
-            If status And &B1000000000000000 Then
-                GetDataResults.BenchInternalWarning = True
-            End If
-            Return "1,Datos Leidos Correctamente"
-        Else
-            Return strResult
-        End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
 
 
     End Function
@@ -751,7 +821,7 @@ Public Class Sensor_MB_Class
         End Try
     End Function
 
-    Public Function Comando_MB_Read_Calibration(dataSet As Integer, PEF_Value As Short, ByRef CalibrationData As Calibration_Data) As String
+    Public Function Comando_MB_Read_Calibration(dataSet As Integer, ByRef CalibrationData As Calibration_Data) As String
         Try
             Dim data(3) As Byte
             Dim strResult As String
@@ -766,8 +836,8 @@ Public Class Sensor_MB_Class
 
             If dataSet = DataSet_PEF Then
                 ReDim Preserve data(5)
-                data(4) = PEF_Value & &HFF
-                data(5) = PEF_Value / &H100
+                data(4) = CalibrationData.PEF And &HFF
+                data(5) = CalibrationData.PEF / &H100
             End If
 
             strResult = Microbench_command(MBReadWriteCalibration, data, data.Length)
@@ -972,30 +1042,295 @@ Public Class Sensor_MB_Class
                 mini_status = data_rcv(4) + data_rcv(5) * &H100
 
                 calibrationData.HC_Flag_Out_Range = False
-                If mini_status & &H1 Then
+                If mini_status And &H1 Then
                     calibrationData.HC_Flag_Out_Range = True
                 End If
                 calibrationData.CO_Flag_Out_Range = False
-                If mini_status & &H2 Then
+                If mini_status And &H2 Then
                     calibrationData.CO_Flag_Out_Range = True
                 End If
                 calibrationData.CO2_Flag_Out_Range = False
-                If mini_status & &H4 Then
+                If mini_status And &H4 Then
                     calibrationData.CO2_Flag_Out_Range = True
                 End If
                 calibrationData.O2_Flag_Out_Range = False
-                If mini_status & &H8 Then
+                If mini_status And &H8 Then
                     calibrationData.O2_Flag_Out_Range = True
                 End If
                 calibrationData.NOX_Flag_Out_Range = False
-                If mini_status & &H10 Then
+                If mini_status And &H10 Then
                     calibrationData.NOX_Flag_Out_Range = True
                 End If
                 calibrationData.New_O2_Transd_Installed = False
-                If mini_status & &H20 Then
+                If mini_status And &H20 Then
                     calibrationData.New_O2_Transd_Installed = True
                 End If
+                Return "1,Datos Almacenados en las estructuras"
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
+    Public Function Comando_MB_Read_I_O(IO_Mode As Integer, ByRef IO_Port As I_O_Port) As String
+        Try
 
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+
+            IO_Port.Cal_Sol_1 = False
+            IO_Port.Cal_Sol_2 = False
+            IO_Port.Sol_1 = False
+            IO_Port.Sol_2 = False
+            IO_Port.Pump = False
+            IO_Port.Drain_Pump = False
+            IO_Port.Low_Flow = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin1 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin2 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin3 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin4 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin5 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin6 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin7 = False
+            IO_Port.Physical_IO_Map_Sample_Output.Pin8 = False
+
+            IO_Port.Physical_IO_Map_Sample_Input.Pin1 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin2 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin3 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin4 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin5 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin6 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin7 = False
+            IO_Port.Physical_IO_Map_Sample_Input.Pin8 = False
+
+            data(0) = 0 'Read
+            data(1) = 0
+            data(2) = IO_Mode
+            data(3) = 0
+            strResult = Microbench_command(MBReadWrite_IO, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                Select Case IO_Mode
+                    Case IO_Mode_Solenoid_Map
+                        If data_rcv(4) And &H1 Then
+                            IO_Port.Cal_Sol_1 = True
+                        End If
+                        If data_rcv(4) And &H2 Then
+                            IO_Port.Cal_Sol_2 = True
+                        End If
+                        If data_rcv(4) And &H4 Then
+                            IO_Port.Sol_1 = True
+                        End If
+                        If data_rcv(4) And &H8 Then
+                            IO_Port.Sol_2 = True
+                        End If
+                        If data_rcv(4) And &H10 Then
+                            IO_Port.Pump = True
+                        End If
+                        If data_rcv(4) And &H20 Then
+                            IO_Port.Drain_Pump = True
+                        End If
+
+                    Case IO_Mode_Cal_Sol1
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Cal_Sol_1 = True
+                        End If
+
+                    Case IO_Mode_Cal_Sol2
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Cal_Sol_2 = True
+                        End If
+                    Case IO_Mode_Sol1
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Sol_1 = True
+                        End If
+
+                    Case IO_Mode_Sol2
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Sol_2 = True
+                        End If
+
+                    Case IO_Mode_Pump
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Pump = True
+                        End If
+
+                    Case IO_Mode_Drain_Pump
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Drain_Pump = True
+                        End If
+
+                    Case IO_Mode_Low_Flow
+                        If data_rcv(4) = 1 Then
+                            IO_Port.Low_Flow = True
+                        End If
+
+                    Case IO_Mode_Physical_IO_Map
+                        If data_rcv(4) And &H1 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin1 = True
+                        End If
+                        If data_rcv(4) And &H2 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin2 = True
+                        End If
+                        If data_rcv(4) And &H4 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin3 = True
+                        End If
+                        If data_rcv(4) And &H8 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin4 = True
+                        End If
+                        If data_rcv(4) And &H10 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin5 = True
+                        End If
+                        If data_rcv(4) And &H20 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin6 = True
+                        End If
+                        If data_rcv(4) And &H40 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin7 = True
+                        End If
+                        If data_rcv(4) And &H80 Then
+                            IO_Port.Physical_IO_Map_Sample_Output.Pin8 = True
+                        End If
+
+                        If data_rcv(5) And &H1 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin1 = True
+                        End If
+                        If data_rcv(5) And &H2 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin2 = True
+                        End If
+                        If data_rcv(5) And &H4 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin3 = True
+                        End If
+                        If data_rcv(5) And &H8 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin4 = True
+                        End If
+                        If data_rcv(5) And &H10 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin5 = True
+                        End If
+                        If data_rcv(5) And &H20 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin6 = True
+                        End If
+                        If data_rcv(5) And &H40 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin7 = True
+                        End If
+                        If data_rcv(5) And &H80 Then
+                            IO_Port.Physical_IO_Map_Sample_Input.Pin8 = True
+                        End If
+
+                End Select
+                Return "1,Datos Almacenados en lasestructura"
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
+    Public Function Comando_MB_Write_I_O(IO_Mode As Integer, IO_Port As I_O_Port) As String
+        Try
+
+            Dim data(5) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+
+
+
+            data(0) = 1 'Write
+            data(1) = 0
+            data(2) = IO_Mode
+            data(3) = 0
+            data(4) = 0
+            data(5) = 0
+
+            Select Case IO_Mode
+                Case IO_Mode_Solenoid_Map
+                    If IO_Port.Cal_Sol_1 Then
+                        data(4) = data(4) Or &H1
+                    End If
+                    If IO_Port.Cal_Sol_2 Then
+                        data(4) = data(4) Or &H2
+                    End If
+                    If IO_Port.Sol_1 Then
+                        data(4) = data(4) Or &H4
+                    End If
+                    If IO_Port.Sol_2 Then
+                        data(4) = data(4) Or &H8
+                    End If
+                    If IO_Port.Pump Then
+                        data(4) = data(4) Or &H10
+                    End If
+                    If IO_Port.Drain_Pump Then
+                        data(4) = data(4) Or &H20
+                    End If
+
+
+                Case IO_Mode_Cal_Sol1
+                    If IO_Port.Cal_Sol_1 Then
+                        data(4) = 1
+                    End If
+
+                Case IO_Mode_Cal_Sol2
+                    If IO_Port.Cal_Sol_1 Then
+                        data(4) = 1
+                    End If
+                Case IO_Mode_Sol1
+                    If IO_Port.Sol_1 Then
+                        data(4) = 1
+                    End If
+
+                Case IO_Mode_Sol2
+                    If IO_Port.Sol_2 Then
+                        data(4) = 1
+                    End If
+
+                Case IO_Mode_Pump
+                    If IO_Port.Pump Then
+                        data(4) = 1
+                    End If
+
+                Case IO_Mode_Drain_Pump
+                    If IO_Port.Drain_Pump Then
+                        data(4) = 1
+                    End If
+
+                Case IO_Mode_Low_Flow
+                    Return "0,IO_Mode no permitido"
+
+                Case IO_Mode_Physical_IO_Map
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin1 Then
+                        data(4) = data(4) Or &H1
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin2 Then
+                        data(4) = data(4) Or &H2
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin3 Then
+                        data(4) = data(4) Or &H4
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin4 Then
+                        data(4) = data(4) Or &H8
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin5 Then
+                        data(4) = data(4) Or &H10
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin6 Then
+                        data(4) = data(4) Or &H20
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin7 Then
+                        data(4) = data(4) Or &H40
+                    End If
+                    If IO_Port.Physical_IO_Map_Sample_Output.Pin8 Then
+                        data(4) = data(4) Or &H80
+                    End If
+
+
+            End Select
+
+            strResult = Microbench_command(MBReadWrite_IO, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+
+                Return "1,Exito"
             Else
                 Return strResult
             End If
@@ -1004,13 +1339,59 @@ Public Class Sensor_MB_Class
         End Try
     End Function
 
-    Public Function Comando_MB_Write_I_O(Cal_Sol_1 As Integer,
-                                         Cal_Sol_2 As Integer,
-                                         Sol_1 As Integer,
-                                         Sol_2 As Integer,
-                                         Pump As Integer,
-                                         Drain_Pump As Integer) As String
 
+    Public Function Comando_MB_ReadSerialNumber() As String
+        Try
+
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim version As UInteger
+
+            data(0) = 0
+            data(1) = 0
+            data(2) = 0
+            data(3) = 0
+
+            strResult = Microbench_command(MBReadSerialNumber, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                version = BitConverter.ToInt16(data_rcv, 4)
+                Return "1," + version.ToString
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+
+        End Try
+
+    End Function
+
+
+    Public Function Comando_MB_SetAccessLevel(AccesLevel As Integer) As String
+        Try
+
+            Dim data(1) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim version As UInteger
+
+            data(0) = AccesLevel
+            data(1) = 0
+
+            strResult = Microbench_command(MBSetAccesLevel, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                version = BitConverter.ToInt16(data_rcv, 4)
+                Return "1," + version.ToString
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+
+        End Try
 
     End Function
     Private Function Microbench_command(command As UInteger, data_in As Byte(), DataCount As UInteger) As String
@@ -1059,7 +1440,52 @@ Public Class Sensor_MB_Class
         End Try
 
     End Function
+    Public Function Comando_MB_Calibrate_RPM(RPM As UShort, ByRef RPM_Status As Calibrate_RPM_Status) As String
+        Try
 
+            Dim data() As Byte
+            Dim strResult As String
+            Dim strResults() As String
+
+
+
+
+            If (RPM < 0) Or (RPM > 9999) Then
+                Return "0,Valor RPM invalido (0-9999)"
+            End If
+            data = BitConverter.GetBytes(RPM)
+
+            RPM_Status.Calibration_Successfull = False
+            RPM_Status.RPM_Zero_Required = False
+            RPM_Status.No_RPM_KIT_Installed = False
+            RPM_Status.RPM_Calibration_Required = False
+
+            strResult = Microbench_command(MBCalibrate_RPM, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+
+                If data_rcv(4) = 0 Then
+                    RPM_Status.Calibration_Successfull = True
+                End If
+                If data_rcv(4) = 1 Then
+                    RPM_Status.RPM_Zero_Required = True
+                End If
+                If data_rcv(4) = 2 Then
+                    RPM_Status.No_RPM_KIT_Installed = True
+                End If
+                If data_rcv(4) = 3 Then
+                    RPM_Status.RPM_Calibration_Required = True
+                End If
+
+                Return "1,Datos almacenados en la estructura"
+            Else
+                Return strResult
+            End If
+
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
     Private Function send_Microbench_command(command As UInteger, MODE As UInteger, data_in As Byte(), DataCount As UInteger) As UInteger
         Try
 

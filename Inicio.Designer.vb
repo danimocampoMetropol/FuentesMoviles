@@ -44,6 +44,7 @@ Partial Class frmFuentesMoviles
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.btnEscanear = New System.Windows.Forms.Button()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
+        Me.btnReadCalibration = New System.Windows.Forms.Button()
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
@@ -109,6 +110,7 @@ Partial Class frmFuentesMoviles
         '
         'grpComandoMB
         '
+        Me.grpComandoMB.Controls.Add(Me.btnReadCalibration)
         Me.grpComandoMB.Controls.Add(Me.btnGetData)
         Me.grpComandoMB.Controls.Add(Me.cmbCalibrationGas)
         Me.grpComandoMB.Controls.Add(Me.cmbCalibrationMode)
@@ -243,6 +245,15 @@ Partial Class frmFuentesMoviles
         Me.btnEscanear.Text = "Escanear Modulo"
         Me.btnEscanear.UseVisualStyleBackColor = True
         '
+        'btnReadCalibration
+        '
+        Me.btnReadCalibration.Location = New System.Drawing.Point(538, 34)
+        Me.btnReadCalibration.Name = "btnReadCalibration"
+        Me.btnReadCalibration.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadCalibration.TabIndex = 8
+        Me.btnReadCalibration.Text = "Read Calibration"
+        Me.btnReadCalibration.UseVisualStyleBackColor = True
+        '
         'frmFuentesMoviles
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(14.0!, 29.0!)
@@ -285,4 +296,5 @@ Partial Class frmFuentesMoviles
     Friend WithEvents Label2 As Windows.Forms.Label
     Friend WithEvents TextBox1 As Windows.Forms.TextBox
     Friend WithEvents btnEscanear As Windows.Forms.Button
+    Friend WithEvents btnReadCalibration As Windows.Forms.Button
 End Class

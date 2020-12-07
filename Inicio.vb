@@ -122,4 +122,23 @@ Public Class frmFuentesMoviles
     Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
 
     End Sub
+
+    Private Sub btnReadCalibration_Click(sender As Object, e As EventArgs) Handles btnReadCalibration.Click
+        Dim strResult As String
+        Dim CalibrationData As Sensor_MB_Class.Calibration_Data
+
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_O2, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_NOX, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_TwolePont_Cal_HC_CO_CO2_P1, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_TwolePont_Cal_HC_CO_CO2_P2, CalibrationData)
+        CalibrationData.PEF = 2000
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_New_O2_Transducer_Installed, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_Read_Bad_O2, CalibrationData)
+        strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_Read_High_O2, CalibrationData)
+
+
+    End Sub
 End Class
