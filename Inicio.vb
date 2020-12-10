@@ -14,8 +14,10 @@ Public Class frmFuentesMoviles
     Public Shared Sub Main()
 
 
-        Sensor_MB = New Sensor_MB_Class("COM8")
-        Sensor_MB._continue = True
+
+
+
+
         frmIncio.ShowDialog()
 
 
@@ -27,6 +29,11 @@ Public Class frmFuentesMoviles
     Private Sub Inicio_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '_continue = True
         'readThread.Start() 'Inicia Thread de recepcion
+
+        For Each sp As String In SerialPort.GetPortNames
+
+            cmbPuertoMicroBench.Items.Add(sp)
+        Next
     End Sub
 
     Private Sub Inicio_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -41,33 +48,45 @@ Public Class frmFuentesMoviles
         Dim strResult As String
         Dim strResults() As String
 
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
 
         strResult = Sensor_MB.Comando_MB_GetVersionSoftware()
         strResults = strResult.Split(",")
 
         If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Version Software: " + strResults(1) + vbCrLf)
+            txtConsolaMicroBench.AppendText("Version Software:  " + strResults(1) + vbCrLf)
         Else
-            txtConsolaMicroBench.AppendText("Version Software ERROR: " + strResults(1) + vbCrLf)
+            txtConsolaMicroBench.AppendText("Version Software ERROR:  " + strResults(1) + vbCrLf)
         End If
 
 
         strResult = Sensor_MB.Comando_MB_GetVersionHardware()
         strResults = strResult.Split(",")
         If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Version Hardware: " + strResults(1) + vbCrLf)
+            txtConsolaMicroBench.AppendText("Version Hardware:  " + strResults(1) + vbCrLf)
         Else
-            txtConsolaMicroBench.AppendText("Version Hardware ERROR: " + strResults(1) + vbCrLf)
+            txtConsolaMicroBench.AppendText("Version Hardware ERROR:  " + strResults(1) + vbCrLf)
         End If
 
     End Sub
 
     Private Sub btnCalibration_Click(sender As Object, e As EventArgs) Handles btnCalibration.Click
 
+
         Dim strResult As String
         Dim strResults() As String
 
-        If (cmbCalibrationGas.SelectedIndex <> -1) And (cmbCalibrationMode.SelectedIndex <> -1) Then
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+
+        If cmbCalibrationMode.SelectedIndex <> -1 Then
             strResult = Sensor_MB.Comando_MB_Calibration(cmbCalibrationMode.SelectedIndex,
                                                          chkHC.Checked,
                                                          chkCO.Checked,
@@ -76,8 +95,8 @@ Public Class frmFuentesMoviles
                                                          chkNOx.Checked,
                                                          chkHiHC.Checked)
             strResults = strResult.Split(",")
+            txtConsolaMicroBench.AppendText(vbCrLf + "CALIBRATION  " + strResults(1) + vbCrLf)
 
-            txtConsolaMicroBench.AppendText(strResults(1) + vbCrLf)
         Else
             MsgBox("Seleccione Modo y Gas", MsgBoxStyle.Information)
         End If
@@ -91,7 +110,10 @@ Public Class frmFuentesMoviles
         Dim GasSelection As UInteger
 
 
-
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
 
         Select Case cmbGasDatain.SelectedItem
             Case "Concentracion"
@@ -113,7 +135,7 @@ Public Class frmFuentesMoviles
         rdbPressmbar.Checked,
          rdbTempC.Checked,
         rdbHC2000.Checked,
-        rdbO2ResLow.Checked,
+        rdbO2ResHigh.Checked,
         rdbRPM2.Checked,
         rdbIgnitionNormal.Checked,
         rdbPressResLow.Checked,
@@ -123,7 +145,7 @@ Public Class frmFuentesMoviles
         GetDataResults)
 
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "GET DATA " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "GET DATA  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             'las unidades y los puntos decimales dependen de la seleccion de realizada .
             'para efectos de ejemplo se presentan los valores tal cual son enviados por el banco de gases
@@ -173,8 +195,11 @@ Public Class frmFuentesMoviles
     Private Sub btnReadCalibration_Click(sender As Object, e As EventArgs) Handles btnReadCalibration.Click
         Dim strResult As String
         Dim strResults() As String
-        Dim CalibrationData As Sensor_MB_Class.Calibration_Data
-
+        Dim CalibrationData As New Sensor_MB_Class.Calibration_Data
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
         'A continuacion se envia el comando Read Calibration para cada tipo de DataSet
         'Las constantes para identificar cada uno de los DataSet se llaman utilizando las constantes publicas 
         'de la clase  Sensor_MB_Class.DataSet_... 
@@ -183,7 +208,7 @@ Public Class frmFuentesMoviles
         txtConsolaMicroBench.AppendText(vbCrLf + "READ CALIBRATION DATA " + vbCrLf)
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal HC,CO,CO2,HiHC: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal HC,CO,CO2,HiHC:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("HC=" + CalibrationData.HC.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("CO=" + CalibrationData.CO.ToString + vbCrLf)
@@ -193,21 +218,21 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_O2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal O2: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal O2:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("O2=" + CalibrationData.O2.ToString + vbCrLf)
         End If
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_NOX, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal NOX: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal NOX:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("NOX=" + CalibrationData.NOX.ToString + vbCrLf)
         End If
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal HC,CO,CO2,HiHC,O2,NOX: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet SinglePont Cal HC,CO,CO2,HiHC,O2,NOX:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("HC=" + CalibrationData.HC.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("CO=" + CalibrationData.CO.ToString + vbCrLf)
@@ -219,7 +244,7 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_TwoPont_Cal_HC_CO_CO2_P1, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet Two Point Cal HC,CO,CO2 Point 1: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet Two Point Cal HC,CO,CO2 Point 1:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("HC=" + CalibrationData.HC.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("CO=" + CalibrationData.CO.ToString + vbCrLf)
@@ -228,7 +253,7 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_TwoPont_Cal_HC_CO_CO2_P2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet Two Point Cal HC,CO,CO2 Point 2: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet Two Point Cal HC,CO,CO2 Point 2:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("HC=" + CalibrationData.HC_P2.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("CO=" + CalibrationData.CO_P2.ToString + vbCrLf)
@@ -238,28 +263,28 @@ Public Class frmFuentesMoviles
         CalibrationData.PEF = 2000 'asignar valor PEF en la estructura para ser enviado en el comando
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet PEF Constant: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet PEF Constant:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("PEF=" + CalibrationData.PEF.ToString + vbCrLf)
         End If
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_New_O2_Transducer_Installed, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet New O2 Transducer Installed: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet New O2 Transducer Installed:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("New O2 Transd Installed=" + CalibrationData.New_O2_Transd_Installed.ToString + vbCrLf)
         End If
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_Read_Bad_O2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet DataSet Read Bad O2: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet DataSet Read Bad O2:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Bad O2=" + CalibrationData.Bad_O2_Threshold.ToString + vbCrLf)
         End If
 
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_Read_High_O2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("DataSet DataSet Read High O2: " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("DataSet DataSet Read High O2:  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("High O2=" + CalibrationData.High_O2_Threshold.ToString + vbCrLf)
         End If
@@ -277,10 +302,13 @@ Public Class frmFuentesMoviles
         Dim ADConverterChannels As Sensor_MB_Class.ADConverter_Channels
         Dim strResult As String
         Dim strResults() As String
-
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
         strResult = Sensor_MB.Comando_MB_GetStatus(OverAllStatus, ZerStatus, SinglePointCalibrationSatus, TwoPointCalibrationStatus, BenchOperationWarning, ADConverterChannels)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText("GET STATUS " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText("GET STATUS  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
 
             txtConsolaMicroBench.AppendText("OverAll Status->" + vbCrLf)
@@ -345,7 +373,10 @@ Public Class frmFuentesMoviles
         Dim strResult As String
         Dim strResults() As String
         Dim CalibrationData As Sensor_MB_Class.Calibration_Data
-
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
         'A continuacion se envia el comando Write Calibration para cada tipo de DataSet
         'Las constantes para identificar cada uno de los DataSet se llaman utilizando las constantes publicas 
         'de la clase  Sensor_MB_Class.DataSet_... 
@@ -367,7 +398,7 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 1" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 1 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -383,7 +414,7 @@ Public Class frmFuentesMoviles
         CalibrationData.O2 = 2100 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_O2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 2" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 2 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -398,7 +429,7 @@ Public Class frmFuentesMoviles
         CalibrationData.NOX = 2100 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_NOX, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 3" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 3 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -418,7 +449,7 @@ Public Class frmFuentesMoviles
         CalibrationData.NOX = 2020 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 4" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 4 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -436,7 +467,7 @@ Public Class frmFuentesMoviles
         CalibrationData.CO2 = 2020 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_TwoPont_Cal_HC_CO_CO2_P1, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 11" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 11 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -453,7 +484,7 @@ Public Class frmFuentesMoviles
         CalibrationData.CO2_P2 = 2020 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_TwoPont_Cal_HC_CO_CO2_P2, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 21" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 21 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -470,7 +501,7 @@ Public Class frmFuentesMoviles
         CalibrationData.PEF = 2000 'modificar el valor segun sea el caso para el PEF seleccionado
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 42" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 42 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -486,7 +517,7 @@ Public Class frmFuentesMoviles
         CalibrationData.New_O2_Transducer_Flag = &H20 'indica que se instalo un nuevo tranducer
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 50" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 50 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -501,7 +532,7 @@ Public Class frmFuentesMoviles
         CalibrationData.Bad_O2_Threshold = 2700 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 51" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 51 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -516,7 +547,7 @@ Public Class frmFuentesMoviles
         CalibrationData.High_O2_Threshold = 2300 'modificar el valor segun sea el caso para este gas
         strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_PEF, CalibrationData)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 52" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "DATA SET 52 " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Mini Satus->" + vbCrLf)
             txtConsolaMicroBench.AppendText("HC Flag Out Range =" + CalibrationData.HC_Flag_Out_Range.ToString + vbCrLf)
@@ -533,7 +564,10 @@ Public Class frmFuentesMoviles
         Dim strResults() As String
         Dim IO_Port As Sensor_MB_Class.I_O_Port
 
-
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
         'A continuacion se envia el comando Read IO Port para cada uno de los modos (ver documentación del banco de gases)
         'Las constantes para identificar cada uno de los modo se llaman utilizando las constantes publicas de la clase  Sensor_MB_Class.IO_Mode_... 
         'Seleccione el Mode adecuado segun la operacion que este realizando
@@ -545,7 +579,7 @@ Public Class frmFuentesMoviles
         'leer solenoid Map
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Solenoid_Map, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Cal Sol 1 =" + IO_Port.Cal_Sol_1.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("Cal Sol 2 =" + IO_Port.Cal_Sol_2.ToString + vbCrLf)
@@ -558,7 +592,7 @@ Public Class frmFuentesMoviles
         'leer Cal Sol 1
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol1" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol1  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Cal Sol 1 =" + IO_Port.Cal_Sol_1.ToString + vbCrLf)
         End If
@@ -566,7 +600,7 @@ Public Class frmFuentesMoviles
         'leer Cal Sol 2
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol2" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol2  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Cal Sol 2 =" + IO_Port.Cal_Sol_2.ToString + vbCrLf)
         End If
@@ -574,7 +608,7 @@ Public Class frmFuentesMoviles
         'leer Sol 1
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol1, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Sol1" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Sol1  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Sol 1 =" + IO_Port.Sol_1.ToString + vbCrLf)
         End If
@@ -582,7 +616,7 @@ Public Class frmFuentesMoviles
         'leer Sol 2
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol2, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Sol2" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Sol2  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Sol 2 =" + IO_Port.Sol_2.ToString + vbCrLf)
         End If
@@ -590,7 +624,7 @@ Public Class frmFuentesMoviles
         'leer Pump
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Pump, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Pump" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Pump  " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Pump =" + IO_Port.Pump.ToString + vbCrLf)
         End If
@@ -598,7 +632,7 @@ Public Class frmFuentesMoviles
         'leer Drain Pump
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Drain_Pump, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Drain Pump" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Drain Pump " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Drain Pump =" + IO_Port.Drain_Pump.ToString + vbCrLf)
         End If
@@ -606,7 +640,7 @@ Public Class frmFuentesMoviles
         'leer low flow sensor
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Low_Flow, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Low Flow" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Low Flow " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsolaMicroBench.AppendText("Low Flow =" + IO_Port.Low_Flow.ToString + vbCrLf)
         End If
@@ -614,7 +648,7 @@ Public Class frmFuentesMoviles
         'leer puerto fisico
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Physical_IO_Map, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Physical IO Map" + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Physical IO Map " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             'Output port
             txtConsolaMicroBench.AppendText("Output port" + vbCrLf)
@@ -648,7 +682,10 @@ Public Class frmFuentesMoviles
         Dim strResults() As String
         Dim IO_Port As Sensor_MB_Class.I_O_Port
 
-
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
         'A continuacion se envia el comando Write IO Port para cada uno de los modos (ver documentación del banco de gases)
         'Las constantes para identificar cada uno de los modo se llaman utilizando las constantes publicas de la clase  Sensor_MB_Class.IO_Mode_... 
         'Seleccione el Mode adecuado segun la operacion que este realizando
@@ -668,19 +705,19 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Solenoid_Map, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map -> " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map ->  " + strResults(1) + vbCrLf)
 
         'escribir cal sol 1 desea encender alguno de los perifericos ponga el valor en true
         IO_Port.Cal_Sol_1 = True 'true inidca que el pin se pone en 1, enciende cal sol 1 
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol1 -> " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol1 ->  " + strResults(1) + vbCrLf)
 
         'escribir cal sol 2 desea encender alguno de los perifericos ponga el valor en true
         IO_Port.Cal_Sol_2 = True 'true inidca que el pin se pone en 1, enciende cal sol 2
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol2 -> " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol2 ->  " + strResults(1) + vbCrLf)
 
         'Realice la misma operacion anterior para escribir los demas perofericos PUMP y Drain Pump
 
@@ -697,8 +734,14 @@ Public Class frmFuentesMoviles
 
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Physical_IO_Map, IO_Port)
         strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map -> " + strResults(1) + vbCrLf)
+        txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map ->  " + strResults(1) + vbCrLf)
 
+
+    End Sub
+
+    Private Sub cmbPuertoMicroBench_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPuertoMicroBench.SelectedIndexChanged
+        Sensor_MB = New Sensor_MB_Class(cmbPuertoMicroBench.SelectedItem)
+        Sensor_MB._continue = True
 
     End Sub
 End Class

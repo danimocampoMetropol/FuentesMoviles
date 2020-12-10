@@ -30,6 +30,9 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.grpComandoMB = New System.Windows.Forms.GroupBox()
+        Me.btnWrite_IO = New System.Windows.Forms.Button()
+        Me.btnRead_IO = New System.Windows.Forms.Button()
+        Me.btnWriteCalibration = New System.Windows.Forms.Button()
         Me.btnGetStatus = New System.Windows.Forms.Button()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.btnCalibration = New System.Windows.Forms.Button()
@@ -86,9 +89,6 @@ Partial Class frmFuentesMoviles
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.btnEscanear = New System.Windows.Forms.Button()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
-        Me.btnWriteCalibration = New System.Windows.Forms.Button()
-        Me.btnRead_IO = New System.Windows.Forms.Button()
-        Me.btnWrite_IO = New System.Windows.Forms.Button()
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
@@ -123,11 +123,11 @@ Partial Class frmFuentesMoviles
         '
         'txtConsolaMicroBench
         '
-        Me.txtConsolaMicroBench.Location = New System.Drawing.Point(2061, 74)
+        Me.txtConsolaMicroBench.Location = New System.Drawing.Point(1750, 74)
         Me.txtConsolaMicroBench.Multiline = True
         Me.txtConsolaMicroBench.Name = "txtConsolaMicroBench"
         Me.txtConsolaMicroBench.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtConsolaMicroBench.Size = New System.Drawing.Size(865, 1100)
+        Me.txtConsolaMicroBench.Size = New System.Drawing.Size(1176, 1100)
         Me.txtConsolaMicroBench.TabIndex = 3
         '
         'TabPrincipal
@@ -159,7 +159,7 @@ Partial Class frmFuentesMoviles
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(2056, 17)
+        Me.Label1.Location = New System.Drawing.Point(1850, 42)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(69, 29)
         Me.Label1.TabIndex = 7
@@ -178,10 +178,37 @@ Partial Class frmFuentesMoviles
         Me.grpComandoMB.Controls.Add(Me.btnGetVersion)
         Me.grpComandoMB.Location = New System.Drawing.Point(22, 63)
         Me.grpComandoMB.Name = "grpComandoMB"
-        Me.grpComandoMB.Size = New System.Drawing.Size(2019, 1111)
+        Me.grpComandoMB.Size = New System.Drawing.Size(1722, 1111)
         Me.grpComandoMB.TabIndex = 6
         Me.grpComandoMB.TabStop = False
         Me.grpComandoMB.Text = "Comandos"
+        '
+        'btnWrite_IO
+        '
+        Me.btnWrite_IO.Location = New System.Drawing.Point(41, 560)
+        Me.btnWrite_IO.Name = "btnWrite_IO"
+        Me.btnWrite_IO.Size = New System.Drawing.Size(193, 84)
+        Me.btnWrite_IO.TabIndex = 30
+        Me.btnWrite_IO.Text = "Write I/O"
+        Me.btnWrite_IO.UseVisualStyleBackColor = True
+        '
+        'btnRead_IO
+        '
+        Me.btnRead_IO.Location = New System.Drawing.Point(41, 449)
+        Me.btnRead_IO.Name = "btnRead_IO"
+        Me.btnRead_IO.Size = New System.Drawing.Size(193, 84)
+        Me.btnRead_IO.TabIndex = 29
+        Me.btnRead_IO.Text = "Read I/O"
+        Me.btnRead_IO.UseVisualStyleBackColor = True
+        '
+        'btnWriteCalibration
+        '
+        Me.btnWriteCalibration.Location = New System.Drawing.Point(41, 340)
+        Me.btnWriteCalibration.Name = "btnWriteCalibration"
+        Me.btnWriteCalibration.Size = New System.Drawing.Size(193, 84)
+        Me.btnWriteCalibration.TabIndex = 28
+        Me.btnWriteCalibration.Text = "Write Calibration"
+        Me.btnWriteCalibration.UseVisualStyleBackColor = True
         '
         'btnGetStatus
         '
@@ -306,7 +333,7 @@ Partial Class frmFuentesMoviles
         Me.GroupBox3.Controls.Add(Me.Label4)
         Me.GroupBox3.Location = New System.Drawing.Point(251, 34)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(1547, 346)
+        Me.GroupBox3.Size = New System.Drawing.Size(1442, 346)
         Me.GroupBox3.TabIndex = 19
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Get Data"
@@ -702,15 +729,16 @@ Partial Class frmFuentesMoviles
         Me.cmbPuertoMicroBench.FormattingEnabled = True
         Me.cmbPuertoMicroBench.Location = New System.Drawing.Point(181, 9)
         Me.cmbPuertoMicroBench.Name = "cmbPuertoMicroBench"
-        Me.cmbPuertoMicroBench.Size = New System.Drawing.Size(274, 37)
+        Me.cmbPuertoMicroBench.Size = New System.Drawing.Size(325, 37)
         Me.cmbPuertoMicroBench.TabIndex = 4
+        Me.cmbPuertoMicroBench.Text = "Seleccione Puerto COM"
         '
         'TabPageOpacimetro
         '
         Me.TabPageOpacimetro.Location = New System.Drawing.Point(10, 47)
         Me.TabPageOpacimetro.Name = "TabPageOpacimetro"
         Me.TabPageOpacimetro.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageOpacimetro.Size = New System.Drawing.Size(2728, 1181)
+        Me.TabPageOpacimetro.Size = New System.Drawing.Size(2941, 1214)
         Me.TabPageOpacimetro.TabIndex = 1
         Me.TabPageOpacimetro.Text = "Opacimetro CAP3030"
         Me.TabPageOpacimetro.UseVisualStyleBackColor = True
@@ -725,7 +753,7 @@ Partial Class frmFuentesMoviles
         Me.TabPageEncicla.Location = New System.Drawing.Point(10, 47)
         Me.TabPageEncicla.Name = "TabPageEncicla"
         Me.TabPageEncicla.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.TabPageEncicla.Size = New System.Drawing.Size(2728, 1181)
+        Me.TabPageEncicla.Size = New System.Drawing.Size(2941, 1214)
         Me.TabPageEncicla.TabIndex = 2
         Me.TabPageEncicla.Text = "EnCicla"
         Me.TabPageEncicla.UseVisualStyleBackColor = True
@@ -771,33 +799,6 @@ Partial Class frmFuentesMoviles
         Me.btnEscanear.TabIndex = 0
         Me.btnEscanear.Text = "Escanear Modulo"
         Me.btnEscanear.UseVisualStyleBackColor = True
-        '
-        'btnWriteCalibration
-        '
-        Me.btnWriteCalibration.Location = New System.Drawing.Point(41, 340)
-        Me.btnWriteCalibration.Name = "btnWriteCalibration"
-        Me.btnWriteCalibration.Size = New System.Drawing.Size(193, 84)
-        Me.btnWriteCalibration.TabIndex = 28
-        Me.btnWriteCalibration.Text = "Write Calibration"
-        Me.btnWriteCalibration.UseVisualStyleBackColor = True
-        '
-        'btnRead_IO
-        '
-        Me.btnRead_IO.Location = New System.Drawing.Point(41, 449)
-        Me.btnRead_IO.Name = "btnRead_IO"
-        Me.btnRead_IO.Size = New System.Drawing.Size(193, 84)
-        Me.btnRead_IO.TabIndex = 29
-        Me.btnRead_IO.Text = "Read I/O"
-        Me.btnRead_IO.UseVisualStyleBackColor = True
-        '
-        'btnWrite_IO
-        '
-        Me.btnWrite_IO.Location = New System.Drawing.Point(41, 560)
-        Me.btnWrite_IO.Name = "btnWrite_IO"
-        Me.btnWrite_IO.Size = New System.Drawing.Size(193, 84)
-        Me.btnWrite_IO.TabIndex = 30
-        Me.btnWrite_IO.Text = "Write I/O"
-        Me.btnWrite_IO.UseVisualStyleBackColor = True
         '
         'frmFuentesMoviles
         '

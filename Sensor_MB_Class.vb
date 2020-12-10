@@ -137,12 +137,14 @@ Public Class Sensor_MB_Class
     Public Shared _readDataMB As Boolean 'Si se cierra la App _continue = False para terminar los loops de recepcion 
     Public Shared _count As UInteger    'Cantidad de datos recibidos por el puerto serial
     Public Shared data_rcv(100) As Byte 'Buffer para recepcion de datos
-    Public Shared _timeOut As Boolean   'Indica si el timer ha expirado
+    Public Shared _timeOut, _timeOutBenchBusy As Boolean   'Indica si el timer ha expirado
     Public Shared _errMsg As String
 
 
     Public Shared _serialPortMicroBench As SerialPort
     Private tmrComunicacion As Windows.Forms.Timer
+    Private tmrBenchBusy As Windows.Forms.Timer
+
 
 
     Dim readThread As New Thread(AddressOf Read)
@@ -295,6 +297,11 @@ Public Class Sensor_MB_Class
         tmrComunicacion = New Windows.Forms.Timer()
         tmrComunicacion.Enabled = False
         AddHandler tmrComunicacion.Tick, AddressOf TmrComunicacion_Tick
+
+        tmrBenchBusy = New Windows.Forms.Timer()
+        tmrBenchBusy.Enabled = False
+        AddHandler tmrBenchBusy.Tick, AddressOf TmrBenchBusy_Tick
+
 
         _serialPortMicroBench = New SerialPort()
         _serialPortMicroBench.PortName = portName
@@ -838,7 +845,7 @@ Public Class Sensor_MB_Class
 
     Public Function Comando_MB_Read_Calibration(dataSet As Integer, ByRef CalibrationData As Calibration_Data) As String
         Try
-            Dim data(3) As Byte
+            Dim data(3), dataT() As Byte
             Dim strResult As String
             Dim strResults() As String
             Dim HC, CO, CO2, O2, NOX, HiHC, Bad_O2, High_O2 As Short
@@ -851,8 +858,9 @@ Public Class Sensor_MB_Class
 
             If dataSet = DataSet_PEF Then
                 ReDim Preserve data(5)
-                data(4) = CalibrationData.PEF And &HFF
-                data(5) = CalibrationData.PEF / &H100
+                dataT = BitConverter.GetBytes(CalibrationData.PEF)
+                data(4) = dataT(0)
+                data(5) = dataT(1)
             End If
 
             strResult = Microbench_command(MBReadWriteCalibration, data, data.Length)
@@ -1520,12 +1528,12 @@ Public Class Sensor_MB_Class
             response = send_Microbench_command(command, NORMAL_MODE, data_in, DataCount)
             If response = BUSY Then
                 'Inicializar temporizador 10 segundos
-                IniTemporizador(10)
-                While response = BUSY And _timeOut = False
+                IniTemporizadorBenchBusy(10)
+                While response = BUSY And _timeOutBenchBusy = False
                     response = send_Microbench_command(PROCESS_STATUS, NORMAL_MODE, data_in, 0)
                 End While
 
-                If _timeOut = True Then
+                If _timeOutBenchBusy = True Then
                     Return "0,Banco ocupado Tiempo de espera de 10 segundos agotado"
                 End If
                 response = send_Microbench_command(command, LENGTHY_MODE, data_in, 0)
@@ -1596,7 +1604,7 @@ Public Class Sensor_MB_Class
             chkSum = chkSumT Mod &H10000
             'Agregar ChkSum a la trama de datos
             data_send(i) = chkSum And &HFF
-            data_send(i + 1) = chkSum And &HFF00
+            data_send(i + 1) = (chkSum And &HFF00) >> 8
             txtConsola = "data_send= "
             Console.Write("data_send: ")
             For i = 0 To DataCount + 5
@@ -1614,7 +1622,7 @@ Public Class Sensor_MB_Class
             _serialPortMicroBench.Write(data_send, 0, DataCount + 6) 'Envia trama
             'Inicializa temporizador de 2 segundos para recibir paquete
 
-            Delay(2)
+            Delay(1)
 
             _readDataMB = True
             'Inicia Thread de recepcion
@@ -1709,6 +1717,21 @@ Public Class Sensor_MB_Class
         _timeOut = True
     End Sub
 
+
+    Private Sub IniTemporizadorBenchBusy(segundos As UInteger)
+        'Inicializa temporizador de 2 segundos para recibir paquete
+
+        tmrBenchBusy.Interval = segundos * 1000
+        tmrBenchBusy.Enabled = True
+        tmrBenchBusy.Start()
+        _timeOutBenchBusy = False
+    End Sub
+
+    Private Sub TmrBenchBusy_Tick(sender As Object, e As EventArgs)
+        tmrBenchBusy.Enabled = False
+        tmrBenchBusy.Stop()
+        _timeOutBenchBusy = True
+    End Sub
 
     Public Sub Delay(ByVal seconds As Single)
         Static start As Single
