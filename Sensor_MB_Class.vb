@@ -10,14 +10,15 @@ Public Class Sensor_MB_Class
     Const NACK As UInteger = 21
     Const BUSY As UInteger = 5
     'Comandos Sensor Microbench
-    Const MBGetVersion As UInteger = 12
     Const MBCalibration As UInteger = 2
     Const MBGetData As UInteger = 3
     Const MBGetStatus As UInteger = 4
     Const MBReadWriteCalibration As UInteger = 5
     Const MBReadWrite_IO As UInteger = 8
     Const MBCalibrate_RPM As UInteger = 9
+    Const MBGetVersion As UInteger = 12
     Const MBReadSerialNumber As UInteger = 13
+    Const MBCalibrate_Pressure As UInteger = 16
     Const MBSetAccesLevel As UInteger = 18
 
 
@@ -94,26 +95,26 @@ Public Class Sensor_MB_Class
 
 
 
-    Public Pressure_in_mbar As Integer = 1
-    Public Pressure_in_Hg As Integer = 0
-    Public Temp_in_C As Integer = 1
-    Public Temp_in_F As Integer = 0
-    Public HC_Range_0_2000_ppmHex As Integer = 1
-    Public HC_Range_0_20000_ppmHex As Integer = 0
-    Public High_Resolution_O2 As Integer = 1
-    Public Low_Resolution_O2 As Integer = 0
-    Public RPM_in_2_cycle As Integer = 1
-    Public RPM_in_4_cycle As Integer = 0
-    Public Normal_Ignition As Integer = 1
-    Public Dual_Ignition As Integer = 0
-    Public Pressure_Resolution_Low As Integer = 1
-    Public Pressure_Resolution_High As Integer = 0
-    Public HC_AS_ppm_Hexane As Integer = 1
-    Public HC_AS_ppm_Propane As Integer = 0
-    Public Oil_Temp_as_C As Integer = 1
-    Public Oil_Temp_as_mV As Integer = 0
-    Public RPM_as_1_Min As Integer = 1
-    Public RPM_as_1_mV As Integer = 0
+    'Public Pressure_in_mbar As Integer = 1
+    'Public Pressure_in_Hg As Integer = 0
+    'Public Temp_in_C As Integer = 1
+    'Public Temp_in_F As Integer = 0
+    'Public HC_Range_0_2000_ppmHex As Integer = 1
+    'Public HC_Range_0_20000_ppmHex As Integer = 0
+    'Public High_Resolution_O2 As Integer = 1
+    'Public Low_Resolution_O2 As Integer = 0
+    'Public RPM_in_2_cycle As Integer = 1
+    'Public RPM_in_4_cycle As Integer = 0
+    'Public Normal_Ignition As Integer = 1
+    'Public Dual_Ignition As Integer = 0
+    'Public Pressure_Resolution_Low As Integer = 1
+    'Public Pressure_Resolution_High As Integer = 0
+    'Public HC_AS_ppm_Hexane As Integer = 1
+    'Public HC_AS_ppm_Propane As Integer = 0
+    'Public Oil_Temp_as_C As Integer = 1
+    'Public Oil_Temp_as_mV As Integer = 0
+    'Public RPM_as_1_Min As Integer = 1
+    'Public RPM_as_1_mV As Integer = 0
     Public Warm_Up_Time As UInteger
 
 
@@ -184,6 +185,13 @@ Public Class Sensor_MB_Class
         Dim RPM_Zero_Required As Boolean
         Dim No_RPM_KIT_Installed As Boolean
         Dim RPM_Calibration_Required As Boolean
+    End Structure
+    Structure Calibrate_Pressure_Status
+        Dim No_Pressure_transducer As Boolean
+        Dim AD_Railed As Boolean
+        Dim Pressure_Cal1_Equal_Pressure_Cal2 As Boolean
+        Dim Reading_Cal1_Equal_Reading_Cal2 As Boolean
+        Dim Reading_Out_Range As Boolean
     End Structure
     Structure Overall_Status
         Dim warmUpInProgress As Boolean
@@ -359,28 +367,29 @@ Public Class Sensor_MB_Class
     ''' 
     ''' </summary>
     ''' <param name="mode"></param>
-    ''' <param name="unitsPressure"></param>
-    ''' <param name="unitsTemp"></param>
-    ''' <param name="HCRange"></param>
-    ''' <param name="LowHighResolition"></param>
-    ''' <param name="Rpm2_4_Cycle"></param>
-    ''' <param name="ignitioNormal_Dual"></param>
-    ''' <param name="ResolutionPressureHigh_Low"></param>
-    ''' <param name="HCasPPMHexane_Propane"></param>
-    ''' <param name="OilTempAs_C_mV"></param>
-    ''' <param name="RpmAs_1xmin_mv"></param>
+    ''' <param name="unitsPressurembar"></param>
+    ''' <param name="unitsTemp_C"></param>
+    ''' <param name="HCRange_20000"></param>
+    ''' <param name="O2HighResolution"></param>
+    ''' <param name="Rpm2_Cycle"></param>
+    ''' <param name="ignitioNormal"></param>
+    ''' <param name="ResolutionPressureLow"></param>
+    ''' <param name="HCasPPMHexane"></param>
+    ''' <param name="OilTempAs_C"></param>
+    ''' <param name="RpmAs_1xmin"></param>
     ''' <returns></returns>
     Public Function Comando_MB_GetData(mode As UInteger,
-                                        unitsPressure As UInteger,
-                                        unitsTemp As UInteger,
-                                        HCRange As UInteger,
-                                        LowHighResolition As UInteger,
-                                        Rpm2_4_Cycle As UInteger,
-                                        ignitioNormal_Dual As UInteger,
-                                        ResolutionPressureHigh_Low As UInteger,
-                                        HCasPPMHexane_Propane As UInteger,
-                                        OilTempAs_C_mV As UInteger,
-                                        RpmAs_1xmin_mv As UInteger, ByRef GetDataResults As GetData_Results) As String
+                                        unitsPressurembar As Boolean,
+                                        unitsTemp_C As Boolean,
+                                        HCRange_2000 As Boolean,
+                                        O2HighResolution As Boolean,
+                                        Rpm2_Cycle As Boolean,
+                                        ignitioNormal As Boolean,
+                                        ResolutionPressureLow As Boolean,
+                                        HCasPPMHexane As Boolean,
+                                        OilTempAs_C As Boolean,
+                                        RpmAs_1xmin As Boolean,
+                                       ByRef GetDataResults As GetData_Results) As String
 
 
 
@@ -395,35 +404,35 @@ Public Class Sensor_MB_Class
 
             unitsL = 0
             unitsH = 0
-            If unitsPressure = 1 Then
-                unitsL = unitsL Or &B1
+            If unitsPressurembar = False Then
+                unitsL = unitsL Or &H1
             End If
-            If unitsTemp = 1 Then
-                unitsL = unitsL Or &B10
+            If unitsTemp_C = False Then
+                unitsL = unitsL Or &H2
             End If
-            If HCRange = 1 Then
-                unitsL = unitsL Or &B100
+            If HCRange_2000 = False Then
+                unitsL = unitsL Or &H4
             End If
-            If LowHighResolition = 1 Then
-                unitsL = unitsL Or &B1000
+            If O2HighResolution = False Then
+                unitsL = unitsL Or &H8
             End If
-            If Rpm2_4_Cycle = 1 Then
-                unitsL = unitsL Or &B10000
+            If Rpm2_Cycle = False Then
+                unitsL = unitsL Or &H10
             End If
-            If ignitioNormal_Dual = 1 Then
-                unitsL = unitsL Or &B100000
+            If ignitioNormal = False Then
+                unitsL = unitsL Or &H20
             End If
-            If ResolutionPressureHigh_Low = 1 Then
-                unitsL = unitsL Or &B1000000
+            If ResolutionPressureLow = False Then
+                unitsL = unitsL Or &H40
             End If
-            If HCasPPMHexane_Propane = 1 Then
-                unitsL = unitsL Or &B10000000
+            If HCasPPMHexane = False Then
+                unitsL = unitsL Or &H80
             End If
-            If OilTempAs_C_mV = 1 Then
-                unitsH = unitsH Or &B1
+            If OilTempAs_C = False Then
+                unitsH = unitsH Or &H100
             End If
-            If RpmAs_1xmin_mv = 1 Then
-                unitsH = unitsH Or &B10
+            If RpmAs_1xmin = False Then
+                unitsH = unitsH Or &H200
             End If
 
             data(0) = mode
@@ -759,7 +768,13 @@ Public Class Sensor_MB_Class
     ''' <returns>string separado por coma</returns>
     ''' 
 
-    Public Function Comando_MB_Calibration(mode As UInteger, gas As UInteger, ByRef GetDataResults As GetData_Results) As String
+    Public Function Comando_MB_Calibration(mode As UInteger,
+                                           HC As Boolean,
+                                           CO As Boolean,
+                                           CO2 As Boolean,
+                                           O2 As Boolean,
+                                           NOx As Boolean,
+                                           HiHC As Boolean) As String
         Try
 
             Dim data(3) As Byte
@@ -768,23 +783,26 @@ Public Class Sensor_MB_Class
             Dim strResults() As String
             Dim mini_status As UInteger
 
+            gasByte = 0
+            If HC Then
+                gasByte = gasByte Or &H1
+            End If
+            If CO Then
+                gasByte = gasByte Or &H2
+            End If
+            If CO2 Then
+                gasByte = gasByte Or &H4
+            End If
+            If O2 Then
+                gasByte = gasByte Or &H8
+            End If
+            If NOx Then
+                gasByte = gasByte Or &H10
+            End If
+            If HiHC Then
+                gasByte = gasByte Or &H20
+            End If
 
-            Select Case gas
-                Case 0
-                    gasByte = &B1
-                Case 1
-                    gasByte = &B10
-                Case 2
-                    gasByte = &B100
-                Case 3
-                    gasByte = &B1000
-                Case 4
-                    gasByte = &B10000
-                Case 5
-                    gasByte = &B100000
-                Case Else
-                    gasByte = 0
-            End Select
             data(0) = mode
             data(1) = 0
             data(2) = gasByte
@@ -796,10 +814,7 @@ Public Class Sensor_MB_Class
             If strResults(0) = "1" Then
                 mini_status = data_rcv(4) + data_rcv(5) * &H100
 
-                GetDataResults.lowFlow = False
-                If mini_status And &B1 Then
-                    GetDataResults.lowFlow = True
-                End If
+
 
                 Select Case mini_status
                     Case &H0
@@ -1219,7 +1234,7 @@ Public Class Sensor_MB_Class
                         End If
 
                 End Select
-                Return "1,Datos Almacenados en lasestructura"
+                Return "1,Datos Almacenados en la estructura"
             Else
                 Return strResult
             End If
@@ -1340,106 +1355,6 @@ Public Class Sensor_MB_Class
     End Function
 
 
-    Public Function Comando_MB_ReadSerialNumber() As String
-        Try
-
-            Dim data(3) As Byte
-            Dim strResult As String
-            Dim strResults() As String
-            Dim version As UInteger
-
-            data(0) = 0
-            data(1) = 0
-            data(2) = 0
-            data(3) = 0
-
-            strResult = Microbench_command(MBReadSerialNumber, data, data.Length)
-            strResults = strResult.Split(",")
-            If strResults(0) = "1" Then
-                version = BitConverter.ToInt16(data_rcv, 4)
-                Return "1," + version.ToString
-            Else
-                Return strResult
-            End If
-        Catch ex As Exception
-            Return "0," + ex.Message
-
-        End Try
-
-    End Function
-
-
-    Public Function Comando_MB_SetAccessLevel(AccesLevel As Integer) As String
-        Try
-
-            Dim data(1) As Byte
-            Dim strResult As String
-            Dim strResults() As String
-            Dim version As UInteger
-
-            data(0) = AccesLevel
-            data(1) = 0
-
-            strResult = Microbench_command(MBSetAccesLevel, data, data.Length)
-            strResults = strResult.Split(",")
-            If strResults(0) = "1" Then
-                version = BitConverter.ToInt16(data_rcv, 4)
-                Return "1," + version.ToString
-            Else
-                Return strResult
-            End If
-        Catch ex As Exception
-            Return "0," + ex.Message
-
-        End Try
-
-    End Function
-    Private Function Microbench_command(command As UInteger, data_in As Byte(), DataCount As UInteger) As String
-        Try
-
-            Dim NORMAL_MODE As UInteger = 0
-            Dim LENGTHY_MODE As UInteger = 1
-
-            Dim PROCESS_STATUS As UInteger = 11
-            Dim response As Integer
-
-            response = send_Microbench_command(command, NORMAL_MODE, data_in, DataCount)
-            If response = BUSY Then
-                'Inicializar temporizador 10 segundos
-                IniTemporizador(10)
-                While response = BUSY And _timeOut = False
-                    response = send_Microbench_command(PROCESS_STATUS, NORMAL_MODE, data_in, 0)
-                End While
-
-                If _timeOut = True Then
-                    Return "0,Banco ocupado Tiempo de espera de 10 segundos agotado"
-                End If
-                response = send_Microbench_command(command, LENGTHY_MODE, data_in, 0)
-            End If
-
-            Select Case response
-                Case ACK
-                    Return "1,ACK"
-                Case NACK
-                    Return "0,Error Comando o comando no reconocido"
-                Case CerraAplicativo
-                    Return "0,CerraAplicativo"
-                Case TimerTimeOut
-                    Return "0,Banco no responde Tiempo de espera agotado"
-                Case RxExcepcion
-                    Return "0," + _errMsg
-                Case Excepcion
-                    Return "0," + _errMsg
-                Case CantDataErr
-                    Return "0,Error cantidad de datos no corresponde"
-                Case Else
-                    Return "0,Err Respuesta"
-            End Select
-        Catch ex As Exception
-            Return "0," + ex.Message
-        End Try
-
-    End Function
     Public Function Comando_MB_Calibrate_RPM(RPM As UShort, ByRef RPM_Status As Calibrate_RPM_Status) As String
         Try
 
@@ -1486,6 +1401,161 @@ Public Class Sensor_MB_Class
             Return "0," + ex.Message
         End Try
     End Function
+    Public Function Comando_MB_ReadSerialNumber() As String
+        Try
+
+            Dim data(3) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim version As UInteger
+
+            data(0) = 0
+            data(1) = 0
+            data(2) = 0
+            data(3) = 0
+
+            strResult = Microbench_command(MBReadSerialNumber, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                version = BitConverter.ToInt16(data_rcv, 4)
+                Return "1," + version.ToString
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+
+        End Try
+
+    End Function
+
+    Public Function Comando_MB_Calibrate_Pressure(Cal_Mode As UShort, Pressure As UShort, Unit As UShort, ByRef Pressure_Status As Calibrate_Pressure_Status) As String
+        Try
+
+            Dim data(5), dataPress() As Byte
+            Dim strResult As String
+            Dim strResults() As String
+
+
+
+            data(0) = Cal_Mode
+            data(1) = 0
+            dataPress = BitConverter.GetBytes(Pressure)
+            data(2) = dataPress(0)
+            data(3) = dataPress(1)
+            data(4) = Unit
+            data(5) = 0
+
+            Pressure_Status.No_Pressure_transducer = False
+            Pressure_Status.AD_Railed = False
+            Pressure_Status.Pressure_Cal1_Equal_Pressure_Cal2 = False
+            Pressure_Status.Reading_Cal1_Equal_Reading_Cal2 = False
+            Pressure_Status.Reading_Out_Range = False
+
+
+            strResult = Microbench_command(MBCalibrate_RPM, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+
+                If data_rcv(4) And &H1 Then
+                    Pressure_Status.No_Pressure_transducer = True
+                End If
+                If data_rcv(4) And &H2 Then
+                    Pressure_Status.AD_Railed = True
+                End If
+                If data_rcv(4) And &H4 Then
+                    Pressure_Status.Pressure_Cal1_Equal_Pressure_Cal2 = True
+                End If
+                If data_rcv(4) And &H8 Then
+                    Pressure_Status.Reading_Cal1_Equal_Reading_Cal2 = True
+                End If
+                If data_rcv(4) And &H10 Then
+                    Pressure_Status.Reading_Out_Range = True
+                End If
+
+                Return "1,Datos almacenados en la estructura"
+            Else
+                Return strResult
+            End If
+
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+    End Function
+    Public Function Comando_MB_SetAccessLevel(AccesLevel As Integer) As String
+        Try
+
+            Dim data(1) As Byte
+            Dim strResult As String
+            Dim strResults() As String
+            Dim version As UInteger
+
+            data(0) = AccesLevel
+            data(1) = 0
+
+            strResult = Microbench_command(MBSetAccesLevel, data, data.Length)
+            strResults = strResult.Split(",")
+            If strResults(0) = "1" Then
+                version = BitConverter.ToInt16(data_rcv, 4)
+                Return "1," + version.ToString
+            Else
+                Return strResult
+            End If
+        Catch ex As Exception
+            Return "0," + ex.Message
+
+        End Try
+
+    End Function
+
+
+    Private Function Microbench_command(command As UInteger, data_in As Byte(), DataCount As UInteger) As String
+        Try
+
+            Dim NORMAL_MODE As UInteger = 0
+            Dim LENGTHY_MODE As UInteger = 1
+
+            Dim PROCESS_STATUS As UInteger = 11
+            Dim response As Integer
+
+            response = send_Microbench_command(command, NORMAL_MODE, data_in, DataCount)
+            If response = BUSY Then
+                'Inicializar temporizador 10 segundos
+                IniTemporizador(10)
+                While response = BUSY And _timeOut = False
+                    response = send_Microbench_command(PROCESS_STATUS, NORMAL_MODE, data_in, 0)
+                End While
+
+                If _timeOut = True Then
+                    Return "0,Banco ocupado Tiempo de espera de 10 segundos agotado"
+                End If
+                response = send_Microbench_command(command, LENGTHY_MODE, data_in, 0)
+            End If
+
+            Select Case response
+                Case ACK
+                    Return "1,ACK"
+                Case NACK
+                    Return "0,Error Comando o comando no reconocido"
+                Case CerraAplicativo
+                    Return "0,CerraAplicativo"
+                Case TimerTimeOut
+                    Return "0,Banco no responde Tiempo de espera agotado"
+                Case RxExcepcion
+                    Return "0," + _errMsg
+                Case Excepcion
+                    Return "0," + _errMsg
+                Case CantDataErr
+                    Return "0,Error cantidad de datos no corresponde"
+                Case Else
+                    Return "0,Err Respuesta"
+            End Select
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+    End Function
+
     Private Function send_Microbench_command(command As UInteger, MODE As UInteger, data_in As Byte(), DataCount As UInteger) As UInteger
         Try
 

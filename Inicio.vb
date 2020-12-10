@@ -68,8 +68,15 @@ Public Class frmFuentesMoviles
         Dim strResults() As String
 
         If (cmbCalibrationGas.SelectedIndex <> -1) And (cmbCalibrationMode.SelectedIndex <> -1) Then
-            strResult = Sensor_MB.Comando_MB_Calibration(cmbCalibrationMode.SelectedIndex, cmbCalibrationGas.SelectedIndex)
+            strResult = Sensor_MB.Comando_MB_Calibration(cmbCalibrationMode.SelectedIndex,
+                                                         chkHC.Checked,
+                                                         chkCO.Checked,
+                                                         chkCO2.Checked,
+                                                         chkO2.Checked,
+                                                         chkNOx.Checked,
+                                                         chkHiHC.Checked)
             strResults = strResult.Split(",")
+
             txtConsolaMicroBench.AppendText(strResults(1) + vbCrLf)
         Else
             MsgBox("Seleccione Modo y Gas", MsgBoxStyle.Information)
@@ -87,31 +94,85 @@ Public Class frmFuentesMoviles
         Dim TwoPointCalibrationStatus As Sensor_MB_Class.TwoPointCalibration_Status
         Dim BenchOperationWarning As Sensor_MB_Class.BenchOperational_Warnings
         Dim ADConverterChannels As Sensor_MB_Class.ADConverter_Channels
+        Dim GasSelection As UInteger
 
 
 
-        CalibrationData.HC = 1500
 
-        strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
+        Select Case cmbGasDatain.SelectedItem
+            Case "Concentracion"
+                GasSelection = Sensor_MB.Report_Gas_Data_in_Concentration
+            Case "Voltage"
+                GasSelection = Sensor_MB.Report_Gas_Data_in_Voltage
+            Case "A/D Counts"
+                GasSelection = Sensor_MB.Report_Gas_Data_in_AD_Counts
+            Case "Modulations"
+                GasSelection = Sensor_MB.Report_Gas_Data_in_Modulation
+            Case Else
+                MsgBox("Seleccione Tipo de dato")
+                Return
+        End Select
+
+
+
+        strResult = Sensor_MB.Comando_MB_GetData(GasSelection,
+        rdbPressmbar.Checked,
+         rdbTempC.Checked,
+        rdbHC2000.Checked,
+        rdbO2ResLow.Checked,
+        rdbRPM2.Checked,
+        rdbIgnitionNormal.Checked,
+        rdbPressResLow.Checked,
+        rdbHCHexane.Checked,
+        rdbOiltempC.Checked,
+        rdbRPM1_min.Checked,
+        GetDataResults)
+
+        strResults = strResult.Split(",")
+        txtConsolaMicroBench.AppendText("GET DATA " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            'las unidades y los puntos decimales dependen de la seleccion de realizada .
+            'para efectos de ejemplo se presentan los valores tal cual son enviados por el banco de gases
+            txtConsolaMicroBench.AppendText("HC=" + GetDataResults.HC.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("CO=" + GetDataResults.CO.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("CO2=" + GetDataResults.CO2.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("O2=" + GetDataResults.O2.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("NOX=" + GetDataResults.NOX.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("RPM=" + GetDataResults.RPM.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("OilTemp=" + GetDataResults.OilTemp.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("AmbientTemp=" + GetDataResults.AmbientTemp.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("Pressure=" + GetDataResults.Pressure.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("lowFlow=" + GetDataResults.lowFlow.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("FilterBowlFull=" + GetDataResults.FilterBowlFull.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("Alarm=" + GetDataResults.Alarm.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("DataMayNotBeAccurate=" + GetDataResults.DataMayNotBeAccurate.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("ZERO_recommended=" + GetDataResults.ZERO_recommended.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("HighHC_Range=" + GetDataResults.HighHC_Range.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("CondensationWarning=" + GetDataResults.CondensationWarning.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("HC_OutRange=" + GetDataResults.HC_OutRange.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("CO_OutRange=" + GetDataResults.CO_OutRange.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("CO2_OutRange=" + GetDataResults.CO2_OutRange.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("O2_OutRange=" + GetDataResults.O2_OutRange.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("NOX_OutRange=" + GetDataResults.NOX_OutRange.ToString + vbCrLf)
+            txtConsolaMicroBench.AppendText("BenchInternalWarning=" + GetDataResults.BenchInternalWarning.ToString + vbCrLf)
+
+        End If
+
+
+
+
+
+
+        'CalibrationData.HC = 1500
+
+        'strResult = Sensor_MB.Comando_MB_Write_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC, CalibrationData)
 
         'strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX, 0)
 
-        strResult = Sensor_MB.Comando_MB_GetData(Sensor_MB.Report_Gas_Data_in_Concentration,
-                                                 Sensor_MB.Pressure_in_mbar,
-                                                 Sensor_MB.Temp_in_C,
-                                                 Sensor_MB.HC_Range_0_20000_ppmHex,
-                                                 Sensor_MB.High_Resolution_O2,
-                                                 Sensor_MB.RPM_in_2_cycle,
-                                                 Sensor_MB.Normal_Ignition,
-                                                 Sensor_MB.Pressure_Resolution_High,
-                                                 Sensor_MB.HC_AS_ppm_Hexane,
-                                                 Sensor_MB.Oil_Temp_as_C, Sensor_MB.RPM_as_1_Min, GetDataResults)
-        strResult = Sensor_MB.Comando_MB_GetStatus(OverAllStatus, ZerStatus, SinglePointCalibrationSatus, TwoPointCalibrationStatus, BenchOperationWarning, ADConverterChannels)
 
 
-        strResult = Sensor_MB.Comando_MB_Calibration(0, 0, GetDataResults)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(strResults(1) + vbCrLf)
+        'strResult = Sensor_MB.Comando_MB_Calibration(0, 0, GetDataResults)
+
 
     End Sub
 
@@ -119,9 +180,7 @@ Public Class frmFuentesMoviles
 
     End Sub
 
-    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
 
-    End Sub
 
     Private Sub btnReadCalibration_Click(sender As Object, e As EventArgs) Handles btnReadCalibration.Click
         Dim strResult As String
@@ -140,5 +199,23 @@ Public Class frmFuentesMoviles
         strResult = Sensor_MB.Comando_MB_Read_Calibration(Sensor_MB.DataSet_Read_High_O2, CalibrationData)
 
 
+    End Sub
+
+    Private Sub btnGetStatus_Click(sender As Object, e As EventArgs) Handles btnGetStatus.Click
+        Dim OverAllStatus As Sensor_MB_Class.Overall_Status
+        Dim ZerStatus As Sensor_MB_Class.Zero_Status
+        Dim SinglePointCalibrationSatus As Sensor_MB_Class.SinglePointCalibration_Status
+        Dim TwoPointCalibrationStatus As Sensor_MB_Class.TwoPointCalibration_Status
+        Dim BenchOperationWarning As Sensor_MB_Class.BenchOperational_Warnings
+        Dim ADConverterChannels As Sensor_MB_Class.ADConverter_Channels
+        Dim strResult As String
+        Dim strResults() As String
+
+        strResult = Sensor_MB.Comando_MB_GetStatus(OverAllStatus, ZerStatus, SinglePointCalibrationSatus, TwoPointCalibrationStatus, BenchOperationWarning, ADConverterChannels)
+        strResults = strResult.Split(",")
+        txtConsolaMicroBench.AppendText("GET STATUS " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsolaMicroBench.AppendText("HC=" + GetDataResults.HC.ToString + vbCrLf)
+        End If
     End Sub
 End Class
