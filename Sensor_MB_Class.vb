@@ -43,8 +43,8 @@ Public Class Sensor_MB_Class
     Public DataSet_SinglePont_Cal_O2 As UInteger = 2
     Public DataSet_SinglePont_Cal_NOX As UInteger = 3
     Public DataSet_SinglePont_Cal_HC_CO_CO2_HiHC_O2_NOX As UInteger = 4
-    Public DataSet_TwolePont_Cal_HC_CO_CO2_P1 As UInteger = 11
-    Public DataSet_TwolePont_Cal_HC_CO_CO2_P2 As UInteger = 21
+    Public DataSet_TwoPont_Cal_HC_CO_CO2_P1 As UInteger = 11
+    Public DataSet_TwoPont_Cal_HC_CO_CO2_P2 As UInteger = 21
     Public DataSet_PEF As UInteger = 42
     Public DataSet_New_O2_Transducer_Installed As UInteger = 50
     Public DataSet_Read_Bad_O2 As UInteger = 51
@@ -79,14 +79,14 @@ Public Class Sensor_MB_Class
         Dim O2 As Integer
         Dim NOX As Integer
         Dim PEF As Integer
-        Dim Flag As Short
-        Dim Bad_O2 As Integer
-        Dim High_O2 As Integer
-        Dim HC_Flag_Out_Range As Integer
-        Dim CO_Flag_Out_Range As Integer
-        Dim CO2_Flag_Out_Range As Integer
-        Dim O2_Flag_Out_Range As Integer
-        Dim NOX_Flag_Out_Range As Integer
+        Dim New_O2_Transducer_Flag As Short
+        Dim Bad_O2_Threshold As Integer
+        Dim High_O2_Threshold As Integer
+        Dim HC_Flag_Out_Range As Boolean
+        Dim CO_Flag_Out_Range As Boolean
+        Dim CO2_Flag_Out_Range As Boolean
+        Dim O2_Flag_Out_Range As Boolean
+        Dim NOX_Flag_Out_Range As Boolean
         Dim New_O2_Transd_Installed As Integer
     End Structure
 
@@ -892,7 +892,7 @@ Public Class Sensor_MB_Class
                         CalibrationData.O2 = O2
                         CalibrationData.HiHc = HiHC
 
-                    Case DataSet_TwolePont_Cal_HC_CO_CO2_P1
+                    Case DataSet_TwoPont_Cal_HC_CO_CO2_P1
                         HC = BitConverter.ToInt16(data_rcv, 4)
                         CO = BitConverter.ToInt16(data_rcv, 6)
                         CO2 = BitConverter.ToInt16(data_rcv, 8)
@@ -901,7 +901,7 @@ Public Class Sensor_MB_Class
                         CalibrationData.CO2 = CO2
 
 
-                    Case DataSet_TwolePont_Cal_HC_CO_CO2_P2
+                    Case DataSet_TwoPont_Cal_HC_CO_CO2_P2
                         HC = BitConverter.ToInt16(data_rcv, 4)
                         CO = BitConverter.ToInt16(data_rcv, 6)
                         CO2 = BitConverter.ToInt16(data_rcv, 8)
@@ -913,15 +913,15 @@ Public Class Sensor_MB_Class
                         CalibrationData.PEF = BitConverter.ToInt16(data_rcv, 4)
 
                     Case DataSet_New_O2_Transducer_Installed
-                        CalibrationData.Flag = BitConverter.ToInt16(data_rcv, 4)
+                        CalibrationData.New_O2_Transducer_Flag = BitConverter.ToInt16(data_rcv, 4)
 
                     Case DataSet_Read_Bad_O2
                         Bad_O2 = BitConverter.ToInt16(data_rcv, 4)
-                        CalibrationData.Bad_O2 = Bad_O2
+                        CalibrationData.Bad_O2_Threshold = Bad_O2
 
                     Case DataSet_Read_High_O2
                         High_O2 = BitConverter.ToInt16(data_rcv, 4)
-                        CalibrationData.Bad_O2 = Bad_O2
+                        CalibrationData.Bad_O2_Threshold = Bad_O2
 
 
 
@@ -1000,7 +1000,7 @@ Public Class Sensor_MB_Class
                     data(14) = DataT(0)
                     data(15) = DataT(1)
 
-                Case DataSet_TwolePont_Cal_HC_CO_CO2_P1
+                Case DataSet_TwoPont_Cal_HC_CO_CO2_P1
                     ReDim Preserve data(11)
                     DataT = BitConverter.GetBytes(calibrationData.HC)
                     data(4) = DataT(0)
@@ -1013,7 +1013,7 @@ Public Class Sensor_MB_Class
                     data(9) = DataT(1)
 
 
-                Case DataSet_TwolePont_Cal_HC_CO_CO2_P2
+                Case DataSet_TwoPont_Cal_HC_CO_CO2_P2
                     ReDim Preserve data(11)
                     DataT = BitConverter.GetBytes(calibrationData.HC_P2)
                     data(4) = DataT(0)
@@ -1033,19 +1033,19 @@ Public Class Sensor_MB_Class
 
                 Case DataSet_New_O2_Transducer_Installed
                     ReDim Preserve data(5)
-                    DataT = BitConverter.GetBytes(calibrationData.Flag)
+                    DataT = BitConverter.GetBytes(calibrationData.New_O2_Transducer_Flag)
                     data(4) = DataT(0)
                     data(5) = DataT(1)
 
                 Case DataSet_Read_Bad_O2
                     ReDim Preserve data(5)
-                    DataT = BitConverter.GetBytes(calibrationData.Bad_O2)
+                    DataT = BitConverter.GetBytes(calibrationData.Bad_O2_Threshold)
                     data(4) = DataT(0)
                     data(5) = DataT(1)
 
                 Case DataSet_Read_High_O2
                     ReDim Preserve data(5)
-                    DataT = BitConverter.GetBytes(calibrationData.High_O2)
+                    DataT = BitConverter.GetBytes(calibrationData.High_O2_Threshold)
                     data(4) = DataT(0)
                     data(5) = DataT(1)
             End Select
@@ -1344,7 +1344,6 @@ Public Class Sensor_MB_Class
             strResult = Microbench_command(MBReadWrite_IO, data, data.Length)
             strResults = strResult.Split(",")
             If strResults(0) = "1" Then
-
                 Return "1,Exito"
             Else
                 Return strResult

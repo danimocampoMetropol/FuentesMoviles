@@ -86,6 +86,9 @@ Partial Class frmFuentesMoviles
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.btnEscanear = New System.Windows.Forms.Button()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
+        Me.btnWriteCalibration = New System.Windows.Forms.Button()
+        Me.btnRead_IO = New System.Windows.Forms.Button()
+        Me.btnWrite_IO = New System.Windows.Forms.Button()
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
@@ -120,11 +123,11 @@ Partial Class frmFuentesMoviles
         '
         'txtConsolaMicroBench
         '
-        Me.txtConsolaMicroBench.Location = New System.Drawing.Point(18, 966)
+        Me.txtConsolaMicroBench.Location = New System.Drawing.Point(2061, 74)
         Me.txtConsolaMicroBench.Multiline = True
         Me.txtConsolaMicroBench.Name = "txtConsolaMicroBench"
         Me.txtConsolaMicroBench.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtConsolaMicroBench.Size = New System.Drawing.Size(1315, 200)
+        Me.txtConsolaMicroBench.Size = New System.Drawing.Size(865, 1100)
         Me.txtConsolaMicroBench.TabIndex = 3
         '
         'TabPrincipal
@@ -135,7 +138,7 @@ Partial Class frmFuentesMoviles
         Me.TabPrincipal.Location = New System.Drawing.Point(12, 12)
         Me.TabPrincipal.Name = "TabPrincipal"
         Me.TabPrincipal.SelectedIndex = 0
-        Me.TabPrincipal.Size = New System.Drawing.Size(1861, 1238)
+        Me.TabPrincipal.Size = New System.Drawing.Size(2961, 1271)
         Me.TabPrincipal.TabIndex = 6
         '
         'TabPageMicroBench
@@ -148,7 +151,7 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench.Location = New System.Drawing.Point(10, 47)
         Me.TabPageMicroBench.Name = "TabPageMicroBench"
         Me.TabPageMicroBench.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageMicroBench.Size = New System.Drawing.Size(1841, 1181)
+        Me.TabPageMicroBench.Size = New System.Drawing.Size(2941, 1214)
         Me.TabPageMicroBench.TabIndex = 0
         Me.TabPageMicroBench.Text = "Sensors Microbench"
         Me.TabPageMicroBench.UseVisualStyleBackColor = True
@@ -156,7 +159,7 @@ Partial Class frmFuentesMoviles
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(17, 934)
+        Me.Label1.Location = New System.Drawing.Point(2056, 17)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(69, 29)
         Me.Label1.TabIndex = 7
@@ -164,24 +167,28 @@ Partial Class frmFuentesMoviles
         '
         'grpComandoMB
         '
+        Me.grpComandoMB.Controls.Add(Me.btnWrite_IO)
+        Me.grpComandoMB.Controls.Add(Me.btnRead_IO)
+        Me.grpComandoMB.Controls.Add(Me.btnWriteCalibration)
         Me.grpComandoMB.Controls.Add(Me.btnGetStatus)
         Me.grpComandoMB.Controls.Add(Me.GroupBox12)
         Me.grpComandoMB.Controls.Add(Me.GroupBox3)
         Me.grpComandoMB.Controls.Add(Me.btnReadCalibration)
         Me.grpComandoMB.Controls.Add(Me.cmbCalibrationGas)
         Me.grpComandoMB.Controls.Add(Me.btnGetVersion)
-        Me.grpComandoMB.Location = New System.Drawing.Point(22, 123)
+        Me.grpComandoMB.Location = New System.Drawing.Point(22, 63)
         Me.grpComandoMB.Name = "grpComandoMB"
-        Me.grpComandoMB.Size = New System.Drawing.Size(1817, 772)
+        Me.grpComandoMB.Size = New System.Drawing.Size(2019, 1111)
         Me.grpComandoMB.TabIndex = 6
         Me.grpComandoMB.TabStop = False
         Me.grpComandoMB.Text = "Comandos"
         '
         'btnGetStatus
         '
-        Me.btnGetStatus.Location = New System.Drawing.Point(28, 521)
+        Me.btnGetStatus.CausesValidation = False
+        Me.btnGetStatus.Location = New System.Drawing.Point(41, 133)
         Me.btnGetStatus.Name = "btnGetStatus"
-        Me.btnGetStatus.Size = New System.Drawing.Size(183, 69)
+        Me.btnGetStatus.Size = New System.Drawing.Size(188, 76)
         Me.btnGetStatus.TabIndex = 27
         Me.btnGetStatus.Text = "Get Status"
         Me.btnGetStatus.UseVisualStyleBackColor = True
@@ -196,7 +203,7 @@ Partial Class frmFuentesMoviles
         Me.GroupBox12.Controls.Add(Me.chkCO)
         Me.GroupBox12.Controls.Add(Me.chkO2)
         Me.GroupBox12.Controls.Add(Me.chkCO2)
-        Me.GroupBox12.Location = New System.Drawing.Point(17, 248)
+        Me.GroupBox12.Location = New System.Drawing.Point(257, 402)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(543, 251)
         Me.GroupBox12.TabIndex = 20
@@ -297,9 +304,9 @@ Partial Class frmFuentesMoviles
         Me.GroupBox3.Controls.Add(Me.cmbGasDatain)
         Me.GroupBox3.Controls.Add(Me.GroupBox1)
         Me.GroupBox3.Controls.Add(Me.Label4)
-        Me.GroupBox3.Location = New System.Drawing.Point(636, 24)
+        Me.GroupBox3.Location = New System.Drawing.Point(251, 34)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(1175, 442)
+        Me.GroupBox3.Size = New System.Drawing.Size(1547, 346)
         Me.GroupBox3.TabIndex = 19
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Get Data"
@@ -308,7 +315,7 @@ Partial Class frmFuentesMoviles
         '
         Me.GroupBox11.Controls.Add(Me.rdbRPMmv)
         Me.GroupBox11.Controls.Add(Me.rdbRPM1_min)
-        Me.GroupBox11.Location = New System.Drawing.Point(38, 339)
+        Me.GroupBox11.Location = New System.Drawing.Point(832, 243)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(228, 79)
         Me.GroupBox11.TabIndex = 26
@@ -341,7 +348,7 @@ Partial Class frmFuentesMoviles
         '
         Me.GroupBox10.Controls.Add(Me.rdbOiltempmV)
         Me.GroupBox10.Controls.Add(Me.rdbOiltempC)
-        Me.GroupBox10.Location = New System.Drawing.Point(895, 250)
+        Me.GroupBox10.Location = New System.Drawing.Point(623, 243)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(203, 79)
         Me.GroupBox10.TabIndex = 25
@@ -374,7 +381,7 @@ Partial Class frmFuentesMoviles
         '
         Me.GroupBox9.Controls.Add(Me.rdbHCHPropane)
         Me.GroupBox9.Controls.Add(Me.rdbHCHexane)
-        Me.GroupBox9.Location = New System.Drawing.Point(574, 243)
+        Me.GroupBox9.Location = New System.Drawing.Point(297, 243)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(302, 79)
         Me.GroupBox9.TabIndex = 24
@@ -407,7 +414,7 @@ Partial Class frmFuentesMoviles
         '
         Me.GroupBox8.Controls.Add(Me.rdbPressResHigh)
         Me.GroupBox8.Controls.Add(Me.rdbPressResLow)
-        Me.GroupBox8.Location = New System.Drawing.Point(299, 243)
+        Me.GroupBox8.Location = New System.Drawing.Point(32, 243)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(259, 79)
         Me.GroupBox8.TabIndex = 23
@@ -440,7 +447,7 @@ Partial Class frmFuentesMoviles
         '
         Me.GroupBox7.Controls.Add(Me.rdbIgnitionDual)
         Me.GroupBox7.Controls.Add(Me.rdbIgnitionNormal)
-        Me.GroupBox7.Location = New System.Drawing.Point(32, 243)
+        Me.GroupBox7.Location = New System.Drawing.Point(1172, 149)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(255, 81)
         Me.GroupBox7.TabIndex = 22
@@ -664,9 +671,9 @@ Partial Class frmFuentesMoviles
         '
         'btnReadCalibration
         '
-        Me.btnReadCalibration.Location = New System.Drawing.Point(245, 34)
+        Me.btnReadCalibration.Location = New System.Drawing.Point(41, 232)
         Me.btnReadCalibration.Name = "btnReadCalibration"
-        Me.btnReadCalibration.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadCalibration.Size = New System.Drawing.Size(193, 84)
         Me.btnReadCalibration.TabIndex = 8
         Me.btnReadCalibration.Text = "Read Calibration"
         Me.btnReadCalibration.UseVisualStyleBackColor = True
@@ -675,7 +682,7 @@ Partial Class frmFuentesMoviles
         '
         Me.cmbCalibrationGas.FormattingEnabled = True
         Me.cmbCalibrationGas.Items.AddRange(New Object() {"HC", "CO", "CO2", "O2", "NOX", "HiHC"})
-        Me.cmbCalibrationGas.Location = New System.Drawing.Point(636, 497)
+        Me.cmbCalibrationGas.Location = New System.Drawing.Point(1331, 607)
         Me.cmbCalibrationGas.Name = "cmbCalibrationGas"
         Me.cmbCalibrationGas.Size = New System.Drawing.Size(274, 37)
         Me.cmbCalibrationGas.TabIndex = 6
@@ -693,7 +700,7 @@ Partial Class frmFuentesMoviles
         'cmbPuertoMicroBench
         '
         Me.cmbPuertoMicroBench.FormattingEnabled = True
-        Me.cmbPuertoMicroBench.Location = New System.Drawing.Point(22, 41)
+        Me.cmbPuertoMicroBench.Location = New System.Drawing.Point(181, 9)
         Me.cmbPuertoMicroBench.Name = "cmbPuertoMicroBench"
         Me.cmbPuertoMicroBench.Size = New System.Drawing.Size(274, 37)
         Me.cmbPuertoMicroBench.TabIndex = 4
@@ -703,7 +710,7 @@ Partial Class frmFuentesMoviles
         Me.TabPageOpacimetro.Location = New System.Drawing.Point(10, 47)
         Me.TabPageOpacimetro.Name = "TabPageOpacimetro"
         Me.TabPageOpacimetro.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageOpacimetro.Size = New System.Drawing.Size(1841, 1181)
+        Me.TabPageOpacimetro.Size = New System.Drawing.Size(2728, 1181)
         Me.TabPageOpacimetro.TabIndex = 1
         Me.TabPageOpacimetro.Text = "Opacimetro CAP3030"
         Me.TabPageOpacimetro.UseVisualStyleBackColor = True
@@ -718,7 +725,7 @@ Partial Class frmFuentesMoviles
         Me.TabPageEncicla.Location = New System.Drawing.Point(10, 47)
         Me.TabPageEncicla.Name = "TabPageEncicla"
         Me.TabPageEncicla.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.TabPageEncicla.Size = New System.Drawing.Size(1841, 1181)
+        Me.TabPageEncicla.Size = New System.Drawing.Size(2728, 1181)
         Me.TabPageEncicla.TabIndex = 2
         Me.TabPageEncicla.Text = "EnCicla"
         Me.TabPageEncicla.UseVisualStyleBackColor = True
@@ -765,11 +772,38 @@ Partial Class frmFuentesMoviles
         Me.btnEscanear.Text = "Escanear Modulo"
         Me.btnEscanear.UseVisualStyleBackColor = True
         '
+        'btnWriteCalibration
+        '
+        Me.btnWriteCalibration.Location = New System.Drawing.Point(41, 340)
+        Me.btnWriteCalibration.Name = "btnWriteCalibration"
+        Me.btnWriteCalibration.Size = New System.Drawing.Size(193, 84)
+        Me.btnWriteCalibration.TabIndex = 28
+        Me.btnWriteCalibration.Text = "Write Calibration"
+        Me.btnWriteCalibration.UseVisualStyleBackColor = True
+        '
+        'btnRead_IO
+        '
+        Me.btnRead_IO.Location = New System.Drawing.Point(41, 449)
+        Me.btnRead_IO.Name = "btnRead_IO"
+        Me.btnRead_IO.Size = New System.Drawing.Size(193, 84)
+        Me.btnRead_IO.TabIndex = 29
+        Me.btnRead_IO.Text = "Read I/O"
+        Me.btnRead_IO.UseVisualStyleBackColor = True
+        '
+        'btnWrite_IO
+        '
+        Me.btnWrite_IO.Location = New System.Drawing.Point(41, 560)
+        Me.btnWrite_IO.Name = "btnWrite_IO"
+        Me.btnWrite_IO.Size = New System.Drawing.Size(193, 84)
+        Me.btnWrite_IO.TabIndex = 30
+        Me.btnWrite_IO.Text = "Write I/O"
+        Me.btnWrite_IO.UseVisualStyleBackColor = True
+        '
         'frmFuentesMoviles
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(14.0!, 29.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1876, 1262)
+        Me.ClientSize = New System.Drawing.Size(2985, 1295)
         Me.Controls.Add(Me.TabPrincipal)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "frmFuentesMoviles"
@@ -872,4 +906,7 @@ Partial Class frmFuentesMoviles
     Friend WithEvents rdbO2ResHigh As Windows.Forms.RadioButton
     Friend WithEvents GroupBox12 As Windows.Forms.GroupBox
     Friend WithEvents btnGetStatus As Windows.Forms.Button
+    Friend WithEvents btnWriteCalibration As Windows.Forms.Button
+    Friend WithEvents btnRead_IO As Windows.Forms.Button
+    Friend WithEvents btnWrite_IO As Windows.Forms.Button
 End Class
