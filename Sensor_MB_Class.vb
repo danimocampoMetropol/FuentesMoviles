@@ -1436,15 +1436,18 @@ Public Class Sensor_MB_Class
 
     End Function
 
-    Public Function Comando_MB_Calibrate_Pressure(Cal_Mode As UShort, Pressure As UShort, Unit As UShort, ByRef Pressure_Status As Calibrate_Pressure_Status) As String
+    Public Function Comando_MB_Calibrate_Pressure(Cal_Mode As UShort, Pressure As UShort, Press_mBar As Boolean, ByRef Pressure_Status As Calibrate_Pressure_Status) As String
         Try
 
             Dim data(5), dataPress() As Byte
             Dim strResult As String
             Dim strResults() As String
+            Dim Unit As Byte
 
-
-
+            Unit = 0
+            If Press_mBar = False Then
+                Unit=1
+            End If
             data(0) = Cal_Mode
             data(1) = 0
             dataPress = BitConverter.GetBytes(Pressure)
@@ -1733,7 +1736,7 @@ Public Class Sensor_MB_Class
         _timeOutBenchBusy = True
     End Sub
 
-    Public Sub Delay(ByVal seconds As Single)
+    Private Sub Delay(ByVal seconds As Single)
         Static start As Single
         start = Microsoft.VisualBasic.Timer()
         Do While Microsoft.VisualBasic.Timer() < start + seconds

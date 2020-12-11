@@ -67,6 +67,7 @@
     <Compile Include="Inicio.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Opacimetro_CAP3030_Class.vb" />
     <Compile Include="Sensor_MB_Class.vb" />
   </ItemGroup>
   <ItemGroup>
