@@ -38,9 +38,12 @@ Public Class frmFuentesMoviles
 
     Private Sub Inicio_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Try
-            Sensor_MB._continue = False
-        Catch ex As Exception
+            If cmbPuertoMicroBench.SelectedIndex <> -1 Then
+                Sensor_MB._continue = False
+            End If
 
+        Catch ex As Exception
+            Return
         End Try
     End Sub
 
@@ -572,7 +575,29 @@ Public Class frmFuentesMoviles
         'Las constantes para identificar cada uno de los modo se llaman utilizando las constantes publicas de la clase  Sensor_MB_Class.IO_Mode_... 
         'Seleccione el Mode adecuado segun la operacion que este realizando
         'el estado de la operacion se almacena en la estructura Sensor_MB_Class.I_O_Port en cada una de las banderas (flags)
+        chkCalSol1.Checked = False
+        chkCalSol2.Checked = False
+        chkSol1.Checked = False
+        chkSol2.Checked = False
+        chkPump.Checked = False
+        chkDrainPmp.Checked = False
+        chkOUT1.Checked = False
+        chkOUT2.Checked = False
+        chkOUT3.Checked = False
+        chkOUT4.Checked = False
+        chkOUT5.Checked = False
+        chkOUT6.Checked = False
+        chkOUT7.Checked = False
+        chkOUT8.Checked = False
 
+        chkIN1.Checked = False
+        chkIN2.Checked = False
+        chkIN3.Checked = False
+        chkIN4.Checked = False
+        chkIN5.Checked = False
+        chkIN6.Checked = False
+        chkIN7.Checked = False
+        chkIN8.Checked = False
 
         txtConsolaMicroBench.AppendText(vbCrLf + "READ IO PORT" + vbCrLf)
 
@@ -581,6 +606,14 @@ Public Class frmFuentesMoviles
         strResults = strResult.Split(",")
         txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
+
+            chkCalSol1.Checked = IO_Port.Cal_Sol_1
+            chkCalSol2.Checked = IO_Port.Cal_Sol_2
+            chkSol1.Checked = IO_Port.Sol_1
+            chkSol2.Checked = IO_Port.Sol_2
+            chkPump.Checked = IO_Port.Pump
+            chkDrainPmp.Checked = IO_Port.Drain_Pump
+
             txtConsolaMicroBench.AppendText("Cal Sol 1 =" + IO_Port.Cal_Sol_1.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("Cal Sol 2 =" + IO_Port.Cal_Sol_2.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("Sol 1 =" + IO_Port.Sol_1.ToString + vbCrLf)
@@ -589,68 +622,80 @@ Public Class frmFuentesMoviles
             txtConsolaMicroBench.AppendText("Drain Pump =" + IO_Port.Drain_Pump.ToString + vbCrLf)
         End If
 
-        'leer Cal Sol 1
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol1  " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Cal Sol 1 =" + IO_Port.Cal_Sol_1.ToString + vbCrLf)
-        End If
+        'A contonuacion se enivian los demas modos (Codigo Comentado), sin embargo con el comando anterior se obtiene el mapa completo.
 
-        'leer Cal Sol 2
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol2  " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Cal Sol 2 =" + IO_Port.Cal_Sol_2.ToString + vbCrLf)
-        End If
 
-        'leer Sol 1
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol1, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Sol1  " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Sol 1 =" + IO_Port.Sol_1.ToString + vbCrLf)
-        End If
+        ''leer Cal Sol 1
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol1  " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Cal Sol 1 =" + IO_Port.Cal_Sol_1.ToString + vbCrLf)
+        'End If
 
-        'leer Sol 2
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol2, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Sol2  " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Sol 2 =" + IO_Port.Sol_2.ToString + vbCrLf)
-        End If
+        ''leer Cal Sol 2
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Cal Sol2  " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Cal Sol 2 =" + IO_Port.Cal_Sol_2.ToString + vbCrLf)
+        'End If
 
-        'leer Pump
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Pump, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Pump  " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Pump =" + IO_Port.Pump.ToString + vbCrLf)
-        End If
+        ''leer Sol 1
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol1, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Sol1  " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Sol 1 =" + IO_Port.Sol_1.ToString + vbCrLf)
+        'End If
 
-        'leer Drain Pump
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Drain_Pump, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Drain Pump " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Drain Pump =" + IO_Port.Drain_Pump.ToString + vbCrLf)
-        End If
+        ''leer Sol 2
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Sol2, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Sol2  " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Sol 2 =" + IO_Port.Sol_2.ToString + vbCrLf)
+        'End If
 
-        'leer low flow sensor
-        strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Low_Flow, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Low Flow " + strResults(1) + vbCrLf)
-        If strResults(0) = "1" Then
-            txtConsolaMicroBench.AppendText("Low Flow =" + IO_Port.Low_Flow.ToString + vbCrLf)
-        End If
+        ''leer Pump
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Pump, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Pump  " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Pump =" + IO_Port.Pump.ToString + vbCrLf)
+        'End If
 
-        'leer puerto fisico
+        ''leer Drain Pump
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Drain_Pump, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Drain Pump " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Drain Pump =" + IO_Port.Drain_Pump.ToString + vbCrLf)
+        'End If
+
+        ''leer low flow sensor
+        'strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Low_Flow, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "Low Flow " + strResults(1) + vbCrLf)
+        'If strResults(0) = "1" Then
+        '    txtConsolaMicroBench.AppendText("Low Flow =" + IO_Port.Low_Flow.ToString + vbCrLf)
+        'End If
+
+        'leer puerto fisico 
         strResult = Sensor_MB.Comando_MB_Read_I_O(Sensor_MB.IO_Mode_Physical_IO_Map, IO_Port)
         strResults = strResult.Split(",")
         txtConsolaMicroBench.AppendText(vbCrLf + "Physical IO Map " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             'Output port
+            chkOUT1.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin1
+            chkOUT2.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin2
+            chkOUT3.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin3
+            chkOUT4.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin4
+            chkOUT5.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin5
+            chkOUT6.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin6
+            chkOUT7.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin7
+            chkOUT8.Checked = IO_Port.Physical_IO_Map_Sample_Output.Pin8
+
             txtConsolaMicroBench.AppendText("Output port" + vbCrLf)
             txtConsolaMicroBench.AppendText("Pin1 =" + IO_Port.Physical_IO_Map_Sample_Output.Pin1.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("Pin2 =" + IO_Port.Physical_IO_Map_Sample_Output.Pin2.ToString + vbCrLf)
@@ -662,6 +707,15 @@ Public Class frmFuentesMoviles
             txtConsolaMicroBench.AppendText("Pin8 =" + IO_Port.Physical_IO_Map_Sample_Output.Pin8.ToString + vbCrLf)
 
             'Input port
+            chkIN1.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin1
+            chkIN2.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin2
+            chkIN3.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin3
+            chkIN4.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin4
+            chkIN5.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin5
+            chkIN6.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin6
+            chkIN7.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin7
+            chkIN8.Checked = IO_Port.Physical_IO_Map_Sample_Input.Pin8
+
             txtConsolaMicroBench.AppendText("Input port" + vbCrLf)
             txtConsolaMicroBench.AppendText("Pin1 =" + IO_Port.Physical_IO_Map_Sample_Input.Pin1.ToString + vbCrLf)
             txtConsolaMicroBench.AppendText("Pin2 =" + IO_Port.Physical_IO_Map_Sample_Input.Pin2.ToString + vbCrLf)
@@ -696,41 +750,42 @@ Public Class frmFuentesMoviles
         txtConsolaMicroBench.AppendText(vbCrLf + "WRITE IO PORT" + vbCrLf)
 
         'escribir solenoid Map si desea encender alguno de los perifericos ponga el valor en true
-        IO_Port.Cal_Sol_1 = True 'true inidca que el pin se pone en 1, enciende cal sol 1 
-        IO_Port.Cal_Sol_2 = False 'False inidca que el pin se pone en 0, apaga cal sol 2 
-        IO_Port.Sol_1 = False 'False inidca que el pin se pone en 0, apaga cal sol 2 
-        IO_Port.Sol_2 = False 'False inidca que el pin se pone en 0, apaga cal sol 2 
-        IO_Port.Pump = False 'False inidca que el pin se pone en 0, apaga pump 
-        IO_Port.Drain_Pump = False 'False inidca que el pin se pone en 0, Drain Pump 
+        IO_Port.Cal_Sol_1 = chkCalSol1.Checked 'true inidca que el pin se pone en 1, enciende cal sol 1 
+        IO_Port.Cal_Sol_2 = chkCalSol2.Checked 'False inidca que el pin se pone en 0, apa
+        IO_Port.Sol_1 = chkSol1.Checked
+        IO_Port.Sol_2 = chkSol2.Checked
+        IO_Port.Pump = chkPump.Checked
+        IO_Port.Drain_Pump = chkDrainPmp.Checked
 
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Solenoid_Map, IO_Port)
         strResults = strResult.Split(",")
         txtConsolaMicroBench.AppendText(vbCrLf + "Solenoid Map ->  " + strResults(1) + vbCrLf)
 
-        'escribir cal sol 1 desea encender alguno de los perifericos ponga el valor en true
-        IO_Port.Cal_Sol_1 = True 'true inidca que el pin se pone en 1, enciende cal sol 1 
-        strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol1 ->  " + strResults(1) + vbCrLf)
 
-        'escribir cal sol 2 desea encender alguno de los perifericos ponga el valor en true
-        IO_Port.Cal_Sol_2 = True 'true inidca que el pin se pone en 1, enciende cal sol 2
-        strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
-        strResults = strResult.Split(",")
-        txtConsolaMicroBench.AppendText(vbCrLf + "Cal_Sol2 ->  " + strResults(1) + vbCrLf)
+        ''escribir cal sol 1 desea encender alguno de los perifericos ponga el valor en true
+        'IO_Port.Cal_Sol_1 = True 'true inidca que el pin se pone en 1, enciende cal sol 1 
+        'strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol1, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "cal_sol1 ->  " + strResults(1) + vbCrLf)
 
-        'Realice la misma operacion anterior para escribir los demas perofericos PUMP y Drain Pump
+        ''escribir cal sol 2 desea encender alguno de los perifericos ponga el valor en true
+        'IO_Port.Cal_Sol_2 = True 'true inidca que el pin se pone en 1, enciende cal sol 2
+        'strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Cal_Sol2, IO_Port)
+        'strResults = strResult.Split(",")
+        'txtConsolaMicroBench.AppendText(vbCrLf + "cal_sol2 ->  " + strResults(1) + vbCrLf)
+
+        ''Realice la misma operacion anterior para escribir los demas perofericos PUMP y Drain Pump
 
 
         'escribir Physical port, si desea encender alguno de los pines ponga el valor en true
-        IO_Port.Physical_IO_Map_Sample_Output.Pin1 = True 'true inidca que el pin se pone en 1, enciende el Pin 1 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin2 = False 'false inidca que el pin se pone en 0, apaga el Pin 2 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin3 = False 'false inidca que el pin se pone en 0, apaga el Pin 3 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin4 = False 'false inidca que el pin se pone en 0, apaga el Pin 4 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin5 = False 'false inidca que el pin se pone en 0, apaga el Pin 5 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin6 = False 'false inidca que el pin se pone en 0, apaga el Pin 6 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin7 = False 'false inidca que el pin se pone en 0, apaga el Pin 7 del puerto
-        IO_Port.Physical_IO_Map_Sample_Output.Pin8 = False 'false inidca que el pin se pone en 0, apaga el Pin 8 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin1 = chkOUT1.Checked 'true inidca que el pin se pone en 1, enciende el Pin 1 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin2 = chkOUT2.Checked 'false inidca que el pin se pone en 0, apaga el Pin 2 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin3 = chkOUT3.Checked 'false inidca que el pin se pone en 0, apaga el Pin 3 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin4 = chkOUT4.Checked 'false inidca que el pin se pone en 0, apaga el Pin 4 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin5 = chkOUT5.Checked 'false inidca que el pin se pone en 0, apaga el Pin 5 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin6 = chkOUT6.Checked 'false inidca que el pin se pone en 0, apaga el Pin 6 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin7 = chkOUT7.Checked 'false inidca que el pin se pone en 0, apaga el Pin 7 del puerto
+        IO_Port.Physical_IO_Map_Sample_Output.Pin8 = chkOUT8.Checked 'false inidca que el pin se pone en 0, apaga el Pin 8 del puerto
 
         strResult = Sensor_MB.Comando_MB_Write_I_O(Sensor_MB.IO_Mode_Physical_IO_Map, IO_Port)
         strResults = strResult.Split(",")
@@ -744,4 +799,5 @@ Public Class frmFuentesMoviles
         Sensor_MB._continue = True
 
     End Sub
+
 End Class

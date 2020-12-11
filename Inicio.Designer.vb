@@ -30,6 +30,29 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.grpComandoMB = New System.Windows.Forms.GroupBox()
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
+        Me.chkIN8 = New System.Windows.Forms.CheckBox()
+        Me.chkIN7 = New System.Windows.Forms.CheckBox()
+        Me.chkIN6 = New System.Windows.Forms.CheckBox()
+        Me.chkIN5 = New System.Windows.Forms.CheckBox()
+        Me.chkIN4 = New System.Windows.Forms.CheckBox()
+        Me.chkIN3 = New System.Windows.Forms.CheckBox()
+        Me.chkIN2 = New System.Windows.Forms.CheckBox()
+        Me.chkIN1 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT8 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT7 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT6 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT5 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT4 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT3 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT2 = New System.Windows.Forms.CheckBox()
+        Me.chkOUT1 = New System.Windows.Forms.CheckBox()
+        Me.chkDrainPmp = New System.Windows.Forms.CheckBox()
+        Me.chkPump = New System.Windows.Forms.CheckBox()
+        Me.chkSol2 = New System.Windows.Forms.CheckBox()
+        Me.chkSol1 = New System.Windows.Forms.CheckBox()
+        Me.chkCalSol2 = New System.Windows.Forms.CheckBox()
+        Me.chkCalSol1 = New System.Windows.Forms.CheckBox()
         Me.btnWrite_IO = New System.Windows.Forms.Button()
         Me.btnRead_IO = New System.Windows.Forms.Button()
         Me.btnWriteCalibration = New System.Windows.Forms.Button()
@@ -92,6 +115,7 @@ Partial Class frmFuentesMoviles
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
+        Me.GroupBox13.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -167,8 +191,7 @@ Partial Class frmFuentesMoviles
         '
         'grpComandoMB
         '
-        Me.grpComandoMB.Controls.Add(Me.btnWrite_IO)
-        Me.grpComandoMB.Controls.Add(Me.btnRead_IO)
+        Me.grpComandoMB.Controls.Add(Me.GroupBox13)
         Me.grpComandoMB.Controls.Add(Me.btnWriteCalibration)
         Me.grpComandoMB.Controls.Add(Me.btnGetStatus)
         Me.grpComandoMB.Controls.Add(Me.GroupBox12)
@@ -183,9 +206,263 @@ Partial Class frmFuentesMoviles
         Me.grpComandoMB.TabStop = False
         Me.grpComandoMB.Text = "Comandos"
         '
+        'GroupBox13
+        '
+        Me.GroupBox13.BackColor = System.Drawing.Color.Gainsboro
+        Me.GroupBox13.Controls.Add(Me.chkIN8)
+        Me.GroupBox13.Controls.Add(Me.btnRead_IO)
+        Me.GroupBox13.Controls.Add(Me.chkIN7)
+        Me.GroupBox13.Controls.Add(Me.chkIN6)
+        Me.GroupBox13.Controls.Add(Me.chkIN5)
+        Me.GroupBox13.Controls.Add(Me.chkIN4)
+        Me.GroupBox13.Controls.Add(Me.chkIN3)
+        Me.GroupBox13.Controls.Add(Me.chkIN2)
+        Me.GroupBox13.Controls.Add(Me.chkIN1)
+        Me.GroupBox13.Controls.Add(Me.chkOUT8)
+        Me.GroupBox13.Controls.Add(Me.chkOUT7)
+        Me.GroupBox13.Controls.Add(Me.chkOUT6)
+        Me.GroupBox13.Controls.Add(Me.chkOUT5)
+        Me.GroupBox13.Controls.Add(Me.chkOUT4)
+        Me.GroupBox13.Controls.Add(Me.chkOUT3)
+        Me.GroupBox13.Controls.Add(Me.chkOUT2)
+        Me.GroupBox13.Controls.Add(Me.chkOUT1)
+        Me.GroupBox13.Controls.Add(Me.chkDrainPmp)
+        Me.GroupBox13.Controls.Add(Me.chkPump)
+        Me.GroupBox13.Controls.Add(Me.chkSol2)
+        Me.GroupBox13.Controls.Add(Me.chkSol1)
+        Me.GroupBox13.Controls.Add(Me.chkCalSol2)
+        Me.GroupBox13.Controls.Add(Me.chkCalSol1)
+        Me.GroupBox13.Controls.Add(Me.btnWrite_IO)
+        Me.GroupBox13.Location = New System.Drawing.Point(823, 402)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Size = New System.Drawing.Size(729, 455)
+        Me.GroupBox13.TabIndex = 31
+        Me.GroupBox13.TabStop = False
+        Me.GroupBox13.Text = "I/O"
+        '
+        'chkIN8
+        '
+        Me.chkIN8.AutoSize = True
+        Me.chkIN8.Location = New System.Drawing.Point(405, 406)
+        Me.chkIN8.Name = "chkIN8"
+        Me.chkIN8.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN8.TabIndex = 52
+        Me.chkIN8.Text = "IN 8"
+        Me.chkIN8.UseVisualStyleBackColor = True
+        '
+        'chkIN7
+        '
+        Me.chkIN7.AutoSize = True
+        Me.chkIN7.Location = New System.Drawing.Point(405, 367)
+        Me.chkIN7.Name = "chkIN7"
+        Me.chkIN7.Size = New System.Drawing.Size(94, 33)
+        Me.chkIN7.TabIndex = 51
+        Me.chkIN7.Text = "IN  7"
+        Me.chkIN7.UseVisualStyleBackColor = True
+        '
+        'chkIN6
+        '
+        Me.chkIN6.AutoSize = True
+        Me.chkIN6.Location = New System.Drawing.Point(405, 326)
+        Me.chkIN6.Name = "chkIN6"
+        Me.chkIN6.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN6.TabIndex = 50
+        Me.chkIN6.Text = "IN 6"
+        Me.chkIN6.UseVisualStyleBackColor = True
+        '
+        'chkIN5
+        '
+        Me.chkIN5.AutoSize = True
+        Me.chkIN5.Location = New System.Drawing.Point(405, 289)
+        Me.chkIN5.Name = "chkIN5"
+        Me.chkIN5.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN5.TabIndex = 49
+        Me.chkIN5.Text = "IN 5"
+        Me.chkIN5.UseVisualStyleBackColor = True
+        '
+        'chkIN4
+        '
+        Me.chkIN4.AutoSize = True
+        Me.chkIN4.Location = New System.Drawing.Point(405, 250)
+        Me.chkIN4.Name = "chkIN4"
+        Me.chkIN4.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN4.TabIndex = 48
+        Me.chkIN4.Text = "IN 4"
+        Me.chkIN4.UseVisualStyleBackColor = True
+        '
+        'chkIN3
+        '
+        Me.chkIN3.AutoSize = True
+        Me.chkIN3.Location = New System.Drawing.Point(405, 211)
+        Me.chkIN3.Name = "chkIN3"
+        Me.chkIN3.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN3.TabIndex = 47
+        Me.chkIN3.Text = "IN 3"
+        Me.chkIN3.UseVisualStyleBackColor = True
+        '
+        'chkIN2
+        '
+        Me.chkIN2.AutoSize = True
+        Me.chkIN2.Location = New System.Drawing.Point(405, 172)
+        Me.chkIN2.Name = "chkIN2"
+        Me.chkIN2.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN2.TabIndex = 46
+        Me.chkIN2.Text = "IN 2"
+        Me.chkIN2.UseVisualStyleBackColor = True
+        '
+        'chkIN1
+        '
+        Me.chkIN1.AutoSize = True
+        Me.chkIN1.Location = New System.Drawing.Point(405, 133)
+        Me.chkIN1.Name = "chkIN1"
+        Me.chkIN1.Size = New System.Drawing.Size(88, 33)
+        Me.chkIN1.TabIndex = 45
+        Me.chkIN1.Text = "IN 1"
+        Me.chkIN1.UseVisualStyleBackColor = True
+        '
+        'chkOUT8
+        '
+        Me.chkOUT8.AutoSize = True
+        Me.chkOUT8.Location = New System.Drawing.Point(246, 406)
+        Me.chkOUT8.Name = "chkOUT8"
+        Me.chkOUT8.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT8.TabIndex = 44
+        Me.chkOUT8.Text = "OUT 8"
+        Me.chkOUT8.UseVisualStyleBackColor = True
+        '
+        'chkOUT7
+        '
+        Me.chkOUT7.AutoSize = True
+        Me.chkOUT7.Location = New System.Drawing.Point(246, 367)
+        Me.chkOUT7.Name = "chkOUT7"
+        Me.chkOUT7.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT7.TabIndex = 43
+        Me.chkOUT7.Text = "OUT 7"
+        Me.chkOUT7.UseVisualStyleBackColor = True
+        '
+        'chkOUT6
+        '
+        Me.chkOUT6.AutoSize = True
+        Me.chkOUT6.Location = New System.Drawing.Point(246, 326)
+        Me.chkOUT6.Name = "chkOUT6"
+        Me.chkOUT6.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT6.TabIndex = 42
+        Me.chkOUT6.Text = "OUT 6"
+        Me.chkOUT6.UseVisualStyleBackColor = True
+        '
+        'chkOUT5
+        '
+        Me.chkOUT5.AutoSize = True
+        Me.chkOUT5.Location = New System.Drawing.Point(246, 289)
+        Me.chkOUT5.Name = "chkOUT5"
+        Me.chkOUT5.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT5.TabIndex = 41
+        Me.chkOUT5.Text = "OUT 5"
+        Me.chkOUT5.UseVisualStyleBackColor = True
+        '
+        'chkOUT4
+        '
+        Me.chkOUT4.AutoSize = True
+        Me.chkOUT4.Location = New System.Drawing.Point(246, 250)
+        Me.chkOUT4.Name = "chkOUT4"
+        Me.chkOUT4.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT4.TabIndex = 40
+        Me.chkOUT4.Text = "OUT 4"
+        Me.chkOUT4.UseVisualStyleBackColor = True
+        '
+        'chkOUT3
+        '
+        Me.chkOUT3.AutoSize = True
+        Me.chkOUT3.Location = New System.Drawing.Point(246, 211)
+        Me.chkOUT3.Name = "chkOUT3"
+        Me.chkOUT3.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT3.TabIndex = 39
+        Me.chkOUT3.Text = "OUT 3"
+        Me.chkOUT3.UseVisualStyleBackColor = True
+        '
+        'chkOUT2
+        '
+        Me.chkOUT2.AutoSize = True
+        Me.chkOUT2.Location = New System.Drawing.Point(246, 171)
+        Me.chkOUT2.Name = "chkOUT2"
+        Me.chkOUT2.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT2.TabIndex = 38
+        Me.chkOUT2.Text = "OUT 2"
+        Me.chkOUT2.UseVisualStyleBackColor = True
+        '
+        'chkOUT1
+        '
+        Me.chkOUT1.AutoSize = True
+        Me.chkOUT1.Location = New System.Drawing.Point(246, 133)
+        Me.chkOUT1.Name = "chkOUT1"
+        Me.chkOUT1.Size = New System.Drawing.Size(116, 33)
+        Me.chkOUT1.TabIndex = 37
+        Me.chkOUT1.Text = "OUT 1"
+        Me.chkOUT1.UseVisualStyleBackColor = True
+        '
+        'chkDrainPmp
+        '
+        Me.chkDrainPmp.AutoSize = True
+        Me.chkDrainPmp.Location = New System.Drawing.Point(511, 82)
+        Me.chkDrainPmp.Name = "chkDrainPmp"
+        Me.chkDrainPmp.Size = New System.Drawing.Size(171, 33)
+        Me.chkDrainPmp.TabIndex = 36
+        Me.chkDrainPmp.Text = "Drain Pump"
+        Me.chkDrainPmp.UseVisualStyleBackColor = True
+        '
+        'chkPump
+        '
+        Me.chkPump.AutoSize = True
+        Me.chkPump.Location = New System.Drawing.Point(511, 43)
+        Me.chkPump.Name = "chkPump"
+        Me.chkPump.Size = New System.Drawing.Size(108, 33)
+        Me.chkPump.TabIndex = 35
+        Me.chkPump.Text = "Pump"
+        Me.chkPump.UseVisualStyleBackColor = True
+        '
+        'chkSol2
+        '
+        Me.chkSol2.AutoSize = True
+        Me.chkSol2.Location = New System.Drawing.Point(405, 82)
+        Me.chkSol2.Name = "chkSol2"
+        Me.chkSol2.Size = New System.Drawing.Size(100, 33)
+        Me.chkSol2.TabIndex = 34
+        Me.chkSol2.Text = "Sol 2"
+        Me.chkSol2.UseVisualStyleBackColor = True
+        '
+        'chkSol1
+        '
+        Me.chkSol1.AutoSize = True
+        Me.chkSol1.Location = New System.Drawing.Point(405, 43)
+        Me.chkSol1.Name = "chkSol1"
+        Me.chkSol1.Size = New System.Drawing.Size(100, 33)
+        Me.chkSol1.TabIndex = 33
+        Me.chkSol1.Text = "Sol 1"
+        Me.chkSol1.UseVisualStyleBackColor = True
+        '
+        'chkCalSol2
+        '
+        Me.chkCalSol2.AutoSize = True
+        Me.chkCalSol2.Location = New System.Drawing.Point(242, 82)
+        Me.chkCalSol2.Name = "chkCalSol2"
+        Me.chkCalSol2.Size = New System.Drawing.Size(142, 33)
+        Me.chkCalSol2.TabIndex = 32
+        Me.chkCalSol2.Text = "Cal Sol 2"
+        Me.chkCalSol2.UseVisualStyleBackColor = True
+        '
+        'chkCalSol1
+        '
+        Me.chkCalSol1.AutoSize = True
+        Me.chkCalSol1.Location = New System.Drawing.Point(242, 43)
+        Me.chkCalSol1.Name = "chkCalSol1"
+        Me.chkCalSol1.Size = New System.Drawing.Size(142, 33)
+        Me.chkCalSol1.TabIndex = 31
+        Me.chkCalSol1.Text = "Cal Sol 1"
+        Me.chkCalSol1.UseVisualStyleBackColor = True
+        '
         'btnWrite_IO
         '
-        Me.btnWrite_IO.Location = New System.Drawing.Point(41, 560)
+        Me.btnWrite_IO.Location = New System.Drawing.Point(27, 137)
         Me.btnWrite_IO.Name = "btnWrite_IO"
         Me.btnWrite_IO.Size = New System.Drawing.Size(193, 84)
         Me.btnWrite_IO.TabIndex = 30
@@ -194,7 +471,7 @@ Partial Class frmFuentesMoviles
         '
         'btnRead_IO
         '
-        Me.btnRead_IO.Location = New System.Drawing.Point(41, 449)
+        Me.btnRead_IO.Location = New System.Drawing.Point(27, 43)
         Me.btnRead_IO.Name = "btnRead_IO"
         Me.btnRead_IO.Size = New System.Drawing.Size(193, 84)
         Me.btnRead_IO.TabIndex = 29
@@ -222,6 +499,7 @@ Partial Class frmFuentesMoviles
         '
         'GroupBox12
         '
+        Me.GroupBox12.BackColor = System.Drawing.Color.LightGray
         Me.GroupBox12.Controls.Add(Me.btnCalibration)
         Me.GroupBox12.Controls.Add(Me.cmbCalibrationMode)
         Me.GroupBox12.Controls.Add(Me.chkHiHC)
@@ -318,6 +596,7 @@ Partial Class frmFuentesMoviles
         '
         'GroupBox3
         '
+        Me.GroupBox3.BackColor = System.Drawing.Color.SeaGreen
         Me.GroupBox3.Controls.Add(Me.GroupBox11)
         Me.GroupBox3.Controls.Add(Me.GroupBox10)
         Me.GroupBox3.Controls.Add(Me.GroupBox9)
@@ -709,7 +988,7 @@ Partial Class frmFuentesMoviles
         '
         Me.cmbCalibrationGas.FormattingEnabled = True
         Me.cmbCalibrationGas.Items.AddRange(New Object() {"HC", "CO", "CO2", "O2", "NOX", "HiHC"})
-        Me.cmbCalibrationGas.Location = New System.Drawing.Point(1331, 607)
+        Me.cmbCalibrationGas.Location = New System.Drawing.Point(268, 712)
         Me.cmbCalibrationGas.Name = "cmbCalibrationGas"
         Me.cmbCalibrationGas.Size = New System.Drawing.Size(274, 37)
         Me.cmbCalibrationGas.TabIndex = 6
@@ -814,6 +1093,8 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench.ResumeLayout(False)
         Me.TabPageMicroBench.PerformLayout()
         Me.grpComandoMB.ResumeLayout(False)
+        Me.GroupBox13.ResumeLayout(False)
+        Me.GroupBox13.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -910,4 +1191,27 @@ Partial Class frmFuentesMoviles
     Friend WithEvents btnWriteCalibration As Windows.Forms.Button
     Friend WithEvents btnRead_IO As Windows.Forms.Button
     Friend WithEvents btnWrite_IO As Windows.Forms.Button
+    Friend WithEvents GroupBox13 As Windows.Forms.GroupBox
+    Friend WithEvents chkCalSol1 As Windows.Forms.CheckBox
+    Friend WithEvents chkDrainPmp As Windows.Forms.CheckBox
+    Friend WithEvents chkPump As Windows.Forms.CheckBox
+    Friend WithEvents chkSol2 As Windows.Forms.CheckBox
+    Friend WithEvents chkSol1 As Windows.Forms.CheckBox
+    Friend WithEvents chkCalSol2 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT7 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT6 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT5 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT4 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT3 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT2 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT1 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN8 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN7 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN6 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN5 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN4 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN3 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN2 As Windows.Forms.CheckBox
+    Friend WithEvents chkIN1 As Windows.Forms.CheckBox
+    Friend WithEvents chkOUT8 As Windows.Forms.CheckBox
 End Class
