@@ -28,8 +28,18 @@ Partial Class frmFuentesMoviles
         Me.txtConsola = New System.Windows.Forms.TextBox()
         Me.TabPrincipal = New System.Windows.Forms.TabControl()
         Me.TabPageMicroBench = New System.Windows.Forms.TabPage()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.grpComandoMB = New System.Windows.Forms.GroupBox()
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
+        Me.cmbCalPressMode = New System.Windows.Forms.ComboBox()
+        Me.rdbCalPressHg = New System.Windows.Forms.RadioButton()
+        Me.rdbCalPressmbar = New System.Windows.Forms.RadioButton()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtCalPress = New System.Windows.Forms.TextBox()
+        Me.btnCalibratePress = New System.Windows.Forms.Button()
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtRPM = New System.Windows.Forms.TextBox()
+        Me.btnCalibrateRPM = New System.Windows.Forms.Button()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
         Me.chkHabilitarSOUT = New System.Windows.Forms.CheckBox()
         Me.chkIN8 = New System.Windows.Forms.CheckBox()
@@ -79,6 +89,7 @@ Partial Class frmFuentesMoviles
         Me.rdbHCHexane = New System.Windows.Forms.RadioButton()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.rdbPressResHigh = New System.Windows.Forms.RadioButton()
+        Me.rdbPressResLow = New System.Windows.Forms.RadioButton()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.rdbIgnitionDual = New System.Windows.Forms.RadioButton()
         Me.rdbIgnitionNormal = New System.Windows.Forms.RadioButton()
@@ -104,32 +115,24 @@ Partial Class frmFuentesMoviles
         Me.lblSerialMB = New System.Windows.Forms.Label()
         Me.cmbPuertoMicroBench = New System.Windows.Forms.ComboBox()
         Me.TabPageOpacimetro = New System.Windows.Forms.TabPage()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.cmbPuertoOpacimetro = New System.Windows.Forms.ComboBox()
+        Me.btnOpacGetVersion = New System.Windows.Forms.Button()
         Me.TabPageEncicla = New System.Windows.Forms.TabPage()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtLogEncicla = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.btnEscanear = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
-        Me.btnCalibrateRPM = New System.Windows.Forms.Button()
-        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
-        Me.txtRPM = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
-        Me.btnCalibratePress = New System.Windows.Forms.Button()
-        Me.rdbCalPressHg = New System.Windows.Forms.RadioButton()
-        Me.rdbCalPressmbar = New System.Windows.Forms.RadioButton()
-        Me.cmbCalPressMode = New System.Windows.Forms.ComboBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.txtCalPress = New System.Windows.Forms.TextBox()
         Me.btnLimpiarConsola = New System.Windows.Forms.Button()
-        Me.rdbPressResLow = New System.Windows.Forms.RadioButton()
-        Me.btnOpacGetVersion = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.cmbPuertoOpacimetro = New System.Windows.Forms.ComboBox()
+        Me.btnNonFilterdOpacity = New System.Windows.Forms.Button()
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
+        Me.GroupBox15.SuspendLayout()
+        Me.GroupBox14.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -145,8 +148,6 @@ Partial Class frmFuentesMoviles
         Me.GroupBox1.SuspendLayout()
         Me.TabPageOpacimetro.SuspendLayout()
         Me.TabPageEncicla.SuspendLayout()
-        Me.GroupBox14.SuspendLayout()
-        Me.GroupBox15.SuspendLayout()
         Me.SuspendLayout()
         '
         'SerialPort1
@@ -196,15 +197,6 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench.Text = "Sensors Microbench"
         Me.TabPageMicroBench.UseVisualStyleBackColor = True
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(1793, 48)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(69, 29)
-        Me.Label1.TabIndex = 7
-        Me.Label1.Text = "LOG "
-        '
         'grpComandoMB
         '
         Me.grpComandoMB.Controls.Add(Me.GroupBox15)
@@ -222,6 +214,115 @@ Partial Class frmFuentesMoviles
         Me.grpComandoMB.TabIndex = 6
         Me.grpComandoMB.TabStop = False
         Me.grpComandoMB.Text = "Comandos"
+        '
+        'GroupBox15
+        '
+        Me.GroupBox15.Controls.Add(Me.cmbCalPressMode)
+        Me.GroupBox15.Controls.Add(Me.rdbCalPressHg)
+        Me.GroupBox15.Controls.Add(Me.rdbCalPressmbar)
+        Me.GroupBox15.Controls.Add(Me.Label6)
+        Me.GroupBox15.Controls.Add(Me.txtCalPress)
+        Me.GroupBox15.Controls.Add(Me.btnCalibratePress)
+        Me.GroupBox15.Location = New System.Drawing.Point(251, 617)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(581, 277)
+        Me.GroupBox15.TabIndex = 34
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "Calibrate Pressure"
+        '
+        'cmbCalPressMode
+        '
+        Me.cmbCalPressMode.FormattingEnabled = True
+        Me.cmbCalPressMode.Items.AddRange(New Object() {"Calibrate Trans 0", "Calibrate Trans 1", "Read Cal. Pressure", ""})
+        Me.cmbCalPressMode.Location = New System.Drawing.Point(234, 52)
+        Me.cmbCalPressMode.Name = "cmbCalPressMode"
+        Me.cmbCalPressMode.Size = New System.Drawing.Size(246, 37)
+        Me.cmbCalPressMode.TabIndex = 35
+        Me.cmbCalPressMode.Text = "Calibration Mode"
+        '
+        'rdbCalPressHg
+        '
+        Me.rdbCalPressHg.AutoSize = True
+        Me.rdbCalPressHg.Location = New System.Drawing.Point(354, 203)
+        Me.rdbCalPressHg.Name = "rdbCalPressHg"
+        Me.rdbCalPressHg.Size = New System.Drawing.Size(75, 33)
+        Me.rdbCalPressHg.TabIndex = 1
+        Me.rdbCalPressHg.Text = "Hg"
+        Me.rdbCalPressHg.UseVisualStyleBackColor = True
+        '
+        'rdbCalPressmbar
+        '
+        Me.rdbCalPressmbar.AutoSize = True
+        Me.rdbCalPressmbar.Checked = True
+        Me.rdbCalPressmbar.Location = New System.Drawing.Point(234, 203)
+        Me.rdbCalPressmbar.Name = "rdbCalPressmbar"
+        Me.rdbCalPressmbar.Size = New System.Drawing.Size(99, 33)
+        Me.rdbCalPressmbar.TabIndex = 0
+        Me.rdbCalPressmbar.TabStop = True
+        Me.rdbCalPressmbar.Text = "mbar"
+        Me.rdbCalPressmbar.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(229, 107)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(110, 29)
+        Me.Label6.TabIndex = 34
+        Me.Label6.Text = "Pressure"
+        '
+        'txtCalPress
+        '
+        Me.txtCalPress.Location = New System.Drawing.Point(234, 150)
+        Me.txtCalPress.Name = "txtCalPress"
+        Me.txtCalPress.Size = New System.Drawing.Size(239, 35)
+        Me.txtCalPress.TabIndex = 33
+        '
+        'btnCalibratePress
+        '
+        Me.btnCalibratePress.Location = New System.Drawing.Point(19, 52)
+        Me.btnCalibratePress.Name = "btnCalibratePress"
+        Me.btnCalibratePress.Size = New System.Drawing.Size(193, 84)
+        Me.btnCalibratePress.TabIndex = 32
+        Me.btnCalibratePress.Text = "Calibrate Pressure"
+        Me.btnCalibratePress.UseVisualStyleBackColor = True
+        '
+        'GroupBox14
+        '
+        Me.GroupBox14.Controls.Add(Me.Label5)
+        Me.GroupBox14.Controls.Add(Me.txtRPM)
+        Me.GroupBox14.Controls.Add(Me.btnCalibrateRPM)
+        Me.GroupBox14.Location = New System.Drawing.Point(257, 402)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(494, 201)
+        Me.GroupBox14.TabIndex = 33
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "Calibrate RPM"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(223, 52)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(66, 29)
+        Me.Label5.TabIndex = 34
+        Me.Label5.Text = "RPM"
+        '
+        'txtRPM
+        '
+        Me.txtRPM.Location = New System.Drawing.Point(228, 92)
+        Me.txtRPM.Name = "txtRPM"
+        Me.txtRPM.Size = New System.Drawing.Size(239, 35)
+        Me.txtRPM.TabIndex = 33
+        '
+        'btnCalibrateRPM
+        '
+        Me.btnCalibrateRPM.Location = New System.Drawing.Point(19, 52)
+        Me.btnCalibrateRPM.Name = "btnCalibrateRPM"
+        Me.btnCalibrateRPM.Size = New System.Drawing.Size(193, 84)
+        Me.btnCalibrateRPM.TabIndex = 32
+        Me.btnCalibrateRPM.Text = "Calibrate RPM"
+        Me.btnCalibrateRPM.UseVisualStyleBackColor = True
         '
         'GroupBox13
         '
@@ -765,6 +866,18 @@ Partial Class frmFuentesMoviles
         Me.rdbPressResHigh.Text = "High"
         Me.rdbPressResHigh.UseVisualStyleBackColor = True
         '
+        'rdbPressResLow
+        '
+        Me.rdbPressResLow.AutoSize = True
+        Me.rdbPressResLow.Checked = True
+        Me.rdbPressResLow.Location = New System.Drawing.Point(6, 34)
+        Me.rdbPressResLow.Name = "rdbPressResLow"
+        Me.rdbPressResLow.Size = New System.Drawing.Size(89, 33)
+        Me.rdbPressResLow.TabIndex = 0
+        Me.rdbPressResLow.TabStop = True
+        Me.rdbPressResLow.Text = "Low"
+        Me.rdbPressResLow.UseVisualStyleBackColor = True
+        '
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.rdbIgnitionDual)
@@ -1020,6 +1133,7 @@ Partial Class frmFuentesMoviles
         '
         'TabPageOpacimetro
         '
+        Me.TabPageOpacimetro.Controls.Add(Me.btnNonFilterdOpacity)
         Me.TabPageOpacimetro.Controls.Add(Me.Label7)
         Me.TabPageOpacimetro.Controls.Add(Me.cmbPuertoOpacimetro)
         Me.TabPageOpacimetro.Controls.Add(Me.btnOpacGetVersion)
@@ -1031,6 +1145,33 @@ Partial Class frmFuentesMoviles
         Me.TabPageOpacimetro.Text = "Opacimetro CAP3030"
         Me.TabPageOpacimetro.UseVisualStyleBackColor = True
         '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(18, 25)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(153, 29)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "Puerto Serial"
+        '
+        'cmbPuertoOpacimetro
+        '
+        Me.cmbPuertoOpacimetro.FormattingEnabled = True
+        Me.cmbPuertoOpacimetro.Location = New System.Drawing.Point(182, 25)
+        Me.cmbPuertoOpacimetro.Name = "cmbPuertoOpacimetro"
+        Me.cmbPuertoOpacimetro.Size = New System.Drawing.Size(325, 37)
+        Me.cmbPuertoOpacimetro.TabIndex = 6
+        Me.cmbPuertoOpacimetro.Text = "Seleccione Puerto COM"
+        '
+        'btnOpacGetVersion
+        '
+        Me.btnOpacGetVersion.Location = New System.Drawing.Point(23, 109)
+        Me.btnOpacGetVersion.Name = "btnOpacGetVersion"
+        Me.btnOpacGetVersion.Size = New System.Drawing.Size(188, 84)
+        Me.btnOpacGetVersion.TabIndex = 1
+        Me.btnOpacGetVersion.Text = "Get Version"
+        Me.btnOpacGetVersion.UseVisualStyleBackColor = True
+        '
         'TabPageEncicla
         '
         Me.TabPageEncicla.Controls.Add(Me.Label3)
@@ -1041,7 +1182,7 @@ Partial Class frmFuentesMoviles
         Me.TabPageEncicla.Location = New System.Drawing.Point(10, 47)
         Me.TabPageEncicla.Name = "TabPageEncicla"
         Me.TabPageEncicla.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.TabPageEncicla.Size = New System.Drawing.Size(2941, 1214)
+        Me.TabPageEncicla.Size = New System.Drawing.Size(1767, 1316)
         Me.TabPageEncicla.TabIndex = 2
         Me.TabPageEncicla.Text = "EnCicla"
         Me.TabPageEncicla.UseVisualStyleBackColor = True
@@ -1088,114 +1229,14 @@ Partial Class frmFuentesMoviles
         Me.btnEscanear.Text = "Escanear Modulo"
         Me.btnEscanear.UseVisualStyleBackColor = True
         '
-        'btnCalibrateRPM
+        'Label1
         '
-        Me.btnCalibrateRPM.Location = New System.Drawing.Point(19, 52)
-        Me.btnCalibrateRPM.Name = "btnCalibrateRPM"
-        Me.btnCalibrateRPM.Size = New System.Drawing.Size(193, 84)
-        Me.btnCalibrateRPM.TabIndex = 32
-        Me.btnCalibrateRPM.Text = "Calibrate RPM"
-        Me.btnCalibrateRPM.UseVisualStyleBackColor = True
-        '
-        'GroupBox14
-        '
-        Me.GroupBox14.Controls.Add(Me.Label5)
-        Me.GroupBox14.Controls.Add(Me.txtRPM)
-        Me.GroupBox14.Controls.Add(Me.btnCalibrateRPM)
-        Me.GroupBox14.Location = New System.Drawing.Point(257, 402)
-        Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(494, 201)
-        Me.GroupBox14.TabIndex = 33
-        Me.GroupBox14.TabStop = False
-        Me.GroupBox14.Text = "Calibrate RPM"
-        '
-        'txtRPM
-        '
-        Me.txtRPM.Location = New System.Drawing.Point(228, 92)
-        Me.txtRPM.Name = "txtRPM"
-        Me.txtRPM.Size = New System.Drawing.Size(239, 35)
-        Me.txtRPM.TabIndex = 33
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(223, 52)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(66, 29)
-        Me.Label5.TabIndex = 34
-        Me.Label5.Text = "RPM"
-        '
-        'GroupBox15
-        '
-        Me.GroupBox15.Controls.Add(Me.cmbCalPressMode)
-        Me.GroupBox15.Controls.Add(Me.rdbCalPressHg)
-        Me.GroupBox15.Controls.Add(Me.rdbCalPressmbar)
-        Me.GroupBox15.Controls.Add(Me.Label6)
-        Me.GroupBox15.Controls.Add(Me.txtCalPress)
-        Me.GroupBox15.Controls.Add(Me.btnCalibratePress)
-        Me.GroupBox15.Location = New System.Drawing.Point(251, 617)
-        Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(581, 277)
-        Me.GroupBox15.TabIndex = 34
-        Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "Calibrate Pressure"
-        '
-        'btnCalibratePress
-        '
-        Me.btnCalibratePress.Location = New System.Drawing.Point(19, 52)
-        Me.btnCalibratePress.Name = "btnCalibratePress"
-        Me.btnCalibratePress.Size = New System.Drawing.Size(193, 84)
-        Me.btnCalibratePress.TabIndex = 32
-        Me.btnCalibratePress.Text = "Calibrate Pressure"
-        Me.btnCalibratePress.UseVisualStyleBackColor = True
-        '
-        'rdbCalPressHg
-        '
-        Me.rdbCalPressHg.AutoSize = True
-        Me.rdbCalPressHg.Location = New System.Drawing.Point(354, 203)
-        Me.rdbCalPressHg.Name = "rdbCalPressHg"
-        Me.rdbCalPressHg.Size = New System.Drawing.Size(75, 33)
-        Me.rdbCalPressHg.TabIndex = 1
-        Me.rdbCalPressHg.Text = "Hg"
-        Me.rdbCalPressHg.UseVisualStyleBackColor = True
-        '
-        'rdbCalPressmbar
-        '
-        Me.rdbCalPressmbar.AutoSize = True
-        Me.rdbCalPressmbar.Checked = True
-        Me.rdbCalPressmbar.Location = New System.Drawing.Point(234, 203)
-        Me.rdbCalPressmbar.Name = "rdbCalPressmbar"
-        Me.rdbCalPressmbar.Size = New System.Drawing.Size(99, 33)
-        Me.rdbCalPressmbar.TabIndex = 0
-        Me.rdbCalPressmbar.TabStop = True
-        Me.rdbCalPressmbar.Text = "mbar"
-        Me.rdbCalPressmbar.UseVisualStyleBackColor = True
-        '
-        'cmbCalPressMode
-        '
-        Me.cmbCalPressMode.FormattingEnabled = True
-        Me.cmbCalPressMode.Items.AddRange(New Object() {"Calibrate Trans 0", "Calibrate Trans 1", "Read Cal. Pressure", ""})
-        Me.cmbCalPressMode.Location = New System.Drawing.Point(234, 52)
-        Me.cmbCalPressMode.Name = "cmbCalPressMode"
-        Me.cmbCalPressMode.Size = New System.Drawing.Size(246, 37)
-        Me.cmbCalPressMode.TabIndex = 35
-        Me.cmbCalPressMode.Text = "Calibration Mode"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(229, 107)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(110, 29)
-        Me.Label6.TabIndex = 34
-        Me.Label6.Text = "Pressure"
-        '
-        'txtCalPress
-        '
-        Me.txtCalPress.Location = New System.Drawing.Point(234, 150)
-        Me.txtCalPress.Name = "txtCalPress"
-        Me.txtCalPress.Size = New System.Drawing.Size(239, 35)
-        Me.txtCalPress.TabIndex = 33
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(1793, 48)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(69, 29)
+        Me.Label1.TabIndex = 7
+        Me.Label1.Text = "LOG "
         '
         'btnLimpiarConsola
         '
@@ -1206,44 +1247,14 @@ Partial Class frmFuentesMoviles
         Me.btnLimpiarConsola.Text = "Limpiar"
         Me.btnLimpiarConsola.UseVisualStyleBackColor = True
         '
-        'rdbPressResLow
+        'btnNonFilterdOpacity
         '
-        Me.rdbPressResLow.AutoSize = True
-        Me.rdbPressResLow.Checked = True
-        Me.rdbPressResLow.Location = New System.Drawing.Point(6, 34)
-        Me.rdbPressResLow.Name = "rdbPressResLow"
-        Me.rdbPressResLow.Size = New System.Drawing.Size(89, 33)
-        Me.rdbPressResLow.TabIndex = 0
-        Me.rdbPressResLow.TabStop = True
-        Me.rdbPressResLow.Text = "Low"
-        Me.rdbPressResLow.UseVisualStyleBackColor = True
-        '
-        'btnOpacGetVersion
-        '
-        Me.btnOpacGetVersion.Location = New System.Drawing.Point(23, 109)
-        Me.btnOpacGetVersion.Name = "btnOpacGetVersion"
-        Me.btnOpacGetVersion.Size = New System.Drawing.Size(188, 84)
-        Me.btnOpacGetVersion.TabIndex = 1
-        Me.btnOpacGetVersion.Text = "Get Version"
-        Me.btnOpacGetVersion.UseVisualStyleBackColor = True
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 25)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(153, 29)
-        Me.Label7.TabIndex = 7
-        Me.Label7.Text = "Puerto Serial"
-        '
-        'cmbPuertoOpacimetro
-        '
-        Me.cmbPuertoOpacimetro.FormattingEnabled = True
-        Me.cmbPuertoOpacimetro.Location = New System.Drawing.Point(182, 25)
-        Me.cmbPuertoOpacimetro.Name = "cmbPuertoOpacimetro"
-        Me.cmbPuertoOpacimetro.Size = New System.Drawing.Size(325, 37)
-        Me.cmbPuertoOpacimetro.TabIndex = 6
-        Me.cmbPuertoOpacimetro.Text = "Seleccione Puerto COM"
+        Me.btnNonFilterdOpacity.Location = New System.Drawing.Point(23, 211)
+        Me.btnNonFilterdOpacity.Name = "btnNonFilterdOpacity"
+        Me.btnNonFilterdOpacity.Size = New System.Drawing.Size(188, 84)
+        Me.btnNonFilterdOpacity.TabIndex = 8
+        Me.btnNonFilterdOpacity.Text = "Non Filtered Opacity"
+        Me.btnNonFilterdOpacity.UseVisualStyleBackColor = True
         '
         'frmFuentesMoviles
         '
@@ -1262,6 +1273,10 @@ Partial Class frmFuentesMoviles
         Me.TabPageMicroBench.ResumeLayout(False)
         Me.TabPageMicroBench.PerformLayout()
         Me.grpComandoMB.ResumeLayout(False)
+        Me.GroupBox15.ResumeLayout(False)
+        Me.GroupBox15.PerformLayout()
+        Me.GroupBox14.ResumeLayout(False)
+        Me.GroupBox14.PerformLayout()
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox13.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
@@ -1292,10 +1307,6 @@ Partial Class frmFuentesMoviles
         Me.TabPageOpacimetro.PerformLayout()
         Me.TabPageEncicla.ResumeLayout(False)
         Me.TabPageEncicla.PerformLayout()
-        Me.GroupBox14.ResumeLayout(False)
-        Me.GroupBox14.PerformLayout()
-        Me.GroupBox15.ResumeLayout(False)
-        Me.GroupBox15.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1405,4 +1416,5 @@ Partial Class frmFuentesMoviles
     Friend WithEvents btnOpacGetVersion As Windows.Forms.Button
     Friend WithEvents Label7 As Windows.Forms.Label
     Friend WithEvents cmbPuertoOpacimetro As Windows.Forms.ComboBox
+    Friend WithEvents btnNonFilterdOpacity As Windows.Forms.Button
 End Class

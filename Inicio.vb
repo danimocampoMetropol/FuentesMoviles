@@ -885,12 +885,63 @@ Public Class frmFuentesMoviles
     Private Sub btnOpacGetVersion_Click(sender As Object, e As EventArgs) Handles btnOpacGetVersion.Click
         Dim version As UShort
         Dim serialnum As UShort
+        Dim strResult As String
+        Dim strResults() As String
+
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Sensor_MB.Comando_MB_GetVersionSoftware()
+        strResults = strResult.Split(",")
+
+
 
         If cmbPuertoOpacimetro.SelectedIndex < 0 Then
             MsgBox("Seleccione Pueto")
             Return
         End If
 
-        Opacimetro.Comando_getVersion(version, serialnum)
+        strResult = Opacimetro.Comando_getVersion(version, serialnum)
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "GET VERSION" + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("Version:  " + (CDbl(version) / 100).ToString + vbCrLf)
+            txtConsola.AppendText("Serial:  " + (CDbl(version) / 100).ToString + vbCrLf)
+        End If
+
     End Sub
+
+    Private Sub btnNonFilterdOpacity_Click(sender As Object, e As EventArgs) Handles btnNonFilterdOpacity.Click
+        Dim version As UShort
+        Dim serialnum As UShort
+        Dim strResult As String
+        Dim strResults() As String
+
+        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Sensor_MB.Comando_MB_GetVersionSoftware()
+        strResults = strResult.Split(",")
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_getVersion(version, serialnum)
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "GET VERSION" + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("Version:  " + (CDbl(version) / 100).ToString + vbCrLf)
+            txtConsola.AppendText("Serial:  " + (CDbl(version) / 100).ToString + vbCrLf)
+        End If
+
+    End Sub
+
 End Class
