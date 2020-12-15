@@ -115,6 +115,60 @@ Partial Class frmFuentesMoviles
         Me.lblSerialMB = New System.Windows.Forms.Label()
         Me.cmbPuertoMicroBench = New System.Windows.Forms.ComboBox()
         Me.TabPageOpacimetro = New System.Windows.Forms.TabPage()
+        Me.btnStopFan = New System.Windows.Forms.Button()
+        Me.btnAdjustGain = New System.Windows.Forms.Button()
+        Me.btnStartFan = New System.Windows.Forms.Button()
+        Me.btnVariousInternalData = New System.Windows.Forms.Button()
+        Me.btnValueSmokePeak = New System.Windows.Forms.Button()
+        Me.GroupBox22 = New System.Windows.Forms.GroupBox()
+        Me.btnCurrentFactor = New System.Windows.Forms.Button()
+        Me.txtN = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.txtM = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.btnReadCurve = New System.Windows.Forms.Button()
+        Me.GroupBox21 = New System.Windows.Forms.GroupBox()
+        Me.txtCleanW = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.btnWriteCleanW = New System.Windows.Forms.Button()
+        Me.btnReadCleanW = New System.Windows.Forms.Button()
+        Me.GroupBox20 = New System.Windows.Forms.GroupBox()
+        Me.btnWriteGasTemp = New System.Windows.Forms.Button()
+        Me.btnReadGasTemp = New System.Windows.Forms.Button()
+        Me.txtGasLimit = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.GroupBox19 = New System.Windows.Forms.GroupBox()
+        Me.rdbBESSEL = New System.Windows.Forms.RadioButton()
+        Me.rdbFilterKN = New System.Windows.Forms.RadioButton()
+        Me.txtCb = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.btnWriteMeasurFilter = New System.Windows.Forms.Button()
+        Me.txtCa = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.btnReadMeasurFilter = New System.Windows.Forms.Button()
+        Me.txtNumPoles = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.GroupBox17 = New System.Windows.Forms.GroupBox()
+        Me.txtIntensity = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.btnWrieIntensity = New System.Windows.Forms.Button()
+        Me.btnReadIntensity = New System.Windows.Forms.Button()
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.txtDataEEPROM = New System.Windows.Forms.TextBox()
+        Me.btnWriteEEPROM = New System.Windows.Forms.Button()
+        Me.txtNumBytesEEPROM = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.btnReadEEPROM = New System.Windows.Forms.Button()
+        Me.txtStartAdd = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.btnStopSampling = New System.Windows.Forms.Button()
+        Me.btnTrigSampling = New System.Windows.Forms.Button()
+        Me.btnSetAcquisition = New System.Windows.Forms.Button()
+        Me.btnMeasurmentTable = New System.Windows.Forms.Button()
+        Me.btnZero = New System.Windows.Forms.Button()
+        Me.btnFilteredOpacity = New System.Windows.Forms.Button()
+        Me.btnNonFilterdOpacity = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.cmbPuertoOpacimetro = New System.Windows.Forms.ComboBox()
         Me.btnOpacGetVersion = New System.Windows.Forms.Button()
@@ -127,7 +181,6 @@ Partial Class frmFuentesMoviles
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
         Me.btnLimpiarConsola = New System.Windows.Forms.Button()
-        Me.btnNonFilterdOpacity = New System.Windows.Forms.Button()
         Me.TabPrincipal.SuspendLayout()
         Me.TabPageMicroBench.SuspendLayout()
         Me.grpComandoMB.SuspendLayout()
@@ -147,6 +200,12 @@ Partial Class frmFuentesMoviles
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageOpacimetro.SuspendLayout()
+        Me.GroupBox22.SuspendLayout()
+        Me.GroupBox21.SuspendLayout()
+        Me.GroupBox20.SuspendLayout()
+        Me.GroupBox19.SuspendLayout()
+        Me.GroupBox17.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.TabPageEncicla.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1133,6 +1192,23 @@ Partial Class frmFuentesMoviles
         '
         'TabPageOpacimetro
         '
+        Me.TabPageOpacimetro.Controls.Add(Me.btnStopFan)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnAdjustGain)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnStartFan)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnVariousInternalData)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnValueSmokePeak)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox22)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox21)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox20)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox19)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox17)
+        Me.TabPageOpacimetro.Controls.Add(Me.GroupBox16)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnStopSampling)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnTrigSampling)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnSetAcquisition)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnMeasurmentTable)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnZero)
+        Me.TabPageOpacimetro.Controls.Add(Me.btnFilteredOpacity)
         Me.TabPageOpacimetro.Controls.Add(Me.btnNonFilterdOpacity)
         Me.TabPageOpacimetro.Controls.Add(Me.Label7)
         Me.TabPageOpacimetro.Controls.Add(Me.cmbPuertoOpacimetro)
@@ -1145,10 +1221,514 @@ Partial Class frmFuentesMoviles
         Me.TabPageOpacimetro.Text = "Opacimetro CAP3030"
         Me.TabPageOpacimetro.UseVisualStyleBackColor = True
         '
+        'btnStopFan
+        '
+        Me.btnStopFan.Location = New System.Drawing.Point(248, 417)
+        Me.btnStopFan.Name = "btnStopFan"
+        Me.btnStopFan.Size = New System.Drawing.Size(188, 84)
+        Me.btnStopFan.TabIndex = 17
+        Me.btnStopFan.Text = "Stop Fan"
+        Me.btnStopFan.UseVisualStyleBackColor = True
+        '
+        'btnAdjustGain
+        '
+        Me.btnAdjustGain.Location = New System.Drawing.Point(248, 214)
+        Me.btnAdjustGain.Name = "btnAdjustGain"
+        Me.btnAdjustGain.Size = New System.Drawing.Size(188, 84)
+        Me.btnAdjustGain.TabIndex = 29
+        Me.btnAdjustGain.Text = "Adjust the gain of the detector"
+        Me.btnAdjustGain.UseVisualStyleBackColor = True
+        '
+        'btnStartFan
+        '
+        Me.btnStartFan.Location = New System.Drawing.Point(248, 317)
+        Me.btnStartFan.Name = "btnStartFan"
+        Me.btnStartFan.Size = New System.Drawing.Size(188, 84)
+        Me.btnStartFan.TabIndex = 16
+        Me.btnStartFan.Text = "Start Fan"
+        Me.btnStartFan.UseVisualStyleBackColor = True
+        '
+        'btnVariousInternalData
+        '
+        Me.btnVariousInternalData.Location = New System.Drawing.Point(248, 113)
+        Me.btnVariousInternalData.Name = "btnVariousInternalData"
+        Me.btnVariousInternalData.Size = New System.Drawing.Size(188, 84)
+        Me.btnVariousInternalData.TabIndex = 28
+        Me.btnVariousInternalData.Text = "Various internal data"
+        Me.btnVariousInternalData.UseVisualStyleBackColor = True
+        '
+        'btnValueSmokePeak
+        '
+        Me.btnValueSmokePeak.Location = New System.Drawing.Point(34, 979)
+        Me.btnValueSmokePeak.Name = "btnValueSmokePeak"
+        Me.btnValueSmokePeak.Size = New System.Drawing.Size(188, 84)
+        Me.btnValueSmokePeak.TabIndex = 27
+        Me.btnValueSmokePeak.Text = "Value of the smoke peak"
+        Me.btnValueSmokePeak.UseVisualStyleBackColor = True
+        '
+        'GroupBox22
+        '
+        Me.GroupBox22.Controls.Add(Me.btnCurrentFactor)
+        Me.GroupBox22.Controls.Add(Me.txtN)
+        Me.GroupBox22.Controls.Add(Me.Label18)
+        Me.GroupBox22.Controls.Add(Me.txtM)
+        Me.GroupBox22.Controls.Add(Me.Label16)
+        Me.GroupBox22.Controls.Add(Me.btnReadCurve)
+        Me.GroupBox22.Location = New System.Drawing.Point(1288, 675)
+        Me.GroupBox22.Name = "GroupBox22"
+        Me.GroupBox22.Size = New System.Drawing.Size(449, 264)
+        Me.GroupBox22.TabIndex = 26
+        Me.GroupBox22.TabStop = False
+        Me.GroupBox22.Text = " opacity curve segment by segment"
+        '
+        'btnCurrentFactor
+        '
+        Me.btnCurrentFactor.Location = New System.Drawing.Point(11, 174)
+        Me.btnCurrentFactor.Name = "btnCurrentFactor"
+        Me.btnCurrentFactor.Size = New System.Drawing.Size(188, 84)
+        Me.btnCurrentFactor.TabIndex = 22
+        Me.btnCurrentFactor.Text = "Current factor of acquisition"
+        Me.btnCurrentFactor.UseVisualStyleBackColor = True
+        '
+        'txtN
+        '
+        Me.txtN.Location = New System.Drawing.Point(231, 92)
+        Me.txtN.Name = "txtN"
+        Me.txtN.Size = New System.Drawing.Size(171, 35)
+        Me.txtN.TabIndex = 20
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(231, 54)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(26, 29)
+        Me.Label18.TabIndex = 21
+        Me.Label18.Text = "n"
+        '
+        'txtM
+        '
+        Me.txtM.Location = New System.Drawing.Point(236, 180)
+        Me.txtM.Name = "txtM"
+        Me.txtM.Size = New System.Drawing.Size(166, 35)
+        Me.txtM.TabIndex = 18
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(236, 142)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(33, 29)
+        Me.Label16.TabIndex = 19
+        Me.Label16.Text = "m"
+        '
+        'btnReadCurve
+        '
+        Me.btnReadCurve.Location = New System.Drawing.Point(11, 67)
+        Me.btnReadCurve.Name = "btnReadCurve"
+        Me.btnReadCurve.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadCurve.TabIndex = 16
+        Me.btnReadCurve.Text = "Read"
+        Me.btnReadCurve.UseVisualStyleBackColor = True
+        '
+        'GroupBox21
+        '
+        Me.GroupBox21.Controls.Add(Me.txtCleanW)
+        Me.GroupBox21.Controls.Add(Me.Label12)
+        Me.GroupBox21.Controls.Add(Me.btnWriteCleanW)
+        Me.GroupBox21.Controls.Add(Me.btnReadCleanW)
+        Me.GroupBox21.Location = New System.Drawing.Point(949, 400)
+        Me.GroupBox21.Name = "GroupBox21"
+        Me.GroupBox21.Size = New System.Drawing.Size(553, 264)
+        Me.GroupBox21.TabIndex = 25
+        Me.GroupBox21.TabStop = False
+        Me.GroupBox21.Text = " Maximum value of sooting of the optical device"
+        '
+        'txtCleanW
+        '
+        Me.txtCleanW.Location = New System.Drawing.Point(231, 191)
+        Me.txtCleanW.Name = "txtCleanW"
+        Me.txtCleanW.Size = New System.Drawing.Size(241, 35)
+        Me.txtCleanW.TabIndex = 18
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(231, 153)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(241, 29)
+        Me.Label12.TabIndex = 19
+        Me.Label12.Text = "Clean Window 0 -100"
+        '
+        'btnWriteCleanW
+        '
+        Me.btnWriteCleanW.Location = New System.Drawing.Point(21, 159)
+        Me.btnWriteCleanW.Name = "btnWriteCleanW"
+        Me.btnWriteCleanW.Size = New System.Drawing.Size(188, 84)
+        Me.btnWriteCleanW.TabIndex = 17
+        Me.btnWriteCleanW.Text = "Write"
+        Me.btnWriteCleanW.UseVisualStyleBackColor = True
+        '
+        'btnReadCleanW
+        '
+        Me.btnReadCleanW.Location = New System.Drawing.Point(21, 52)
+        Me.btnReadCleanW.Name = "btnReadCleanW"
+        Me.btnReadCleanW.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadCleanW.TabIndex = 16
+        Me.btnReadCleanW.Text = "Read"
+        Me.btnReadCleanW.UseVisualStyleBackColor = True
+        '
+        'GroupBox20
+        '
+        Me.GroupBox20.Controls.Add(Me.btnWriteGasTemp)
+        Me.GroupBox20.Controls.Add(Me.btnReadGasTemp)
+        Me.GroupBox20.Controls.Add(Me.txtGasLimit)
+        Me.GroupBox20.Controls.Add(Me.Label17)
+        Me.GroupBox20.Location = New System.Drawing.Point(512, 958)
+        Me.GroupBox20.Name = "GroupBox20"
+        Me.GroupBox20.Size = New System.Drawing.Size(373, 269)
+        Me.GroupBox20.TabIndex = 24
+        Me.GroupBox20.TabStop = False
+        Me.GroupBox20.Text = "Minimun Value of Gas temp"
+        '
+        'btnWriteGasTemp
+        '
+        Me.btnWriteGasTemp.Location = New System.Drawing.Point(21, 157)
+        Me.btnWriteGasTemp.Name = "btnWriteGasTemp"
+        Me.btnWriteGasTemp.Size = New System.Drawing.Size(188, 84)
+        Me.btnWriteGasTemp.TabIndex = 20
+        Me.btnWriteGasTemp.Text = "Write"
+        Me.btnWriteGasTemp.UseVisualStyleBackColor = True
+        '
+        'btnReadGasTemp
+        '
+        Me.btnReadGasTemp.Location = New System.Drawing.Point(21, 47)
+        Me.btnReadGasTemp.Name = "btnReadGasTemp"
+        Me.btnReadGasTemp.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadGasTemp.TabIndex = 15
+        Me.btnReadGasTemp.Text = "Read"
+        Me.btnReadGasTemp.UseVisualStyleBackColor = True
+        '
+        'txtGasLimit
+        '
+        Me.txtGasLimit.Location = New System.Drawing.Point(235, 195)
+        Me.txtGasLimit.Name = "txtGasLimit"
+        Me.txtGasLimit.Size = New System.Drawing.Size(111, 35)
+        Me.txtGasLimit.TabIndex = 16
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(235, 157)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(113, 29)
+        Me.Label17.TabIndex = 17
+        Me.Label17.Text = "Gas Limit"
+        '
+        'GroupBox19
+        '
+        Me.GroupBox19.Controls.Add(Me.rdbBESSEL)
+        Me.GroupBox19.Controls.Add(Me.rdbFilterKN)
+        Me.GroupBox19.Controls.Add(Me.txtCb)
+        Me.GroupBox19.Controls.Add(Me.Label15)
+        Me.GroupBox19.Controls.Add(Me.btnWriteMeasurFilter)
+        Me.GroupBox19.Controls.Add(Me.txtCa)
+        Me.GroupBox19.Controls.Add(Me.Label13)
+        Me.GroupBox19.Controls.Add(Me.btnReadMeasurFilter)
+        Me.GroupBox19.Controls.Add(Me.txtNumPoles)
+        Me.GroupBox19.Controls.Add(Me.Label14)
+        Me.GroupBox19.Location = New System.Drawing.Point(512, 670)
+        Me.GroupBox19.Name = "GroupBox19"
+        Me.GroupBox19.Size = New System.Drawing.Size(747, 269)
+        Me.GroupBox19.TabIndex = 23
+        Me.GroupBox19.TabStop = False
+        Me.GroupBox19.Text = "Measurement FIlter"
+        '
+        'rdbBESSEL
+        '
+        Me.rdbBESSEL.AutoSize = True
+        Me.rdbBESSEL.Location = New System.Drawing.Point(480, 127)
+        Me.rdbBESSEL.Name = "rdbBESSEL"
+        Me.rdbBESSEL.Size = New System.Drawing.Size(232, 33)
+        Me.rdbBESSEL.TabIndex = 26
+        Me.rdbBESSEL.Text = " BESSEL FILTER"
+        Me.rdbBESSEL.UseVisualStyleBackColor = True
+        '
+        'rdbFilterKN
+        '
+        Me.rdbFilterKN.AutoSize = True
+        Me.rdbFilterKN.Checked = True
+        Me.rdbFilterKN.Location = New System.Drawing.Point(236, 127)
+        Me.rdbFilterKN.Name = "rdbFilterKN"
+        Me.rdbFilterKN.Size = New System.Drawing.Size(220, 33)
+        Me.rdbFilterKN.TabIndex = 25
+        Me.rdbFilterKN.TabStop = True
+        Me.rdbFilterKN.Text = "Filter on k and N"
+        Me.rdbFilterKN.UseVisualStyleBackColor = True
+        '
+        'txtCb
+        '
+        Me.txtCb.Location = New System.Drawing.Point(588, 73)
+        Me.txtCb.Name = "txtCb"
+        Me.txtCb.Size = New System.Drawing.Size(124, 35)
+        Me.txtCb.TabIndex = 23
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(583, 35)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(44, 29)
+        Me.Label15.TabIndex = 24
+        Me.Label15.Text = "Cb"
+        '
+        'btnWriteMeasurFilter
+        '
+        Me.btnWriteMeasurFilter.Location = New System.Drawing.Point(21, 48)
+        Me.btnWriteMeasurFilter.Name = "btnWriteMeasurFilter"
+        Me.btnWriteMeasurFilter.Size = New System.Drawing.Size(188, 84)
+        Me.btnWriteMeasurFilter.TabIndex = 20
+        Me.btnWriteMeasurFilter.Text = "Write"
+        Me.btnWriteMeasurFilter.UseVisualStyleBackColor = True
+        '
+        'txtCa
+        '
+        Me.txtCa.Location = New System.Drawing.Point(445, 73)
+        Me.txtCa.Name = "txtCa"
+        Me.txtCa.Size = New System.Drawing.Size(124, 35)
+        Me.txtCa.TabIndex = 18
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(440, 35)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(43, 29)
+        Me.Label13.TabIndex = 19
+        Me.Label13.Text = "Ca"
+        '
+        'btnReadMeasurFilter
+        '
+        Me.btnReadMeasurFilter.Location = New System.Drawing.Point(21, 160)
+        Me.btnReadMeasurFilter.Name = "btnReadMeasurFilter"
+        Me.btnReadMeasurFilter.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadMeasurFilter.TabIndex = 15
+        Me.btnReadMeasurFilter.Text = "Read"
+        Me.btnReadMeasurFilter.UseVisualStyleBackColor = True
+        '
+        'txtNumPoles
+        '
+        Me.txtNumPoles.Location = New System.Drawing.Point(231, 73)
+        Me.txtNumPoles.Name = "txtNumPoles"
+        Me.txtNumPoles.Size = New System.Drawing.Size(187, 35)
+        Me.txtNumPoles.TabIndex = 16
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(231, 35)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(194, 29)
+        Me.Label14.TabIndex = 17
+        Me.Label14.Text = "Number of Poles"
+        '
+        'GroupBox17
+        '
+        Me.GroupBox17.Controls.Add(Me.txtIntensity)
+        Me.GroupBox17.Controls.Add(Me.Label11)
+        Me.GroupBox17.Controls.Add(Me.btnWrieIntensity)
+        Me.GroupBox17.Controls.Add(Me.btnReadIntensity)
+        Me.GroupBox17.Location = New System.Drawing.Point(512, 400)
+        Me.GroupBox17.Name = "GroupBox17"
+        Me.GroupBox17.Size = New System.Drawing.Size(423, 264)
+        Me.GroupBox17.TabIndex = 21
+        Me.GroupBox17.TabStop = False
+        Me.GroupBox17.Text = "Intensity of Light Source"
+        '
+        'txtIntensity
+        '
+        Me.txtIntensity.Location = New System.Drawing.Point(231, 191)
+        Me.txtIntensity.Name = "txtIntensity"
+        Me.txtIntensity.Size = New System.Drawing.Size(166, 35)
+        Me.txtIntensity.TabIndex = 18
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(231, 153)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(166, 29)
+        Me.Label11.TabIndex = 19
+        Me.Label11.Text = "Intensity 0-100"
+        '
+        'btnWrieIntensity
+        '
+        Me.btnWrieIntensity.Location = New System.Drawing.Point(21, 159)
+        Me.btnWrieIntensity.Name = "btnWrieIntensity"
+        Me.btnWrieIntensity.Size = New System.Drawing.Size(188, 84)
+        Me.btnWrieIntensity.TabIndex = 17
+        Me.btnWrieIntensity.Text = "Write Intensity"
+        Me.btnWrieIntensity.UseVisualStyleBackColor = True
+        '
+        'btnReadIntensity
+        '
+        Me.btnReadIntensity.Location = New System.Drawing.Point(21, 52)
+        Me.btnReadIntensity.Name = "btnReadIntensity"
+        Me.btnReadIntensity.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadIntensity.TabIndex = 16
+        Me.btnReadIntensity.Text = "Read Intensity"
+        Me.btnReadIntensity.UseVisualStyleBackColor = True
+        '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.Label10)
+        Me.GroupBox16.Controls.Add(Me.txtDataEEPROM)
+        Me.GroupBox16.Controls.Add(Me.btnWriteEEPROM)
+        Me.GroupBox16.Controls.Add(Me.txtNumBytesEEPROM)
+        Me.GroupBox16.Controls.Add(Me.Label9)
+        Me.GroupBox16.Controls.Add(Me.btnReadEEPROM)
+        Me.GroupBox16.Controls.Add(Me.txtStartAdd)
+        Me.GroupBox16.Controls.Add(Me.Label8)
+        Me.GroupBox16.Location = New System.Drawing.Point(512, 104)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(873, 269)
+        Me.GroupBox16.TabIndex = 20
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "EEPROM"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(236, 174)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(302, 29)
+        Me.Label10.TabIndex = 22
+        Me.Label10.Text = "Datos separados por coma"
+        '
+        'txtDataEEPROM
+        '
+        Me.txtDataEEPROM.Location = New System.Drawing.Point(236, 206)
+        Me.txtDataEEPROM.Name = "txtDataEEPROM"
+        Me.txtDataEEPROM.Size = New System.Drawing.Size(604, 35)
+        Me.txtDataEEPROM.TabIndex = 21
+        '
+        'btnWriteEEPROM
+        '
+        Me.btnWriteEEPROM.Location = New System.Drawing.Point(21, 157)
+        Me.btnWriteEEPROM.Name = "btnWriteEEPROM"
+        Me.btnWriteEEPROM.Size = New System.Drawing.Size(188, 84)
+        Me.btnWriteEEPROM.TabIndex = 20
+        Me.btnWriteEEPROM.Text = "Write   EEPROM"
+        Me.btnWriteEEPROM.UseVisualStyleBackColor = True
+        '
+        'txtNumBytesEEPROM
+        '
+        Me.txtNumBytesEEPROM.Location = New System.Drawing.Point(381, 96)
+        Me.txtNumBytesEEPROM.Name = "txtNumBytesEEPROM"
+        Me.txtNumBytesEEPROM.Size = New System.Drawing.Size(124, 35)
+        Me.txtNumBytesEEPROM.TabIndex = 18
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(376, 58)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(129, 29)
+        Me.Label9.TabIndex = 19
+        Me.Label9.Text = "Num Bytes"
+        '
+        'btnReadEEPROM
+        '
+        Me.btnReadEEPROM.Location = New System.Drawing.Point(21, 47)
+        Me.btnReadEEPROM.Name = "btnReadEEPROM"
+        Me.btnReadEEPROM.Size = New System.Drawing.Size(188, 84)
+        Me.btnReadEEPROM.TabIndex = 15
+        Me.btnReadEEPROM.Text = "Read EEPROM"
+        Me.btnReadEEPROM.UseVisualStyleBackColor = True
+        '
+        'txtStartAdd
+        '
+        Me.txtStartAdd.Location = New System.Drawing.Point(236, 96)
+        Me.txtStartAdd.Name = "txtStartAdd"
+        Me.txtStartAdd.Size = New System.Drawing.Size(114, 35)
+        Me.txtStartAdd.TabIndex = 16
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(236, 58)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(111, 29)
+        Me.Label8.TabIndex = 17
+        Me.Label8.Text = "Start Add"
+        '
+        'btnStopSampling
+        '
+        Me.btnStopSampling.Location = New System.Drawing.Point(34, 871)
+        Me.btnStopSampling.Name = "btnStopSampling"
+        Me.btnStopSampling.Size = New System.Drawing.Size(188, 84)
+        Me.btnStopSampling.TabIndex = 14
+        Me.btnStopSampling.Text = "Stop Sampling"
+        Me.btnStopSampling.UseVisualStyleBackColor = True
+        '
+        'btnTrigSampling
+        '
+        Me.btnTrigSampling.Location = New System.Drawing.Point(34, 748)
+        Me.btnTrigSampling.Name = "btnTrigSampling"
+        Me.btnTrigSampling.Size = New System.Drawing.Size(188, 84)
+        Me.btnTrigSampling.TabIndex = 13
+        Me.btnTrigSampling.Text = "Trig Sampling"
+        Me.btnTrigSampling.UseVisualStyleBackColor = True
+        '
+        'btnSetAcquisition
+        '
+        Me.btnSetAcquisition.Location = New System.Drawing.Point(34, 638)
+        Me.btnSetAcquisition.Name = "btnSetAcquisition"
+        Me.btnSetAcquisition.Size = New System.Drawing.Size(188, 84)
+        Me.btnSetAcquisition.TabIndex = 12
+        Me.btnSetAcquisition.Text = "Set Acquisition"
+        Me.btnSetAcquisition.UseVisualStyleBackColor = True
+        '
+        'btnMeasurmentTable
+        '
+        Me.btnMeasurmentTable.Location = New System.Drawing.Point(34, 525)
+        Me.btnMeasurmentTable.Name = "btnMeasurmentTable"
+        Me.btnMeasurmentTable.Size = New System.Drawing.Size(188, 84)
+        Me.btnMeasurmentTable.TabIndex = 11
+        Me.btnMeasurmentTable.Text = "Measurement Table "
+        Me.btnMeasurmentTable.UseVisualStyleBackColor = True
+        '
+        'btnZero
+        '
+        Me.btnZero.Location = New System.Drawing.Point(34, 416)
+        Me.btnZero.Name = "btnZero"
+        Me.btnZero.Size = New System.Drawing.Size(188, 84)
+        Me.btnZero.TabIndex = 10
+        Me.btnZero.Text = "Zero"
+        Me.btnZero.UseVisualStyleBackColor = True
+        '
+        'btnFilteredOpacity
+        '
+        Me.btnFilteredOpacity.Location = New System.Drawing.Point(34, 317)
+        Me.btnFilteredOpacity.Name = "btnFilteredOpacity"
+        Me.btnFilteredOpacity.Size = New System.Drawing.Size(188, 84)
+        Me.btnFilteredOpacity.TabIndex = 9
+        Me.btnFilteredOpacity.Text = "Filtered Opacity"
+        Me.btnFilteredOpacity.UseVisualStyleBackColor = True
+        '
+        'btnNonFilterdOpacity
+        '
+        Me.btnNonFilterdOpacity.Location = New System.Drawing.Point(34, 214)
+        Me.btnNonFilterdOpacity.Name = "btnNonFilterdOpacity"
+        Me.btnNonFilterdOpacity.Size = New System.Drawing.Size(188, 84)
+        Me.btnNonFilterdOpacity.TabIndex = 8
+        Me.btnNonFilterdOpacity.Text = "Non Filtered Opacity"
+        Me.btnNonFilterdOpacity.UseVisualStyleBackColor = True
+        '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 25)
+        Me.Label7.Location = New System.Drawing.Point(33, 44)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(153, 29)
         Me.Label7.TabIndex = 7
@@ -1157,7 +1737,7 @@ Partial Class frmFuentesMoviles
         'cmbPuertoOpacimetro
         '
         Me.cmbPuertoOpacimetro.FormattingEnabled = True
-        Me.cmbPuertoOpacimetro.Location = New System.Drawing.Point(182, 25)
+        Me.cmbPuertoOpacimetro.Location = New System.Drawing.Point(197, 44)
         Me.cmbPuertoOpacimetro.Name = "cmbPuertoOpacimetro"
         Me.cmbPuertoOpacimetro.Size = New System.Drawing.Size(325, 37)
         Me.cmbPuertoOpacimetro.TabIndex = 6
@@ -1165,7 +1745,7 @@ Partial Class frmFuentesMoviles
         '
         'btnOpacGetVersion
         '
-        Me.btnOpacGetVersion.Location = New System.Drawing.Point(23, 109)
+        Me.btnOpacGetVersion.Location = New System.Drawing.Point(34, 110)
         Me.btnOpacGetVersion.Name = "btnOpacGetVersion"
         Me.btnOpacGetVersion.Size = New System.Drawing.Size(188, 84)
         Me.btnOpacGetVersion.TabIndex = 1
@@ -1247,15 +1827,6 @@ Partial Class frmFuentesMoviles
         Me.btnLimpiarConsola.Text = "Limpiar"
         Me.btnLimpiarConsola.UseVisualStyleBackColor = True
         '
-        'btnNonFilterdOpacity
-        '
-        Me.btnNonFilterdOpacity.Location = New System.Drawing.Point(23, 211)
-        Me.btnNonFilterdOpacity.Name = "btnNonFilterdOpacity"
-        Me.btnNonFilterdOpacity.Size = New System.Drawing.Size(188, 84)
-        Me.btnNonFilterdOpacity.TabIndex = 8
-        Me.btnNonFilterdOpacity.Text = "Non Filtered Opacity"
-        Me.btnNonFilterdOpacity.UseVisualStyleBackColor = True
-        '
         'frmFuentesMoviles
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(14.0!, 29.0!)
@@ -1305,6 +1876,18 @@ Partial Class frmFuentesMoviles
         Me.GroupBox1.PerformLayout()
         Me.TabPageOpacimetro.ResumeLayout(False)
         Me.TabPageOpacimetro.PerformLayout()
+        Me.GroupBox22.ResumeLayout(False)
+        Me.GroupBox22.PerformLayout()
+        Me.GroupBox21.ResumeLayout(False)
+        Me.GroupBox21.PerformLayout()
+        Me.GroupBox20.ResumeLayout(False)
+        Me.GroupBox20.PerformLayout()
+        Me.GroupBox19.ResumeLayout(False)
+        Me.GroupBox19.PerformLayout()
+        Me.GroupBox17.ResumeLayout(False)
+        Me.GroupBox17.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
         Me.TabPageEncicla.ResumeLayout(False)
         Me.TabPageEncicla.PerformLayout()
         Me.ResumeLayout(False)
@@ -1417,4 +2000,57 @@ Partial Class frmFuentesMoviles
     Friend WithEvents Label7 As Windows.Forms.Label
     Friend WithEvents cmbPuertoOpacimetro As Windows.Forms.ComboBox
     Friend WithEvents btnNonFilterdOpacity As Windows.Forms.Button
+    Friend WithEvents btnFilteredOpacity As Windows.Forms.Button
+    Friend WithEvents Label9 As Windows.Forms.Label
+    Friend WithEvents txtNumBytesEEPROM As Windows.Forms.TextBox
+    Friend WithEvents Label8 As Windows.Forms.Label
+    Friend WithEvents txtStartAdd As Windows.Forms.TextBox
+    Friend WithEvents btnReadEEPROM As Windows.Forms.Button
+    Friend WithEvents btnStopSampling As Windows.Forms.Button
+    Friend WithEvents btnTrigSampling As Windows.Forms.Button
+    Friend WithEvents btnSetAcquisition As Windows.Forms.Button
+    Friend WithEvents btnMeasurmentTable As Windows.Forms.Button
+    Friend WithEvents btnZero As Windows.Forms.Button
+    Friend WithEvents GroupBox16 As Windows.Forms.GroupBox
+    Friend WithEvents Label10 As Windows.Forms.Label
+    Friend WithEvents txtDataEEPROM As Windows.Forms.TextBox
+    Friend WithEvents btnWriteEEPROM As Windows.Forms.Button
+    Friend WithEvents GroupBox17 As Windows.Forms.GroupBox
+    Friend WithEvents btnReadIntensity As Windows.Forms.Button
+    Friend WithEvents btnWrieIntensity As Windows.Forms.Button
+    Friend WithEvents GroupBox19 As Windows.Forms.GroupBox
+    Friend WithEvents rdbBESSEL As Windows.Forms.RadioButton
+    Friend WithEvents rdbFilterKN As Windows.Forms.RadioButton
+    Friend WithEvents txtCb As Windows.Forms.TextBox
+    Friend WithEvents Label15 As Windows.Forms.Label
+    Friend WithEvents btnWriteMeasurFilter As Windows.Forms.Button
+    Friend WithEvents txtCa As Windows.Forms.TextBox
+    Friend WithEvents Label13 As Windows.Forms.Label
+    Friend WithEvents btnReadMeasurFilter As Windows.Forms.Button
+    Friend WithEvents txtNumPoles As Windows.Forms.TextBox
+    Friend WithEvents Label14 As Windows.Forms.Label
+    Friend WithEvents btnStopFan As Windows.Forms.Button
+    Friend WithEvents btnStartFan As Windows.Forms.Button
+    Friend WithEvents txtIntensity As Windows.Forms.TextBox
+    Friend WithEvents Label11 As Windows.Forms.Label
+    Friend WithEvents GroupBox20 As Windows.Forms.GroupBox
+    Friend WithEvents btnWriteGasTemp As Windows.Forms.Button
+    Friend WithEvents btnReadGasTemp As Windows.Forms.Button
+    Friend WithEvents txtGasLimit As Windows.Forms.TextBox
+    Friend WithEvents Label17 As Windows.Forms.Label
+    Friend WithEvents GroupBox21 As Windows.Forms.GroupBox
+    Friend WithEvents txtCleanW As Windows.Forms.TextBox
+    Friend WithEvents Label12 As Windows.Forms.Label
+    Friend WithEvents btnWriteCleanW As Windows.Forms.Button
+    Friend WithEvents btnReadCleanW As Windows.Forms.Button
+    Friend WithEvents GroupBox22 As Windows.Forms.GroupBox
+    Friend WithEvents txtN As Windows.Forms.TextBox
+    Friend WithEvents Label18 As Windows.Forms.Label
+    Friend WithEvents txtM As Windows.Forms.TextBox
+    Friend WithEvents Label16 As Windows.Forms.Label
+    Friend WithEvents btnReadCurve As Windows.Forms.Button
+    Friend WithEvents btnAdjustGain As Windows.Forms.Button
+    Friend WithEvents btnVariousInternalData As Windows.Forms.Button
+    Friend WithEvents btnValueSmokePeak As Windows.Forms.Button
+    Friend WithEvents btnCurrentFactor As Windows.Forms.Button
 End Class

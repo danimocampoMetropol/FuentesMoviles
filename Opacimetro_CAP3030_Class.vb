@@ -27,6 +27,13 @@ Public Class Opacimetro_CAP3030_Class
     Const OPAREadWriteIntensity As UInteger = 99 ' ascii "c"
     Const OPAStartStopFan As UInteger = 115 ' ascii "s"
     Const OPAReadWriteSelectionMesuramentFilter As UInteger = 115 ' ascii "s"
+    Const OPAReadWriteMinimunValue_GasTemp As UInteger = 104 ' ascii "h"
+    Const OPAReadWriteCleanWindow As UInteger = 107 ' ascii "k"
+    Const OPAReadOpacityCurve As UInteger = &H8A
+    Const OPAReadCurrFactorAcquisition As UInteger = 119 ' ascii "w
+    Const OPAReadValueSmokePeak As UInteger = 98 ' ascii "b"
+    Const OPAReadVariousInternalData As UInteger = 85 ' ascii "U"
+    Const OPAAdjustGainDetector As UInteger = 100 ' ascii "d"
 
 
 
@@ -68,7 +75,7 @@ Public Class Opacimetro_CAP3030_Class
         Dim triggerActivated As Boolean
         Dim faultFans As Boolean
         Dim gasTempCold As Boolean
-        Dim faultTempSemsor As Boolean
+        Dim faultTempSensor As Boolean
     End Structure
 
     Public Sub New(portName As String)
@@ -147,7 +154,7 @@ Public Class Opacimetro_CAP3030_Class
             Dim data(3) As Byte
 
 
-            response = send_Opacimetro_command(OPAGetNonFilteredOpacity, data, 0)
+            response = send_Opacimetro_command(OPAGetFilteredOpacity, data, 0)
             strResult = response.Split(",")
             If strResult(0) = "1" Then
                 opacity = CDbl(convertMSByte_toUInt16(data_rcv, 1)) / 10.0
@@ -208,9 +215,9 @@ Public Class Opacimetro_CAP3030_Class
                 If data_rcv(5) And &H20 Then
                     status.gasTempCold = True
                 End If
-                status.faultTempSemsor = False
+                status.faultTempSensor = False
                 If data_rcv(5) And &H80 Then
-                    status.faultTempSemsor = True
+                    status.faultTempSensor = True
                 End If
 
                 Return "1,ACK"
@@ -488,7 +495,306 @@ Public Class Opacimetro_CAP3030_Class
 
             End If
 
-            Return send_Opacimetro_command(OPAStartStopFan, data, data.Length)
+            Return send_Opacimetro_command(OPAReadWriteSelectionMesuramentFilter, data, data.Length)
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_ReadSelectionMesuramentFilter(ByRef numberOfPoles As UInt16,
+                                                          ByRef filterOn_k_N As Boolean,
+                                                          ByRef besselFilter As Boolean,
+                                                          ByRef Ca As Double,
+                                                          ByRef Cb As Double) As String
+        Try
+
+            Dim data(0), dataT() As Byte
+            Dim strNum() As String
+            Dim strN As String
+            Dim response As String
+            Dim strResult() As String
+
+
+            data(0) = &H80 's.7=1 Read
+
+
+            response = send_Opacimetro_command(OPAReadWriteSelectionMesuramentFilter, data, data.Length)
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+
+                numberOfPoles = data_rcv(1) And &H3 'enmascara los bits  s.0 y s.1
+                filterOn_k_N = False
+                If data_rcv(1) And &H10 Then
+                    filterOn_k_N = True
+                End If
+                besselFilter = False
+                If data_rcv(1) And &H20 Then
+                    besselFilter = True
+                End If
+
+                If filterOn_k_N Then
+                    Dim CxDecimal As Double
+                    strN = data_rcv(3).ToString
+                    CxDecimal = data_rcv(3)
+                    For i = 0 To strN.Length - 1
+                        CxDecimal /= 10.0
+                    Next
+
+                    Ca = CxDecimal + data_rcv(2)
+
+                    strN = data_rcv(5).ToString
+                    CxDecimal = data_rcv(5)
+                    For i = 0 To strN.Length - 1
+                        CxDecimal /= 10.0
+                    Next
+
+                    Cb = CxDecimal + data_rcv(4)
+
+                ElseIf besselFilter Then
+                    Ca = convertMSByte_toUInt16(data_rcv, 2)
+                    Cb = convertMSByte_toUInt16(data_rcv, 4)
+                Else
+                    Return "0,No Filter Selected"
+                End If
+
+                Return "1,ACK"
+            End If
+            Return response
+
+
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_Write_MinimunValue_GasTemp(tgasLimit As Byte) As String
+        Try
+
+            Dim data(1) As Byte
+
+            data(0) = 0 'Write
+            data(1) = tgasLimit
+
+            Return send_Opacimetro_command(OPAReadWriteMinimunValue_GasTemp, data, data.Length)
+
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+    Public Function Comando_ReadMinimunValue_GasTemp(ByRef tgasLimit As Byte) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(0) As Byte
+
+            data(0) = &H80 's.7=1 Read
+
+            tgasLimit = 0
+            response = send_Opacimetro_command(OPAReadWriteMinimunValue_GasTemp, data, data.Length)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                tgasLimit = data_rcv(2)
+                Return "1,ACK"
+            End If
+
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_WritecleanWindow(cleanWindow As Byte) As String
+        Try
+
+            Dim data(1) As Byte
+
+            data(0) = 0 'Write
+            data(1) = cleanWindow
+
+            Return send_Opacimetro_command(OPAReadWriteCleanWindow, data, data.Length)
+
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+    Public Function Comando_ReadcleanWindow(ByRef cleanWindow As Byte) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(0) As Byte
+
+            data(0) = &H80 's.7=1 Read
+
+            cleanWindow = 0
+            response = send_Opacimetro_command(OPAReadWriteCleanWindow, data, data.Length)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                cleanWindow = data_rcv(2)
+                Return "1,ACK"
+            End If
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+
+    Public Function Comando_ReadOpacityCurve(n As UInt16, m As UInt16, ByRef dataArray() As UInt16) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(3) As Byte
+            Dim dataT() As Byte
+
+
+            dataT = convertUint16toMSByte(n)
+            data(0) = dataT(0)
+            data(1) = dataT(1)
+
+            dataT = convertUint16toMSByte(m)
+            data(2) = dataT(0)
+            data(3) = dataT(1)
+
+
+            dataT = convertUint16toMSByte(n)
+
+
+            response = send_Opacimetro_command(OPAReadOpacityCurve, data, data.Length)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                Dim i As Integer
+
+                For i = 0 To _count - 3 Step 2
+                    dataArray(i / 2) = convertMSByte_toUInt16(data_rcv, i + 1)
+
+                Next
+
+                Return "1,ACK"
+
+            End If
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_ReadCurrFactorAcquisition(ByRef Indice As UInt16) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(0) As Byte
+
+
+
+
+            response = send_Opacimetro_command(OPAReadCurrFactorAcquisition, data, 0)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                Indice = convertMSByte_toUInt16(data_rcv, 1)
+                Return "1,ACK"
+            End If
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_ReadValueSmokePeak(ByRef peak As Double,
+                                              ByRef gasStatus As UInt16,
+                                              ByRef durationAcceleration As UInt16) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(0) As Byte
+
+
+
+
+            response = send_Opacimetro_command(OPAReadValueSmokePeak, data, 0)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                peak = convertMSByte_toUInt16(data_rcv, 1) / 1000.0
+                gasStatus = data_rcv(3)
+                durationAcceleration = convertMSByte_toUInt16(data_rcv, 4)
+                Return "1,ACK"
+            End If
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_ReadVariousInternalData(ByRef tempGas As UInt16,
+                                                    ByRef tempTube As UInt16,
+                                                    ByRef tempDetector As UInt16,
+                                                    ByRef tempAMbient As UInt16,
+                                                    ByRef powerSupply As Double,
+                                                    ByRef fanSpeed As UInt16,
+                                                    ByRef lenseDirtyness As UInt16,
+                                                    ByRef ledOFFIntensity As UInt16,
+                                                    ByRef ledONIntensity As UInt16) As String
+        Try
+            Dim response As String
+            Dim strResult() As String
+            Dim data(0) As Byte
+
+
+
+
+            response = send_Opacimetro_command(OPAReadVariousInternalData, data, 0)
+
+            strResult = response.Split(",")
+            If strResult(0) = "1" Then
+                tempGas = data_rcv(1)
+                tempTube = data_rcv(2)
+                tempDetector = data_rcv(3)
+                tempAMbient = data_rcv(4)
+                powerSupply = convertMSByte_toUInt16(data_rcv, 5) / 100.0
+                fanSpeed = convertMSByte_toUInt16(data_rcv, 7)
+                lenseDirtyness = data_rcv(9)
+                ledOFFIntensity = convertMSByte_toUInt16(data_rcv, 10)
+                ledONIntensity = convertMSByte_toUInt16(data_rcv, 12)
+
+                Return "1,ACK"
+            End If
+            Return response
+        Catch ex As Exception
+            Return "0," + ex.Message
+        End Try
+
+
+    End Function
+
+    Public Function Comando_AdjustGainDetector() As String
+        Try
+
+            Dim data(3) As Byte
+
+            Return send_Opacimetro_command(OPAAdjustGainDetector, data, 0)
+
         Catch ex As Exception
             Return "0," + ex.Message
         End Try
@@ -504,6 +810,17 @@ Public Class Opacimetro_CAP3030_Class
 
     End Function
 
+    Private Function convertUint16toMSByte(num As UInt16) As Byte()
+        Dim dataT(1) As Byte
+        Dim data(1) As Byte
+
+        dataT = BitConverter.GetBytes(num)
+        data(0) = dataT(1)
+        data(1) = dataT(0)
+
+        Return data
+
+    End Function
 
     Private Function send_Opacimetro_command(commandB As Byte, data_in As Byte(), DataCount As UInteger) As String
         Try

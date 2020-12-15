@@ -883,18 +883,10 @@ Public Class frmFuentesMoviles
     End Sub
 
     Private Sub btnOpacGetVersion_Click(sender As Object, e As EventArgs) Handles btnOpacGetVersion.Click
-        Dim version As UShort
-        Dim serialnum As UShort
+        Dim version As Double
+        Dim serialnum As Double
         Dim strResult As String
         Dim strResults() As String
-
-        If cmbPuertoMicroBench.SelectedIndex < 0 Then
-            MsgBox("Seleccione Pueto")
-            Return
-        End If
-
-        strResult = Sensor_MB.Comando_MB_GetVersionSoftware()
-        strResults = strResult.Split(",")
 
 
 
@@ -905,7 +897,7 @@ Public Class frmFuentesMoviles
 
         strResult = Opacimetro.Comando_getVersion(version, serialnum)
         strResults = strResult.Split(",")
-        txtConsola.AppendText(vbCrLf + "GET VERSION" + strResults(1) + vbCrLf)
+        txtConsola.AppendText(vbCrLf + "GET VERSION " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
             txtConsola.AppendText("Version:  " + (CDbl(version) / 100).ToString + vbCrLf)
             txtConsola.AppendText("Serial:  " + (CDbl(version) / 100).ToString + vbCrLf)
@@ -914,18 +906,36 @@ Public Class frmFuentesMoviles
     End Sub
 
     Private Sub btnNonFilterdOpacity_Click(sender As Object, e As EventArgs) Handles btnNonFilterdOpacity.Click
-        Dim version As UShort
-        Dim serialnum As UShort
+
         Dim strResult As String
         Dim strResults() As String
+        Dim opacity As Double
 
-        If cmbPuertoMicroBench.SelectedIndex < 0 Then
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
             MsgBox("Seleccione Pueto")
             Return
         End If
 
-        strResult = Sensor_MB.Comando_MB_GetVersionSoftware()
+
+        strResult = Opacimetro.Comando_NonFilteredOpacity(opacity)
+
         strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "NON FILTERED OPACITY" + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("opacity:  " + opacity.ToString + vbCrLf)
+        End If
+
+
+
+    End Sub
+
+    Private Sub btnFilteredOpacity_Click(sender As Object, e As EventArgs) Handles btnFilteredOpacity.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim opacity As Double
+        Dim gasTemp, tubeTemp As UInt16
+        Dim status As Opacimetro_CAP3030_Class.filteredOpacityStatus
 
 
 
@@ -934,14 +944,653 @@ Public Class frmFuentesMoviles
             Return
         End If
 
-        strResult = Opacimetro.Comando_getVersion(version, serialnum)
+        strResult = Opacimetro.Comando_FilteredOpacity(opacity, gasTemp, tubeTemp, status)
+
         strResults = strResult.Split(",")
-        txtConsola.AppendText(vbCrLf + "GET VERSION" + strResults(1) + vbCrLf)
+        txtConsola.AppendText(vbCrLf + "FILTERED OPACITY " + strResults(1) + vbCrLf)
         If strResults(0) = "1" Then
-            txtConsola.AppendText("Version:  " + (CDbl(version) / 100).ToString + vbCrLf)
-            txtConsola.AppendText("Serial:  " + (CDbl(version) / 100).ToString + vbCrLf)
+            txtConsola.AppendText("opacity:  " + opacity.ToString + vbCrLf)
+            txtConsola.AppendText("gas Temp:  " + gasTemp.ToString + vbCrLf)
+            txtConsola.AppendText("tube Temp:  " + tubeTemp.ToString + vbCrLf)
+            txtConsola.AppendText("ambient Temp Unvalid:  " + status.ambienTempUnvalid.ToString + vbCrLf)
+            txtConsola.AppendText("detector Temp Unvalid:  " + status.detectorTempUnvalid.ToString + vbCrLf)
+            txtConsola.AppendText("tube Temp Unvalid:  " + status.tubeTempUnvalid.ToString + vbCrLf)
+            txtConsola.AppendText("Power Supply Out Tolarance:  " + status.PowerSupplyOutTolarance.ToString + vbCrLf)
+            txtConsola.AppendText("fan State:  " + status.fanState.ToString + vbCrLf)
+            txtConsola.AppendText("opacity NonAvailable:  " + status.opacityNonAvailable.ToString + vbCrLf)
+            txtConsola.AppendText("trasnducer Stand By:  " + status.trasnducerStandBy.ToString + vbCrLf)
+            txtConsola.AppendText("zero Running:  " + status.zeroRunning.ToString + vbCrLf)
+            txtConsola.AppendText("sooting Lenses:  " + status.sootingLenses.ToString + vbCrLf)
+            txtConsola.AppendText("acquisition Triggered:  " + status.acquisitionTriggered.ToString + vbCrLf)
+            txtConsola.AppendText("trigger Activated:  " + status.triggerActivated.ToString + vbCrLf)
+            txtConsola.AppendText("fault Fans:  " + status.faultFans.ToString + vbCrLf)
+            txtConsola.AppendText("gas Temp Cold:  " + status.gasTempCold.ToString + vbCrLf)
+            txtConsola.AppendText("fault Temp Sensor:  " + status.faultTempSensor.ToString + vbCrLf)
+
+
+        End If
+
+
+
+    End Sub
+
+    Private Sub btnZero_Click(sender As Object, e As EventArgs) Handles btnZero.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_Zero()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "ZERO " + strResults(1) + vbCrLf)
+
+
+
+    End Sub
+
+    Private Sub btnMeasurmentTable_Click(sender As Object, e As EventArgs) Handles btnMeasurmentTable.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim opacityArray(499) As Double
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_GetMesTable(opacityArray)
+        strResults = strResult.Split(",")
+
+        txtConsola.AppendText(vbCrLf + "MEASUREMENT TABLE " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            For i = 0 To 499
+                txtConsola.AppendText("opacity Array " +
+                                      i.ToString + ": " +
+                                      opacityArray(i).ToString + vbCrLf)
+            Next
+        End If
+
+
+    End Sub
+
+    Private Sub btnSetAcquisition_Click(sender As Object, e As EventArgs) Handles btnSetAcquisition.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_DemandAcquisition()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "DEMAND ACQUISITION " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+    Private Sub btnTrigSampling_Click(sender As Object, e As EventArgs) Handles btnTrigSampling.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_TrigSampling()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "TRIG SAMPLING " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+    Private Sub btnStopSampling_Click(sender As Object, e As EventArgs) Handles btnStopSampling.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_StopSampling()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "STOP SAMPLING: " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+
+    Private Sub btnReadEEPROM_Click(sender As Object, e As EventArgs) Handles btnReadEEPROM.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim startAdd, cantData As UInt16
+        Dim dataArray() As Byte 'el tmaño depende de la cantidad de datos a leer
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        If IsNumeric(txtStartAdd.Text) = False Or IsNumeric(txtNumBytesEEPROM.Text) Then
+            MsgBox("Ingrese datos")
+            Return
+        End If
+
+        startAdd = CInt(txtStartAdd.Text)
+        cantData = CInt(txtNumBytesEEPROM.Text)
+        ReDim dataArray(cantData - 1)
+
+        strResult = Opacimetro.Comando_ReadEEPROM(startAdd, cantData, dataArray)
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "READ EEPROM: " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            For i = 0 To cantData - 1
+                txtConsola.AppendText("Data EEPROM " +
+                                  (i + startAdd).ToString + ": " +
+                                  dataArray(i).ToString + vbCrLf)
+            Next
+
         End If
 
     End Sub
 
+    Private Sub btnWriteEEPROM_Click(sender As Object, e As EventArgs) Handles btnWriteEEPROM.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim startAdd, cantData As UInt16
+        Dim dataArray(0) As Byte 'el tmaño depende de la cantidad de datos a escribir
+        Dim dataStr() As String
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        If IsNumeric(txtStartAdd.Text) = False Or
+            txtDataEEPROM.Text = "" Then
+            MsgBox("Ingrese datos")
+            Return
+        End If
+
+        dataStr = txtDataEEPROM.Text.Split(",")
+
+        If dataStr.Length <= 0 Then
+            MsgBox("Ingrese datos separados por coma")
+            Return
+        End If
+
+        For i = 0 To dataStr.Length - 1
+            If IsNumeric(dataStr(i)) = False Then
+                MsgBox("Ingrese solo numeros")
+                Return
+            End If
+            ReDim Preserve dataArray(i)
+            dataArray(i) = CInt(dataStr(i))
+        Next
+
+
+
+        startAdd = CInt(txtStartAdd.Text)
+        cantData = dataStr.Length - 1
+
+
+        strResult = Opacimetro.Comando_WriteEEPROM(startAdd, cantData, dataArray)
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "WRITE EEPROM: " + strResults(1) + vbCrLf)
+
+    End Sub
+
+    Private Sub btnReadIntensity_Click(sender As Object, e As EventArgs) Handles btnReadIntensity.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim intensity As UShort
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadIntensity(intensity)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "READ INTENSITY " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("intensity:  " + intensity.ToString + vbCrLf)
+        End If
+
+
+    End Sub
+
+    Private Sub btnWrieIntensity_Click(sender As Object, e As EventArgs) Handles btnWrieIntensity.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim intensity As UShort
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        If IsNumeric(txtIntensity.Text) = False Then
+            MsgBox("Ingrese solo numeros")
+            Return
+        End If
+
+        If CInt(txtIntensity.Text) > 100 Then
+            MsgBox("rango entre 0 y 100")
+            Return
+        End If
+        intensity = CInt(txtIntensity.Text)
+
+
+        strResult = Opacimetro.Comando_WriteIntensity(intensity)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "WRITE INTENSITY " + strResults(1) + vbCrLf)
+
+
+
+    End Sub
+
+    Private Sub btnStartFan_Click(sender As Object, e As EventArgs) Handles btnStartFan.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_StartFan()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "START FAN " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+    Private Sub btnStopFan_Click(sender As Object, e As EventArgs) Handles btnStopFan.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_StopFan()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "STOP FAN " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+    Private Sub btnReadMeasurFilter_Click(sender As Object, e As EventArgs) Handles btnReadMeasurFilter.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim numberOfPoles As UInt16
+        Dim filterOn_k_N, besselFilter As Boolean
+        Dim Ca, Cb As Double
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadSelectionMesuramentFilter(numberOfPoles,
+                                                                     filterOn_k_N,
+                                                                     besselFilter,
+                                                                     Ca,
+                                                                     Cb)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read Selection Mesurament Filter " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("numberOfPoles:  " + numberOfPoles.ToString + vbCrLf)
+            txtConsola.AppendText("filterOn_k_N:  " + filterOn_k_N.ToString + vbCrLf)
+            txtConsola.AppendText("besselFilter:  " + besselFilter.ToString + vbCrLf)
+            txtConsola.AppendText("Ca:  " + Ca.ToString + vbCrLf)
+            txtConsola.AppendText("Cb:  " + Cb.ToString + vbCrLf)
+        End If
+
+    End Sub
+
+    Private Sub btnWriteMeasurFilter_Click(sender As Object, e As EventArgs) Handles btnWriteMeasurFilter.Click
+        Try
+            Dim strResult As String
+            Dim strResults() As String
+            Dim numberOfPoles As UInt16
+            Dim Ca, Cb As Double
+
+            If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+                MsgBox("Seleccione Pueto")
+                Return
+            End If
+
+            If IsNumeric(txtNumPoles.Text) = False Or
+                IsNumeric(txtCa.Text) = False Or
+                IsNumeric(txtCb.Text) = False Then
+
+                MsgBox("Ingrese solo numeros")
+                Return
+            End If
+
+
+            numberOfPoles = CInt(txtNumPoles.Text)
+            Ca = CDbl(txtCa.Text)
+            Cb = CDbl(txtCb.Text)
+
+
+            strResult = Opacimetro.Comando_WriteSelectionMesuramentFilter(numberOfPoles,
+                                                                         rdbFilterKN.Checked,
+                                                                         rdbBESSEL.Checked,
+                                                                         Ca,
+                                                                         Cb)
+
+            strResults = strResult.Split(",")
+            txtConsola.AppendText(vbCrLf + "WRITE Selection Mesurament Filter " + strResults(1) + vbCrLf)
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+
+
+    End Sub
+
+    Private Sub btnReadGasTemp_Click(sender As Object, e As EventArgs) Handles btnReadGasTemp.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim gasTemp As Byte
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadMinimunValue_GasTemp(gasTemp)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read Minimun Value GasTemp " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("gasTemp:  " + gasTemp.ToString + vbCrLf)
+        End If
+
+
+    End Sub
+
+    Private Sub btnWriteGasTemp_Click(sender As Object, e As EventArgs) Handles btnWriteGasTemp.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim gasTemp As Byte
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        If IsNumeric(txtGasLimit.Text) = False Then
+            MsgBox("Ingrese solo numeros")
+            Return
+        End If
+
+        If CInt(txtGasLimit.Text) > 255 Then
+            MsgBox("rango entre 0 y 255")
+            Return
+        End If
+        gasTemp = CByte(txtGasLimit.Text)
+
+
+        strResult = Opacimetro.Comando_Write_MinimunValue_GasTemp(gasTemp)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "WRITE Minimun Value GasTemp " + strResults(1) + vbCrLf)
+
+
+    End Sub
+
+    Private Sub btnReadCleanW_Click(sender As Object, e As EventArgs) Handles btnReadCleanW.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim cleanW As Byte
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadcleanWindow(cleanW)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read clean Window " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("cleanW:  " + cleanW.ToString + vbCrLf)
+        End If
+
+    End Sub
+
+    Private Sub btnWriteCleanW_Click(sender As Object, e As EventArgs) Handles btnWriteCleanW.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim cleanW As Byte
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        If IsNumeric(txtCleanW.Text) = False Then
+            MsgBox("Ingrese solo numeros")
+            Return
+        End If
+
+        If CInt(txtCleanW.Text) > 100 Then
+            MsgBox("rango entre 0 y 100")
+            Return
+        End If
+        cleanW = CByte(txtCleanW.Text)
+
+
+        strResult = Opacimetro.Comando_WritecleanWindow(cleanW)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "WRITE clean Window " + strResults(1) + vbCrLf)
+
+    End Sub
+
+    Private Sub btnReadCurve_Click(sender As Object, e As EventArgs) Handles btnReadCurve.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim opacityArray() As UInt16
+        Dim n, m As UInt16
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        If IsNumeric(txtN.Text) = False Or IsNumeric(txtM.Text) = False Then
+
+            MsgBox("Ingrese solo numeros")
+            Return
+        End If
+
+        n = CInt(txtN.Text)
+        m = CInt(txtM.Text)
+        If n > m Then
+            MsgBox("'m' debe ser mayor a 'n' ")
+            Return
+        End If
+        ReDim opacityArray(n - m)
+        strResult = Opacimetro.Comando_ReadOpacityCurve(n, m, opacityArray)
+        strResults = strResult.Split(",")
+
+        txtConsola.AppendText(vbCrLf + "Read Opacity Curve " + strResults(1) + vbCrLf)
+
+        If strResults(0) = "1" Then
+            Dim i = 0
+            For Each d In opacityArray
+                txtConsola.AppendText("opacity curve " +
+                                      (n + i).ToString + ": " +
+                                      d.ToString + vbCrLf)
+                i += 1
+            Next
+        End If
+
+    End Sub
+
+    Private Sub btnCurrentFactor_Click(sender As Object, e As EventArgs) Handles btnCurrentFactor.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+        Dim indice As UInt16
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadCurrFactorAcquisition(indice)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read Curr Factor Acquisition " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("indice:  " + indice.ToString + vbCrLf)
+        End If
+
+    End Sub
+
+
+    Private Sub btnValueSmokePeak_Click(sender As Object, e As EventArgs) Handles btnValueSmokePeak.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim gasStatus As UShort
+        Dim durationAcceleration As UShort
+        Dim peak As Double
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadValueSmokePeak(peak, gasStatus, durationAcceleration)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read value Smoke Peak " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("peak:  " + peak.ToString + vbCrLf)
+            txtConsola.AppendText("gasStatus:  " + gasStatus.ToString + vbCrLf)
+            txtConsola.AppendText("durationAcceleration:  " + durationAcceleration.ToString + vbCrLf)
+        End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnVariousInternalData.Click
+        Dim strResult As String
+        Dim strResults() As String
+        Dim Tempgas, Temptube, Tempdetector, Tempambient As Byte
+        Dim Fanspeed, lensedirtyness, LEDOFFIntensity, LEDONIntensity As UInt16
+        Dim Powersupply As Double
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+
+        strResult = Opacimetro.Comando_ReadVariousInternalData(Tempgas,
+                                                               Temptube,
+                                                               Tempdetector,
+                                                               Tempambient,
+                                                               Powersupply,
+                                                               Fanspeed,
+                                                               lensedirtyness,
+                                                               LEDOFFIntensity,
+                                                               LEDONIntensity)
+
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Read Various Internal Data " + strResults(1) + vbCrLf)
+        If strResults(0) = "1" Then
+            txtConsola.AppendText("Tempgas:  " + Tempgas.ToString + vbCrLf)
+            txtConsola.AppendText("Temptube:  " + Temptube.ToString + vbCrLf)
+            txtConsola.AppendText("Tempdetector:  " + Tempdetector.ToString + vbCrLf)
+            txtConsola.AppendText("Tempambient:  " + Tempambient.ToString + vbCrLf)
+            txtConsola.AppendText("Powersupply:  " + Powersupply.ToString + vbCrLf)
+            txtConsola.AppendText("Fanspeed:  " + Fanspeed.ToString + vbCrLf)
+            txtConsola.AppendText("lensedirtyness:  " + lensedirtyness.ToString + vbCrLf)
+            txtConsola.AppendText("LEDOFFIntensity:  " + LEDOFFIntensity.ToString + vbCrLf)
+            txtConsola.AppendText("LEDONIntensity:  " + LEDONIntensity.ToString + vbCrLf)
+        End If
+    End Sub
+
+    Private Sub btnAdjustGain_Click(sender As Object, e As EventArgs) Handles btnAdjustGain.Click
+
+        Dim strResult As String
+        Dim strResults() As String
+
+
+
+        If cmbPuertoOpacimetro.SelectedIndex < 0 Then
+            MsgBox("Seleccione Pueto")
+            Return
+        End If
+
+        strResult = Opacimetro.Comando_AdjustGainDetector()
+        strResults = strResult.Split(",")
+        txtConsola.AppendText(vbCrLf + "Adjust Gain Detector " + strResults(1) + vbCrLf)
+
+
+    End Sub
 End Class
