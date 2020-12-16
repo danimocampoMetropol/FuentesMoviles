@@ -194,7 +194,7 @@ Public Class frmFuentesMoviles
 
     End Sub
 
-    Private Sub btnEscanear_Click(sender As Object, e As EventArgs) Handles btnEscanear.Click
+    Private Sub btnEscanear_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -1093,7 +1093,7 @@ Public Class frmFuentesMoviles
             Return
         End If
 
-        If IsNumeric(txtStartAdd.Text) = False Or IsNumeric(txtNumBytesEEPROM.Text) Then
+        If IsNumeric(txtStartAdd.Text) = False Or IsNumeric(txtNumBytesEEPROM.Text) = False Then
             MsgBox("Ingrese datos")
             Return
         End If

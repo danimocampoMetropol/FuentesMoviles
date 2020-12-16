@@ -26,7 +26,7 @@ Public Class Opacimetro_CAP3030_Class
     Const OPAWriteEEPROM As UInteger = 110 ' ascii "n"
     Const OPAREadWriteIntensity As UInteger = 99 ' ascii "c"
     Const OPAStartStopFan As UInteger = 115 ' ascii "s"
-    Const OPAReadWriteSelectionMesuramentFilter As UInteger = 115 ' ascii "s"
+    Const OPAReadWriteSelectionMesuramentFilter As UInteger = 101 ' ascii "e"
     Const OPAReadWriteMinimunValue_GasTemp As UInteger = 104 ' ascii "h"
     Const OPAReadWriteCleanWindow As UInteger = 107 ' ascii "k"
     Const OPAReadOpacityCurve As UInteger = &H8A
@@ -877,7 +877,7 @@ Public Class Opacimetro_CAP3030_Class
             _serialPort.Write(data_send, 0, DataCount + 2) 'Envia trama
             'Inicializa temporizador de 2 segundos para recibir paquete
 
-            Delay(1)
+            Delay(2)
 
             _readData = True
             'Inicia Thread de recepcion

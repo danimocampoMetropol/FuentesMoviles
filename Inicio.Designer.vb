@@ -172,12 +172,6 @@ Partial Class frmFuentesMoviles
         Me.Label7 = New System.Windows.Forms.Label()
         Me.cmbPuertoOpacimetro = New System.Windows.Forms.ComboBox()
         Me.btnOpacGetVersion = New System.Windows.Forms.Button()
-        Me.TabPageEncicla = New System.Windows.Forms.TabPage()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtLogEncicla = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.btnEscanear = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tmrComunicacion = New System.Windows.Forms.Timer(Me.components)
         Me.btnLimpiarConsola = New System.Windows.Forms.Button()
@@ -206,7 +200,6 @@ Partial Class frmFuentesMoviles
         Me.GroupBox19.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
-        Me.TabPageEncicla.SuspendLayout()
         Me.SuspendLayout()
         '
         'SerialPort1
@@ -236,7 +229,6 @@ Partial Class frmFuentesMoviles
         '
         Me.TabPrincipal.Controls.Add(Me.TabPageMicroBench)
         Me.TabPrincipal.Controls.Add(Me.TabPageOpacimetro)
-        Me.TabPrincipal.Controls.Add(Me.TabPageEncicla)
         Me.TabPrincipal.Location = New System.Drawing.Point(0, 48)
         Me.TabPrincipal.Name = "TabPrincipal"
         Me.TabPrincipal.SelectedIndex = 0
@@ -1752,63 +1744,6 @@ Partial Class frmFuentesMoviles
         Me.btnOpacGetVersion.Text = "Get Version"
         Me.btnOpacGetVersion.UseVisualStyleBackColor = True
         '
-        'TabPageEncicla
-        '
-        Me.TabPageEncicla.Controls.Add(Me.Label3)
-        Me.TabPageEncicla.Controls.Add(Me.txtLogEncicla)
-        Me.TabPageEncicla.Controls.Add(Me.Label2)
-        Me.TabPageEncicla.Controls.Add(Me.TextBox1)
-        Me.TabPageEncicla.Controls.Add(Me.btnEscanear)
-        Me.TabPageEncicla.Location = New System.Drawing.Point(10, 47)
-        Me.TabPageEncicla.Name = "TabPageEncicla"
-        Me.TabPageEncicla.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.TabPageEncicla.Size = New System.Drawing.Size(1767, 1316)
-        Me.TabPageEncicla.TabIndex = 2
-        Me.TabPageEncicla.Text = "EnCicla"
-        Me.TabPageEncicla.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(3, 533)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(69, 29)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "LOG "
-        '
-        'txtLogEncicla
-        '
-        Me.txtLogEncicla.Location = New System.Drawing.Point(3, 576)
-        Me.txtLogEncicla.Multiline = True
-        Me.txtLogEncicla.Name = "txtLogEncicla"
-        Me.txtLogEncicla.Size = New System.Drawing.Size(1315, 539)
-        Me.txtLogEncicla.TabIndex = 4
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(207, 85)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(187, 29)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Número Módulo"
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(207, 130)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(208, 35)
-        Me.TextBox1.TabIndex = 1
-        '
-        'btnEscanear
-        '
-        Me.btnEscanear.Location = New System.Drawing.Point(19, 85)
-        Me.btnEscanear.Name = "btnEscanear"
-        Me.btnEscanear.Size = New System.Drawing.Size(182, 94)
-        Me.btnEscanear.TabIndex = 0
-        Me.btnEscanear.Text = "Escanear Modulo"
-        Me.btnEscanear.UseVisualStyleBackColor = True
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -1888,8 +1823,6 @@ Partial Class frmFuentesMoviles
         Me.GroupBox17.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
-        Me.TabPageEncicla.ResumeLayout(False)
-        Me.TabPageEncicla.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1909,12 +1842,6 @@ Partial Class frmFuentesMoviles
     Friend WithEvents btnCalibration As Windows.Forms.Button
     Friend WithEvents cmbCalibrationMode As Windows.Forms.ComboBox
     Friend WithEvents btnGetData As Windows.Forms.Button
-    Friend WithEvents TabPageEncicla As Windows.Forms.TabPage
-    Friend WithEvents Label3 As Windows.Forms.Label
-    Friend WithEvents txtLogEncicla As Windows.Forms.TextBox
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents TextBox1 As Windows.Forms.TextBox
-    Friend WithEvents btnEscanear As Windows.Forms.Button
     Friend WithEvents btnReadCalibration As Windows.Forms.Button
     Friend WithEvents chkHC As Windows.Forms.CheckBox
     Friend WithEvents chkHiHC As Windows.Forms.CheckBox
